@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'sonar-runner'
 
 android {
     configurations.all {
@@ -15,47 +14,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
-        release {
-            storeFile file('\\my-release-key.jks')
-            storePassword "bigfollow"
-            keyAlias "bigfollow"
-            keyPassword "bigfollow"
-        }
-        config {
-            keyAlias 'bigfollow'
-            keyPassword 'bigfollow'
-            storeFile file('\\my-release-key.jks')
-            storePassword 'bigfollow'
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-        }
-        debug {
-            signingConfig signingConfigs.config
-        }
-        buildType {
-            signingConfig signingConfigs.config
-        }
-    }
 }
 
-/*
-sonarRunner {
-    sonarProperties {
-        property "sonar.host.url", "http://localhost:9000" // Address of Sonar server
-        property "sonar.sources", "src" // Sources
-        property "sonar.projectName", "BigFollow" // Name of your project
-        property "sonar.projectVersion", "1.0-SNAPSHOT" // Version of your project
-        property "sonar.projectDescription", "Processus developpement project" // Description of your project
-    }
-}
-*/
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile('com.google.api-client:google-api-client-android:1.22.0') {
@@ -68,10 +28,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile files('libs/activeandroid-3.0.jar')
-    compile 'com.google.android.gms:play-services-auth:10.2.0'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'com.google.firebase:firebase-auth:11.8.0'
+    compile 'com.google.firebase:firebase-core:11.8.0'
+    compile 'com.google.android.gms:play-services-auth:11.8.0'
     compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.google.android.gms:play-services-auth:10.2.0'
     compile 'pub.devrel:easypermissions:0.2.1'
     compile 'com.android.support:design:25.3.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -79,8 +40,8 @@ dependencies {
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     compile 'javax.annotation:javax.annotation-api:1.2'
     compile 'com.mikhaellopez:circularprogressbar:1.1.1'
-    compile 'com.google.android.gms:play-services-plus:10.2.0'
-    compile 'com.google.android.gms:play-services-drive:10.2.0'
+    compile 'com.google.android.gms:play-services-plus:11.8.0'
+    compile 'com.google.android.gms:play-services-drive:11.8.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'org.jetbrains:annotations-java5:15.0'
     testCompile 'junit:junit:4.12'

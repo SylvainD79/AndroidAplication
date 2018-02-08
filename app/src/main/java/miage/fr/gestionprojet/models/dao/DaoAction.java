@@ -3,6 +3,7 @@ package miage.fr.gestionprojet.models.dao;
 import android.database.Cursor;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
@@ -86,11 +87,11 @@ public class DaoAction {
         return lstActions;
     }
 
-    public static ArrayList<Action> loadActionsByDomaineAndDate(int idDomaine,Date d, long idProjet){
+    public static List<Action> loadActionsByDomaineAndDate(int idDomaine,Date d, long idProjet){
         Projet proj = Model.load(Projet.class, idProjet);
-        ArrayList<Action> lstActions = new ArrayList<>();
+        List<Action> lstActions = new ArrayList<>();
         for(Domaine dom : proj.getLstDomaines()) {
-            ArrayList<Action> result = new Select()
+            List<Action> result = new Select()
                     .from(Action.class)
                     .where("domaine=? and dt_fin_prevue>=? and dt_debut<=? and domaine=?", idDomaine, d.getTime(), d.getTime(),dom.getId())
                     .execute();
@@ -98,7 +99,7 @@ public class DaoAction {
         }
         return lstActions;
     }
-    public static ArrayList<Action> getActionbyCode(String id) {
+    public static List<Action> getActionbyCode(String id) {
         return new Select()
                 .from(Action.class)
                 .where("code = ?", id)
@@ -107,9 +108,10 @@ public class DaoAction {
 
 
     public static HashMap<String,Integer> getNbActionRealiseeGroupByDomaine(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT COUNT(*) as total, domaine FROM " + new Action().getTableName() + " WHERE reste_a_faire=0 GROUP BY domaine", null);
+                .rawQuery("SELECT COUNT(*) as total, domaine FROM " + tableName + " WHERE reste_a_faire=0 GROUP BY domaine", null);
         HashMap<String,Integer> lstResult = new HashMap<>();
 
         try {
@@ -124,9 +126,10 @@ public class DaoAction {
     }
 
     public static HashMap<String,Integer> getNbActionTotalGroupByDomaine(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT COUNT(*) as total, domaine FROM " + new Action().getTableName() + " GROUP BY domaine", null);
+                .rawQuery("SELECT COUNT(*) as total, domaine FROM " + tableName + " GROUP BY domaine", null);
         HashMap<String,Integer> lstResult = new HashMap<>();
 
         try {
@@ -142,9 +145,10 @@ public class DaoAction {
 
 
     public static HashMap<String,Integer> getNbActionRealiseeGroupByTypeTravail(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT COUNT(*) as total,typeTravail FROM " + new Action().getTableName() + " WHERE reste_a_faire=0 GROUP BY typeTravail", null);
+                .rawQuery("SELECT COUNT(*) as total,typeTravail FROM " + tableName + " WHERE reste_a_faire=0 GROUP BY typeTravail", null);
         HashMap<String,Integer> lstResult = new HashMap<>();
 
         try {
@@ -159,9 +163,10 @@ public class DaoAction {
     }
 
     public static HashMap<String,Integer> getNbActionTotalGroupByTypeTravail(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT COUNT(*) as total, typeTravail FROM " + new Action().getTableName() + " GROUP BY typeTravail", null);
+                .rawQuery("SELECT COUNT(*) as total, typeTravail FROM " + tableName + " GROUP BY typeTravail", null);
         HashMap<String,Integer> lstResult = new HashMap<>();
 
         try {
@@ -175,11 +180,12 @@ public class DaoAction {
         return lstResult;
     }
 
-    public static ArrayList<String> getLstTypeTravail(){
+    public static List<String> getLstTypeTravail(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT DISTINCT(typeTravail) FROM " + new Action().getTableName(), null);
-        ArrayList<String> lstResults = new ArrayList<>();
+                .rawQuery("SELECT DISTINCT(typeTravail) FROM " + tableName, null);
+        List<String> lstResults = new ArrayList<>();
 
         try {
             while (c.moveToNext()) {
@@ -194,9 +200,10 @@ public class DaoAction {
 
 
     public static HashMap<String,Integer> getNbActionRealiseeGroupByUtilisateurOeu(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT COUNT(*) as total,resp_oeu FROM " + new Action().getTableName() + " WHERE reste_a_faire=0 GROUP BY resp_oeu", null);
+                .rawQuery("SELECT COUNT(*) as total,resp_oeu FROM " + tableName + " WHERE reste_a_faire=0 GROUP BY resp_oeu", null);
         HashMap<String,Integer> lstResult = new HashMap<>();
 
         try {
@@ -211,9 +218,10 @@ public class DaoAction {
     }
 
     public static HashMap<String,Integer> getNbActionRealiseeGroupByUtilisateurOuv(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT COUNT(*) as total,resp_ouv FROM " + new Action().getTableName() + " WHERE reste_a_faire=0 GROUP BY resp_ouv", null);
+                .rawQuery("SELECT COUNT(*) as total,resp_ouv FROM " + tableName + " WHERE reste_a_faire=0 GROUP BY resp_ouv", null);
         HashMap<String,Integer> lstResult = new HashMap<>();
 
         try {
@@ -228,9 +236,10 @@ public class DaoAction {
     }
 
     public static HashMap<String,Integer> getNbActionTotalGroupByUtilisateurOeu(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT COUNT(*) as total, resp_oeu FROM " + new Action().getTableName() + " GROUP BY resp_oeu", null);
+                .rawQuery("SELECT COUNT(*) as total, resp_oeu FROM " + tableName + " GROUP BY resp_oeu", null);
         HashMap<String,Integer> lstResult = new HashMap<>();
 
         try {
@@ -245,9 +254,10 @@ public class DaoAction {
     }
 
     public static HashMap<String,Integer> getNbActionTotalGroupByUtilisateurOuv(){
+        String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT COUNT(*) as total, resp_ouv FROM " + new Action().getTableName() + " GROUP BY resp_ouv", null);
+                .rawQuery("SELECT COUNT(*) as total, resp_ouv FROM " + tableName + " GROUP BY resp_ouv", null);
         HashMap<String,Integer> lstResult = new HashMap<>();
 
         try {
@@ -261,11 +271,11 @@ public class DaoAction {
         return lstResult;
     }
 
-    public static ArrayList<Action> getActionRealiseesByProjet(long idProjet){
+    public static List<Action> getActionRealiseesByProjet(long idProjet){
         Projet proj = Model.load(Projet.class,idProjet);
         List<Domaine> lstDomaines = proj.getLstDomaines();
-        ArrayList<Action> lstActionRealisees = new ArrayList<>();
-        ArrayList<Action> lstActionRecuperees = new ArrayList<>();
+        List<Action> lstActionRealisees = new ArrayList<>();
+        List<Action> lstActionRecuperees = new ArrayList<>();
         for(Domaine d: lstDomaines){
             lstActionRecuperees = new Select()
                     .from(Action.class)
@@ -276,11 +286,11 @@ public class DaoAction {
         return lstActionRealisees;
     }
 
-    public static ArrayList<Action> getAllActionsByProjet(long idProjet){
+    public static List<Action> getAllActionsByProjet(long idProjet){
         Projet proj = Model.load(Projet.class,idProjet);
         List<Domaine> lstDomaines = proj.getLstDomaines();
-        ArrayList<Action> lstAction = new ArrayList<>();
-        ArrayList<Action> lstActionRecuperees = new ArrayList<>();
+        List<Action> lstAction = new ArrayList<>();
+        List<Action> lstActionRecuperees = new ArrayList<>();
         for(Domaine d: lstDomaines){
             lstActionRecuperees = new Select()
                     .from(Action.class)

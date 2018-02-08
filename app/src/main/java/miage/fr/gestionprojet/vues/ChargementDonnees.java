@@ -1,75 +1,75 @@
 
-      package miage.fr.gestionprojet.vues;
+package miage.fr.gestionprojet.vues;
 
-        import com.activeandroid.ActiveAndroid;
-        import com.activeandroid.query.Delete;
-        import com.google.android.gms.common.ConnectionResult;
-        import com.google.android.gms.common.GoogleApiAvailability;
-        import com.google.api.client.extensions.android.http.AndroidHttp;
-        import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-        import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
-        import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 
-        import com.google.api.client.http.HttpTransport;
-        import com.google.api.client.json.JsonFactory;
-        import com.google.api.client.json.jackson2.JacksonFactory;
-        import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.ExponentialBackOff;
 
-        import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.SheetsScopes;
 
-        import com.google.api.services.sheets.v4.model.*;
+import com.google.api.services.sheets.v4.model.*;
 
-        import android.Manifest;
-        import android.accounts.AccountManager;
-        import android.app.Activity;
-        import android.app.Dialog;
-        import android.app.ProgressDialog;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.net.ConnectivityManager;
-        import android.net.NetworkInfo;
-        import android.os.AsyncTask;
-        import android.os.Bundle;
-        import android.support.annotation.NonNull;
-        import android.text.TextUtils;
-        import android.text.method.ScrollingMovementMethod;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.LinearLayout;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.Manifest;
+import android.accounts.AccountManager;
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import java.io.IOException;
-        import java.text.ParseException;
-        import java.text.SimpleDateFormat;
-        import java.util.ArrayList;
-        import java.util.Arrays;
-        import java.util.Date;
-        import java.util.HashMap;
-        import java.util.List;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
-        import miage.fr.gestionprojet.models.EtapeFormation;
-        import miage.fr.gestionprojet.models.Formation;
-        import miage.fr.gestionprojet.models.Action;
-        import miage.fr.gestionprojet.models.Domaine;
-        import miage.fr.gestionprojet.models.Mesure;
-        import miage.fr.gestionprojet.models.Projet;
-        import miage.fr.gestionprojet.models.Ressource;
-        import miage.fr.gestionprojet.models.SaisieCharge;
-        import miage.fr.gestionprojet.models.dao.DaoAction;
+import miage.fr.gestionprojet.models.EtapeFormation;
+import miage.fr.gestionprojet.models.Formation;
+import miage.fr.gestionprojet.models.Action;
+import miage.fr.gestionprojet.models.Domaine;
+import miage.fr.gestionprojet.models.Mesure;
+import miage.fr.gestionprojet.models.Projet;
+import miage.fr.gestionprojet.models.Ressource;
+import miage.fr.gestionprojet.models.SaisieCharge;
+import miage.fr.gestionprojet.models.dao.DaoAction;
 
-        import miage.fr.gestionprojet.models.dao.DaoDomaine;
-        import miage.fr.gestionprojet.models.dao.DaoFormation;
-        import miage.fr.gestionprojet.models.dao.DaoMesure;
-        import miage.fr.gestionprojet.models.dao.DaoProjet;
-        import miage.fr.gestionprojet.models.dao.DaoRessource;
-        import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
-        import miage.fr.gestionprojet.outils.Outils;
-        import pub.devrel.easypermissions.AfterPermissionGranted;
-        import pub.devrel.easypermissions.EasyPermissions;
+import miage.fr.gestionprojet.models.dao.DaoDomaine;
+import miage.fr.gestionprojet.models.dao.DaoFormation;
+import miage.fr.gestionprojet.models.dao.DaoMesure;
+import miage.fr.gestionprojet.models.dao.DaoProjet;
+import miage.fr.gestionprojet.models.dao.DaoRessource;
+import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
+import miage.fr.gestionprojet.outils.Outils;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class ChargementDonnees extends Activity implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
@@ -726,7 +726,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             new Delete().from(Formation.class).execute();
 
 
-            ArrayList<Action> actionList = new ArrayList<>();
+            List<Action> actionList = new ArrayList<>();
             Action action = new Action();
             ActiveAndroid.beginTransaction();
             try {
@@ -812,7 +812,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                         saisiecharge.setChargeRestanteParSemaine(chainetofloat(row.get(15).toString()));
 
                         saisiecharge.setPrctChargeFaiteParSemaineParChargeEstimee(chainetofloat(row.get(17).toString().replace('%', ' ')));
-                        ArrayList<Action> listesActions = DaoAction.getActionbyCode(row.get(2).toString());
+                        List<Action> listesActions = DaoAction.getActionbyCode(row.get(2).toString());
 
                         if (listesActions.size() > 0) {
                             Action actionsaisie = new Action();

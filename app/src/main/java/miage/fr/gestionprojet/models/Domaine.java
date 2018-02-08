@@ -24,9 +24,9 @@ public class Domaine extends Model {
     @Column(name="projet")
     private Projet projet;
 
-    private ArrayList<Action> lstActions;
+    private List<Action> lstActions;
 
-    private ArrayList<SaisieCharge> lstSaisieCharge;
+    private List<SaisieCharge> lstSaisieCharge;
 
     public Domaine(String nom, String description, Projet projet) {
         super();
@@ -64,7 +64,7 @@ public class Domaine extends Model {
         this.projet = projet;
     }
 
-    public ArrayList<Action> getLstActions() {
+    public List<Action> getLstActions() {
         this.lstActions = getMany(Action.class, "domaine");
         return this.lstActions;
     }

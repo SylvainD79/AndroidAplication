@@ -3,6 +3,7 @@ package miage.fr.gestionprojet.models.dao;
 import android.database.Cursor;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Cache;
 import com.activeandroid.query.Select;
 
 import java.text.DateFormat;
@@ -34,11 +35,14 @@ public class DaoProjet {
     }
 
     public static Date getDateFin(long idProjet){
+        String tableNameAction = Cache.getTableInfo(Action.class).getTableName();
+        String tableNameDomaine = Cache.getTableInfo(Domaine.class).getTableName();
+        String tableNameProjet = Cache.getTableInfo(Projet.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT max(a.dt_fin_prevue) FROM " + new Action().getTableName()
-                        + " a INNER JOIN "+ new Domaine().getTableName() + " d ON a.domaine = d.id INNER JOIN "
-                        +new Projet().getTableName() +" p ON d.projet = p.id WHERE p.id = "+idProjet, null);
+                .rawQuery("SELECT max(a.dt_fin_prevue) FROM " + tableNameAction
+                        + " a INNER JOIN "+ tableNameDomaine + " d ON a.domaine = d.id INNER JOIN "
+                        + tableNameProjet +" p ON d.projet = p.id WHERE p.id = "+idProjet, null);
         Date dateFinPrevu;
         if(c.moveToFirst()){
             Calendar.getInstance().setTimeInMillis(c.getLong(0));
@@ -49,11 +53,14 @@ public class DaoProjet {
     }
 
     public static Date getDateDebut(long idProjet){
+        String tableNameAction = Cache.getTableInfo(Action.class).getTableName();
+        String tableNameDomaine = Cache.getTableInfo(Domaine.class).getTableName();
+        String tableNameProjet = Cache.getTableInfo(Projet.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
-                .rawQuery("SELECT min(a.dt_debut) FROM " + new Action().getTableName()
-                        + " a INNER JOIN "+ new Domaine().getTableName() + " d ON a.domaine = d.id INNER JOIN "
-                        +new Projet().getTableName() +" p ON d.projet = p.id WHERE p.id = "+idProjet, null);
+                .rawQuery("SELECT min(a.dt_debut) FROM " + tableNameAction
+                        + " a INNER JOIN "+ tableNameDomaine + " d ON a.domaine = d.id INNER JOIN "
+                        +tableNameProjet +" p ON d.projet = p.id WHERE p.id = "+idProjet, null);
         Date dateDebut;
         if(c.moveToFirst()){
             Calendar.getInstance().setTimeInMillis(c.getLong(0));

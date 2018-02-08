@@ -3,6 +3,7 @@ package miage.fr.gestionprojet.models.dao;
 import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import miage.fr.gestionprojet.models.Domaine;
 
@@ -12,14 +13,14 @@ import miage.fr.gestionprojet.models.Domaine;
 
 public class DaoDomaine {
 
-    public static ArrayList<Domaine> loadAll(){
+    public static List<Domaine> loadAll(){
         return new Select()
                 .from(Domaine.class)
                 .execute();
     }
 
     public static Domaine getByName(String name){
-        ArrayList<Domaine> lst = new Select()
+        List<Domaine> lst = new Select()
                 .from(Domaine.class)
                 .where("nom = ?",name)
                 .execute();

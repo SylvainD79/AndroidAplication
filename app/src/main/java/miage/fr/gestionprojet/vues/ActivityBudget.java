@@ -95,7 +95,7 @@ public class ActivityBudget extends AppCompatActivity {
     }
 
     private void AffichageType(){
-        ArrayList<String> lstTypes = DaoAction.getLstTypeTravail();
+        List<String> lstTypes = DaoAction.getLstTypeTravail();
         AdapterBudgetType adapter = new AdapterBudgetType(ActivityBudget.this,R.layout.lst_view_budget,lstTypes);
         this.liste.setAdapter(adapter);
     }

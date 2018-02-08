@@ -17,7 +17,7 @@ import miage.fr.gestionprojet.models.SaisieCharge;
 public class DaoMesure {
 
     public static Mesure getLastMesureBySaisieCharge(long idSaisieCharge){
-        ArrayList<Mesure> lstMesures =
+        List<Mesure> lstMesures =
                 new Select()
                 .from(Mesure.class)
                 .where("action=?", idSaisieCharge)
@@ -30,9 +30,9 @@ public class DaoMesure {
         }
     }
 
-    public static ArrayList<Mesure> getListtMesureByAction(long idSaisieCharge) {
-        ArrayList<Mesure> mesures = new Select().from(Mesure.class).execute();
-        ArrayList<Mesure> lstMesures =
+    public static List<Mesure> getListtMesureByAction(long idSaisieCharge) {
+        List<Mesure> mesures = new Select().from(Mesure.class).execute();
+        List<Mesure> lstMesures =
                 new Select()
                         .from(Mesure.class)
                         .where("action=?", idSaisieCharge)

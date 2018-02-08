@@ -7,6 +7,7 @@ import com.activeandroid.annotation.Table;
 import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Audrey on 25/02/2017.
@@ -55,7 +56,7 @@ public class SaisieCharge extends Model {
 
 
 
-     private ArrayList<Mesure> lstMesures;
+     private List<Mesure> lstMesures;
 
     public SaisieCharge() {
         super();
@@ -149,7 +150,7 @@ public class SaisieCharge extends Model {
         this.prctChargeFaiteParSemaineParChargeEstimee = prctChargeFaiteParSemaineParChargeEstimee;
     }
 
-    public ArrayList<Mesure> getLstMesures() {
+    public List<Mesure> getLstMesures() {
         this.lstMesures = getMany(Mesure.class, "action");
        return this.lstMesures;
     }

@@ -30,9 +30,9 @@ public class DaoSaisieCharge {
 
     }
 
-    public static ArrayList<SaisieCharge> loadSaisieChargesByDomaine(int idDomaine){
-        ArrayList<SaisieCharge> lst = new ArrayList<>();
-        ArrayList<Action> results = new Select()
+    public static List<SaisieCharge> loadSaisieChargesByDomaine(int idDomaine){
+        List<SaisieCharge> lst = new ArrayList<>();
+        List<Action> results = new Select()
                 .from(Action.class)
                 .where("domaine=?",idDomaine)
                 .execute();
@@ -49,11 +49,11 @@ public class DaoSaisieCharge {
         return lst;
     }
 
-    public static ArrayList<SaisieCharge> loadSaisieChargeByUtilisateur(int idUser){
+    public static List<SaisieCharge> loadSaisieChargeByUtilisateur(int idUser){
 
 
-        ArrayList<SaisieCharge> lst = new ArrayList<>();
-        ArrayList<Action> results = new Select()
+        List<SaisieCharge> lst = new ArrayList<>();
+        List<Action> results = new Select()
                 .from(Action.class)
                 .where("resp_ouv=? or resp_oeu=?",idUser,idUser)
                 .execute();
@@ -71,7 +71,7 @@ public class DaoSaisieCharge {
     }
 
     public static SaisieCharge loadSaisieChargeByAction(long idAction){
-        ArrayList<SaisieCharge> lst = new Select()
+        List<SaisieCharge> lst = new Select()
                 .from(SaisieCharge.class)
                 .where("action = ?", idAction)
                 .execute();

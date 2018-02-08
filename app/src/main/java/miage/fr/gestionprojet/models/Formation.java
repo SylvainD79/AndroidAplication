@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Audrey on 25/02/2017.
@@ -26,13 +27,13 @@ public class Formation extends Model {
     @Column(name="avancement_post_formation")
     private float avancementPostFormation;
 
-    private ArrayList<EtapeFormation> lstEtapesFormation;
+    private List<EtapeFormation> lstEtapesFormation;
 
     public Formation() {
         super();
     }
 
-    public ArrayList<EtapeFormation> getLstEtapesFormations() {
+    public List<EtapeFormation> getLstEtapesFormations() {
         this.lstEtapesFormation = getMany(EtapeFormation.class, "formation");
         return this.lstEtapesFormation;
     }
@@ -69,7 +70,7 @@ public class Formation extends Model {
         this.avancementPostFormation = avancementPostFormation;
     }
 
-    public ArrayList<EtapeFormation> getLstEtapesFormation() {
+    public List<EtapeFormation> getLstEtapesFormation() {
         return lstEtapesFormation;
     }
 
