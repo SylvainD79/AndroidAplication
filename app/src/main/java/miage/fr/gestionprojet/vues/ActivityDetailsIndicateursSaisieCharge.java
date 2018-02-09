@@ -1,4 +1,4 @@
-package miage.fr.gestionprojet.vues;
+    package miage.fr.gestionprojet.vues;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -67,7 +67,8 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
 
             ProgressBar progressBarDate = (ProgressBar) findViewById(R.id.progressBarDate);
             Calendar c = Calendar.getInstance();
-            int progress = Outils.calculerPourcentage(c.getTimeInMillis()-saisieCharge.getAction().getDtDeb().getTime(),saisieCharge.getAction().getDtFinPrevue().getTime()-saisieCharge.getAction().getDtDeb().getTime());
+            int progress = Outils.calculerPourcentage((double) c.getTimeInMillis() - saisieCharge.getAction().getDtDeb().getTime(),
+                    (double) saisieCharge.getAction().getDtFinPrevue().getTime() - saisieCharge.getAction().getDtDeb().getTime());
             progressBarDate.setProgress(progress);
 
             ListView lstViewIndicateur = (ListView) findViewById(R.id.ListViewDetailsSaisieCharge);

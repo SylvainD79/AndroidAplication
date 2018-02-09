@@ -44,11 +44,6 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
     private int request_code;
     ProgressDialog progress_dialog;
 
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,26 +188,23 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
                 progress_dialog.show();
                 gPlusSignIn();
                 break;
+
             case R.id.sign_out_button:
                 progress_dialog.show();
                 gPlusSignOut();
-
                 break;
+
             case R.id.disconnect_button:
                 progress_dialog.show();
                 gPlusRevokeAccess();
+                break;
 
             case R.id.frnd_button:
                 Plus.PeopleApi.loadVisible(google_api_client, null)
                         .setResultCallback(this);
-
                 break;
-
-
         }
     }
-
-
 
     /*
       Sign-in into the Google + account
@@ -226,7 +218,6 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
             resolveSignInError();
             Intent intent = new Intent(ActivityConnexion.this,ActivityGestionDesInitials.class);
             startActivity(intent);
-
         }
     }
 
@@ -383,6 +374,7 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
             this.bitmap_img = bitmap_img;
         }
 
+        @Override
         protected Bitmap doInBackground(String... urls) {
             String url = urls[0];
             Bitmap new_icon = null;

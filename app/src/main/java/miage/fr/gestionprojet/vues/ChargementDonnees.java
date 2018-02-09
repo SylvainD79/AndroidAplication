@@ -514,58 +514,38 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             return values;
         }
 
-
-        public Date chainetoDate(String s) throws ParseException {
+        public Date chainetoDate(String date) throws ParseException {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date resultat;
-            if (s.equals("") || s.equals(null) || s.equals("NON PREVU")) {
+            if (date == null ||date.equals("") || date.equals("NON PREVU")) {
                 resultat = sdf.parse("00/00/0000");
-
             } else {
-                resultat = sdf.parse(s);
+                resultat = sdf.parse(date);
             }
-            ;
             return resultat;
         }
 
-
-        public Boolean chainetoBoolean(String s) {
-            Boolean resultat;
-            if (s.equals("1")) {
-                resultat = true;
-
-            } else {
-                resultat = false;
-            }
-
-            return resultat;
+        public Boolean chainetoBoolean(String booleanString) {
+            return booleanString.equals("1");
         }
 
-        public int chainetoint(String s) {
+        public int chainetoint(String integer) {
             int resultat;
-            boolean flag = s.matches("%[a-zA-Z]%");
-            if (s.equals("") || (flag)) {
+            if (integer == null || integer.equals("") || integer.matches("%[a-zA-Z]%")) {
                 resultat = 0;
-
             } else {
-                resultat = new Integer(s);
+                resultat = new Integer(integer);
             }
-            ;
             return resultat;
         }
 
         public Float chainetofloat(String s) {
             Float resultat;
-
-            boolean flag = s.matches(".*[a-zA-Z]+.*");
-            if (s.equals("") || (s == null) || s.equals("-") || flag || s.equals("RETARD") || s.equals("#DIV/0!")) {
+            if (s == null || s.equals("") || s.equals("-") || s.matches(".*[a-zA-Z]+.*") || s.equals("RETARD") || s.equals("#DIV/0!")) {
                 resultat = (float)0.0;
-
             } else {
-
                 resultat = Float.parseFloat(s.replace(',', '.'));
             }
-            ;
             return resultat;
         }
 

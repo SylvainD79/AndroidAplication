@@ -67,7 +67,7 @@ public class AdapterBudgetUtilisateur extends ArrayAdapter<Ressource> {
 
         // on définit le texte à afficher
         holder.utilisateur.setText(getItem(position).toString());
-        holder.nbActionRealisees.setText(Integer.valueOf(this.lstNbActionsRealisees.get(position))+"/"+Integer.valueOf(this.lstNbActions.get(position)));
+        holder.nbActionRealisees.setText(this.lstNbActionsRealisees.get(position) + "/" + this.lstNbActions.get(position));
         holder.avancement.setProgress(Outils.calculerPourcentage(this.lstNbActionsRealisees.get(position),this.lstNbActions.get(position)));
         return convertView;
     }
