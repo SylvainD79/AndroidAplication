@@ -1,8 +1,8 @@
 package miage.fr.gestionprojet.vues;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +24,6 @@ import miage.fr.gestionprojet.models.Domaine;
 import miage.fr.gestionprojet.models.Projet;
 import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.dao.DaoAction;
-import miage.fr.gestionprojet.models.dao.DaoDomaine;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 
 public class ActivityBudget extends AppCompatActivity {

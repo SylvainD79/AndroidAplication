@@ -1,24 +1,6 @@
 
 package miage.fr.gestionprojet.vues;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.query.Delete;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.ExponentialBackOff;
-
-import com.google.api.services.sheets.v4.SheetsScopes;
-
-import com.google.api.services.sheets.v4.model.*;
-
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -42,28 +24,38 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.ValueRange;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
-import miage.fr.gestionprojet.models.EtapeFormation;
-import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
+import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.Projet;
 import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoAction;
-
 import miage.fr.gestionprojet.models.dao.DaoDomaine;
-import miage.fr.gestionprojet.models.dao.DaoFormation;
-import miage.fr.gestionprojet.models.dao.DaoMesure;
 import miage.fr.gestionprojet.models.dao.DaoProjet;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;

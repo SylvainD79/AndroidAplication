@@ -14,7 +14,6 @@ import java.util.List;
 
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Formation;
-import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.vues.FormationsActivity;
 
 /**

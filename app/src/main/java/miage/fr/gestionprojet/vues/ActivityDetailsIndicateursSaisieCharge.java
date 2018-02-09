@@ -1,8 +1,8 @@
 package miage.fr.gestionprojet.vues;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoMesure;
 import miage.fr.gestionprojet.outils.Outils;
-import miage.fr.gestionprojet.R;
 
 public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
 

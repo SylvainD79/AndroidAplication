@@ -15,12 +15,12 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import miage.fr.gestionprojet.models.Mesure;
-import miage.fr.gestionprojet.models.dao.DaoMesure;
-import miage.fr.gestionprojet.vues.ActivityIndicateursSaisieCharge;
-import miage.fr.gestionprojet.outils.Outils;
 import miage.fr.gestionprojet.R;
+import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.SaisieCharge;
+import miage.fr.gestionprojet.models.dao.DaoMesure;
+import miage.fr.gestionprojet.outils.Outils;
+import miage.fr.gestionprojet.vues.ActivityIndicateursSaisieCharge;
 
 /**
  * Created by Audrey on 01/02/2017.

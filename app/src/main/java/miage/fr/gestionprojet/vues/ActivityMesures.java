@@ -1,20 +1,17 @@
 package miage.fr.gestionprojet.vues;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.activeandroid.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.adapter.AdapterBudgetType;
 import miage.fr.gestionprojet.adapter.AdapterMesure;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.SaisieCharge;

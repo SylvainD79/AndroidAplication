@@ -4,9 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import java.nio.channels.FileLock;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -2,7 +2,6 @@ package miage.fr.gestionprojet.models.dao;
 
 import com.activeandroid.query.Select;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import miage.fr.gestionprojet.models.Domaine;

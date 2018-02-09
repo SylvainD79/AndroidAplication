@@ -14,7 +14,6 @@ import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapter.FormationsAdapter;
 import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
-import miage.fr.gestionprojet.outils.DividerItemDecoration;
 
 public class FormationsActivity extends AppCompatActivity {
 

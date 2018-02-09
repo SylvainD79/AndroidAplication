@@ -1,6 +1,5 @@
 package miage.fr.gestionprojet.vues;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,23 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.activeandroid.ActiveAndroid;
-import com.activeandroid.query.Delete;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.models.Action;
-import miage.fr.gestionprojet.models.Domaine;
-import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.Projet;
-import miage.fr.gestionprojet.models.Ressource;
-import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoProjet;
 
 public class MainActivity  extends AppCompatActivity {

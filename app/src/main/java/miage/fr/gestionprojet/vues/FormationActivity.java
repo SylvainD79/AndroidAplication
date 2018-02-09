@@ -2,15 +2,11 @@ package miage.fr.gestionprojet.vues;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceGroup;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.text.Normalizer;
 
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Formation;

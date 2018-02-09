@@ -2,13 +2,9 @@ package miage.fr.gestionprojet.models.dao;
 
 import com.activeandroid.query.Select;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Mesure;
-import miage.fr.gestionprojet.models.Projet;
-import miage.fr.gestionprojet.models.SaisieCharge;
 
 /**
  * Created by Audrey on 27/02/2017.

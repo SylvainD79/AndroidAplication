@@ -1,10 +1,7 @@
 package miage.fr.gestionprojet.vues;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -21,18 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.activeandroid.Model;
-import com.activeandroid.query.Select;
-
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,10 +34,7 @@ import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapter.ActionsAdapter;
 import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
-import miage.fr.gestionprojet.models.Projet;
 import miage.fr.gestionprojet.models.dao.DaoAction;
-import miage.fr.gestionprojet.models.dao.DaoDomaine;
-import miage.fr.gestionprojet.models.dao.DaoRessource;
 import miage.fr.gestionprojet.outils.DividerItemDecoration;
 import miage.fr.gestionprojet.outils.Outils;
 

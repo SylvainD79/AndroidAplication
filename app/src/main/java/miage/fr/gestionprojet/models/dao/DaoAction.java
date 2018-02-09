@@ -5,7 +5,6 @@ import android.database.Cursor;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Cache;
 import com.activeandroid.Model;
-import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
 
 import java.util.ArrayList;

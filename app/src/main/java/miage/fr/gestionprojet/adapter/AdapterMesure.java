@@ -5,22 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import miage.fr.gestionprojet.models.Mesure;
-import miage.fr.gestionprojet.models.dao.DaoMesure;
-import miage.fr.gestionprojet.vues.ActivityIndicateursSaisieCharge;
-import miage.fr.gestionprojet.outils.Outils;
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.models.SaisieCharge;
+import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.vues.ActivityMesures;
 
 /**

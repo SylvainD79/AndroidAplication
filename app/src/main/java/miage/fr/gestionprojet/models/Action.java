@@ -3,10 +3,8 @@ package miage.fr.gestionprojet.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 
 import java.util.Date;
-import java.util.ArrayList;
 
 /**
  * Created by Audrey on 25/02/2017.
