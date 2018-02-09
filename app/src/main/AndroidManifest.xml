@@ -32,7 +32,6 @@
                 miage.fr.gestionprojet.models.SaisieCharge" />
 
         <activity android:name=".vues.ActivityConnexion">
-            ,
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
