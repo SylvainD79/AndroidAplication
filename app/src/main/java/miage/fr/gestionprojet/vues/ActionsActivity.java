@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,10 +54,11 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
     private Date dateSaisie;
     private long idProjet;
 
-    public final static String EXTRA_INITIAL = "initial";
-    public final static String EXTRA_PROJET = "projet visu";
-    @Override
+    public static final  String EXTRA_INITIAL = "initial";
+    public static final String EXTRA_PROJET = "projet visu";
+    private static final String TAG = "[ActionsActivity]";
 
+    @Override
     //TODO voir problème de date
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +67,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             initial = getIntent().getStringExtra(ActivityDetailsProjet.EXTRA_INITIAL);
             idProjet = getIntent().getLongExtra(EXTRA_PROJET,0);
         }catch(Exception e){
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
             finish();
         }
 
@@ -118,7 +120,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                     dateSaisie = Outils.weekOfYearToDate(year,week);
                     refreshAdapter(DaoAction.loadActionsByDate(dateSaisie, idProjet));
                 }catch(Exception e){
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
                     yearEditText.setError("");
                 }
             }
@@ -141,7 +143,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                     dateSaisie = Outils.weekOfYearToDate(year,week);
                     refreshAdapter(DaoAction.loadActionsByDate(dateSaisie, idProjet));
                 }catch(Exception e){
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
                     weekEditText.setError("");
                 }
             }
@@ -280,6 +282,8 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra(EXTRA_INITIAL, (initial));
                 startActivity(intent);
                 return true;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -337,7 +341,6 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             popupMenu.getMenuInflater().inflate(R.menu.popup_menu_domaine, menu);
             popupMenu.setGravity(Gravity.CENTER);
             ArrayList<Domaine> doms = getDomainesAffiches();
-            int i = 0 ;
             for(Domaine d : doms){
                 menu.add(0,(int)(long) d.getId(), 0, d.getNom());
             }

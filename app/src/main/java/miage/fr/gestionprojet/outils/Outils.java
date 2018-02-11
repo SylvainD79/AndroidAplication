@@ -8,7 +8,8 @@ import java.util.Date;
  */
 
 public class Outils {
-    public static long CONST_DURATION_OF_DAY = 1000l * 60 * 60 * 24;
+
+    private static final long CONST_DURATION_OF_DAY = 1000l * 60 * 60 * 24;
 
     public static int calculerPourcentage(double valeurReleve, double valeurCible){
         int result = (int) ((valeurReleve/valeurCible)*100);
@@ -22,9 +23,8 @@ public class Outils {
         return c.getTime();
     }
 
-    public static long dureeEntreDeuxDate(Date dateInf, Date datePost){
+    public static long dureeEntreDeuxDates(Date dateInf, Date datePost){
         long duree = datePost.getTime() - dateInf.getTime();
-        long numberOfDay = duree/CONST_DURATION_OF_DAY;
-        return numberOfDay;
+        return duree / CONST_DURATION_OF_DAY;
     }
 }

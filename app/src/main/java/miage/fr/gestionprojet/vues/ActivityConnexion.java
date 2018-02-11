@@ -38,6 +38,7 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
     SignInButton signIn_btn;
     private static final int SIGN_IN_CODE = 0;
     private static final int PROFILE_PIC_SIZE = 120;
+    private static final String TAG = "[ActionsActivity]";
     private ConnectionResult connection_result;
     private boolean is_intent_inprogress;
     private boolean is_signInBtn_clicked;
@@ -297,7 +298,7 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
     }
@@ -382,8 +383,7 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
                 InputStream in_stream = new java.net.URL(url).openStream();
                 new_icon = BitmapFactory.decodeStream(in_stream);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
             return new_icon;
         }

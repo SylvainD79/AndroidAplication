@@ -39,7 +39,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
     public final static String EXTRA_INITIAL = "initial";
     private ArrayList <String> lstActions;
     private Projet proj;
-    public String initialUtilisateur =null;
+    private String initialUtilisateur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +147,8 @@ public class ActivityDetailsProjet extends AppCompatActivity {
 
             //proportion de durée
             Date dateFin = DaoProjet.getDateFin(this.proj.getId());
-            long dureeRestante = Outils.dureeEntreDeuxDate(Calendar.getInstance().getTime(),dateFin);
-            long dureeTotal = Outils.dureeEntreDeuxDate(DaoProjet.getDateDebut(this.proj.getId()),DaoProjet.getDateFin(this.proj.getId()));
+            long dureeRestante = Outils.dureeEntreDeuxDates(Calendar.getInstance().getTime(),dateFin);
+            long dureeTotal = Outils.dureeEntreDeuxDates(DaoProjet.getDateDebut(this.proj.getId()),DaoProjet.getDateFin(this.proj.getId()));
             int ratioDuree  = Outils.calculerPourcentage(dureeRestante,dureeTotal);
 
             //détermination de la couleur du bouton budget en fonction du temps restant et du nombre d'actions déjà réalisées

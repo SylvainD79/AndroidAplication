@@ -33,7 +33,7 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
     private TextView txtSaisieCharge;
     public final static String EXTRA_INITIAL = "initial";
     public static final String EXTRA_SAISIECHARGE = "saisie charge";
-    public String initialUtilisateur =null;
+    private String initialUtilisateur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
