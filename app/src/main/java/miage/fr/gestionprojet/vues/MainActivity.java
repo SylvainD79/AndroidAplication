@@ -92,12 +92,15 @@ public class MainActivity  extends AppCompatActivity {
         switch(id){
             case R.id.initial_utilisateur:
                 return true;
+
             case R.id.charger_donnees:
                 Intent intent = new Intent(MainActivity.this, ChargementDonnees.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
 
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

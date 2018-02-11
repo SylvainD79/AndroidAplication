@@ -204,6 +204,9 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
                 Plus.PeopleApi.loadVisible(google_api_client, null)
                         .setResultCallback(this);
                 break;
+
+            default:
+                break;
         }
     }
 

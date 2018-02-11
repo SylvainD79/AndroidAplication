@@ -71,7 +71,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
     private Button idButtonParDefaut;
     private EditText buttonInput;
 
-    private static String spreadsheetId ;
+    private String spreadsheetId ;
     private static String spreadsheetIdParDefaut= "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -165,14 +165,10 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      * appropriate.
      */
     private void getResultsFromApi() {
-        boolean projetIdVide=true;
-
-        if (buttonInput.length()>0){
-            projetIdVide=false;
-        };
+        boolean projetIdVide = buttonInput.length() <= 0;
 
         if(!projetIdVide) {
-            spreadsheetId=buttonInput.getText().toString();
+            spreadsheetId = buttonInput.getText().toString();
             if (!isGooglePlayServicesAvailable()) {
                 acquireGooglePlayServices();
             } else if (mCredential.getSelectedAccountName() == null) {
@@ -247,6 +243,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                     getResultsFromApi();
                 }
                 break;
+
             case REQUEST_ACCOUNT_PICKER:
                 if (resultCode == RESULT_OK && data != null &&
                         data.getExtras() != null) {
@@ -263,10 +260,14 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                     }
                 }
                 break;
+
             case REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
                     getResultsFromApi();
                 }
+                break;
+
+            default:
                 break;
         }
     }

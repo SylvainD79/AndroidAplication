@@ -70,11 +70,16 @@ public class ActivityBudget extends AppCompatActivity {
                     case DOMAINE:
                         AffichageDomaine();
                         break;
+
                     case TYPE:
                         AffichageType();
                         break;
+
                     case UTILISATEUR:
                         AffichageUtilisateur();
+                        break;
+
+                    default:
                         break;
                 }
             }
@@ -117,11 +122,15 @@ public class ActivityBudget extends AppCompatActivity {
         switch(id){
             case R.id.initial_utilisateur:
                 return true;
+
             case R.id.charger_donnees:
                 Intent intent = new Intent(ActivityBudget.this, ChargementDonnees.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
+
+            default:
+                break;
 
         }
         return super.onOptionsItemSelected(item);

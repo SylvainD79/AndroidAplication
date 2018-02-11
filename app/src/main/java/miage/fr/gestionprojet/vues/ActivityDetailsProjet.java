@@ -83,17 +83,20 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                             intent.putExtra(PROJET, proj.getId());
                             startActivity(intent);
                             break;
+
                         case 1:
                             intent = new Intent(ActivityDetailsProjet.this, FormationsActivity.class);
                             intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
                             startActivity(intent);
                             break;
+
                         case 2:
                             intent = new Intent(ActivityDetailsProjet.this, ActionsActivity.class);
                             intent.putExtra(EXTRA_INITIAL, initialUtilisateur);
                             intent.putExtra(PROJET, proj.getId());
                             startActivity(intent);
                             break;
+
                         case 3:
                             intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
                             intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
@@ -101,6 +104,8 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                             startActivity(intent);
                             break;
 
+                        default:
+                            break;
                     }
 
                 }
@@ -196,16 +201,18 @@ public class ActivityDetailsProjet extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
         switch(id){
             case R.id.initial_utilisateur:
                 return true;
+
             case R.id.charger_donnees:
                 Intent intent = new Intent(ActivityDetailsProjet.this, ChargementDonnees.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
 
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

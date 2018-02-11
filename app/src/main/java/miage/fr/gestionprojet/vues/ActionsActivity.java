@@ -266,22 +266,28 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.nom:
                 refreshAdapter(DaoAction.loadActionsOrderByNomAndDate(dateSaisie,idProjet));
                 return true;
+
             case R.id.type:
                 showPopUp("type");
                 return true;
+
             case R.id.domain:
                 showPopUp("domaine");
                 return true;
+
             case R.id.phase:
                 showPopUp("phase");
                 return true;
+
             case R.id.initial_utilisateur:
                 return true;
+
             case R.id.charger_donnees:
                 Intent intent = new Intent(ActionsActivity.this, ChargementDonnees.class);
                 intent.putExtra(EXTRA_INITIAL, (initial));
                 startActivity(intent);
                 return true;
+
             default:
                 break;
         }
