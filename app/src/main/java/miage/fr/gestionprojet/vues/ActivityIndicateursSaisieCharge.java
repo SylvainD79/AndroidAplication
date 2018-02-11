@@ -34,7 +34,7 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
     private ListView liste;
     public static final String SAISIECHARGE = "saisie charge";
     public final static String EXTRA_INITIAL = "initial";
-    public String initialUtilisateur;
+    private String initialUtilisateur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

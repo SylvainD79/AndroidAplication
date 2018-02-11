@@ -115,8 +115,8 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
-                default:
-                    break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

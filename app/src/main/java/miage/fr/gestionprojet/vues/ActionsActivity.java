@@ -192,16 +192,19 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 dateSaisie = Outils.weekOfYearToDate(year,week);
                 break;
+
             case R.id.week_plus:
                 week = (Integer.parseInt(weekEditText.getText().toString()) + 1) % 53;
                 weekEditText.setText(String.valueOf(week));
                 dateSaisie = Outils.weekOfYearToDate(year,week);
                 break;
+
             case R.id.year_plus:
                 year = (Integer.parseInt(yearEditText.getText().toString()) + 1);
                 dateSaisie = Outils.weekOfYearToDate(year,week);
                 yearEditText.setText(String.valueOf(year));
                 break;
+
             case R.id.year_minus :
                 year = Integer.parseInt(yearEditText.getText().toString()) - 1;
                 dateSaisie = Outils.weekOfYearToDate(year,week);
@@ -210,6 +213,9 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                     return;
                 }
                 yearEditText.setText(String.valueOf(year));
+                break;
+
+            default:
                 break;
         }
 

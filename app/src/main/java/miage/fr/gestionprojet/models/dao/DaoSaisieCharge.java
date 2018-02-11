@@ -18,6 +18,10 @@ import miage.fr.gestionprojet.models.SaisieCharge;
 
 public class DaoSaisieCharge {
 
+    private DaoSaisieCharge() {
+        // private constructor for static class
+    }
+
     private static final String DOMAINE_FILTER = "domaine=?";
     private static final String SAISIE_FILTER = "Saisie";
 

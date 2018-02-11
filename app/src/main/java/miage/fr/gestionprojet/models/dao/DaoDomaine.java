@@ -12,6 +12,10 @@ import miage.fr.gestionprojet.models.Domaine;
 
 public class DaoDomaine {
 
+    private DaoDomaine() {
+        // private constructor for static class
+    }
+
     public static List<Domaine> loadAll(){
         return new Select()
                 .from(Domaine.class)

@@ -13,6 +13,9 @@ import miage.fr.gestionprojet.models.Ressource;
 
 public class DaoRessource {
 
+    private DaoRessource() {
+        // private constructor for static class
+    }
 
     public static List<Ressource> loadAll(){
         return new Select()

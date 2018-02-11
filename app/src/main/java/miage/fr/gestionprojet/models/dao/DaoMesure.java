@@ -12,6 +12,10 @@ import miage.fr.gestionprojet.models.Mesure;
 
 public class DaoMesure {
 
+    private DaoMesure() {
+        // private constructor for static class
+    }
+
     public static Mesure getLastMesureBySaisieCharge(long idSaisieCharge){
         List<Mesure> lstMesures =
                 new Select()
@@ -38,9 +42,7 @@ public class DaoMesure {
     }
 
     public static List<Mesure> loadAll() {
-        List<Mesure> mesures = new Select().from(Mesure.class).execute();
-        return mesures;
-
+        return new Select().from(Mesure.class).execute();
     }
 
 }

@@ -157,6 +157,7 @@ public class SaisieCharge extends Model {
       this.lstMesures = lstMesures;
     }
 
+    @Override
     public String toString(){
         return this.action.getCode();
     }

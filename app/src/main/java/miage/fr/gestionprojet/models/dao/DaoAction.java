@@ -21,6 +21,11 @@ import miage.fr.gestionprojet.models.Projet;
  */
 
 public class DaoAction {
+
+    private DaoAction() {
+        // private constructor for static class
+    }
+
     public static List<Action> loadActionsByCode(String code) {
         //getAll
         List<Action> actions = new Select()
@@ -274,9 +279,8 @@ public class DaoAction {
         Projet proj = Model.load(Projet.class,idProjet);
         List<Domaine> lstDomaines = proj.getLstDomaines();
         List<Action> lstActionRealisees = new ArrayList<>();
-        List<Action> lstActionRecuperees = new ArrayList<>();
         for(Domaine d: lstDomaines){
-            lstActionRecuperees = new Select()
+            List<Action> lstActionRecuperees = new Select()
                     .from(Action.class)
                     .where("reste_a_faire=0 and domaine=?",d.getId())
                     .execute();
@@ -289,9 +293,8 @@ public class DaoAction {
         Projet proj = Model.load(Projet.class,idProjet);
         List<Domaine> lstDomaines = proj.getLstDomaines();
         List<Action> lstAction = new ArrayList<>();
-        List<Action> lstActionRecuperees = new ArrayList<>();
         for(Domaine d: lstDomaines){
-            lstActionRecuperees = new Select()
+            List<Action> lstActionRecuperees = new Select()
                     .from(Action.class)
                     .where("domaine=?",d.getId())
                     .execute();

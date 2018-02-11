@@ -20,6 +20,10 @@ import miage.fr.gestionprojet.models.Projet;
 
 public class DaoProjet {
 
+    private DaoProjet() {
+        // private constructor for static class
+    }
+
     public List<Projet> getProjetEnCours(Date dateDuJour){
         return new Select()
                 .from(Projet.class)

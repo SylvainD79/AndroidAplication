@@ -16,6 +16,10 @@ import miage.fr.gestionprojet.models.Projet;
  */
 public class DaoFormation {
 
+    private DaoFormation() {
+        // private constructor for static class
+    }
+
     public static List<Formation> getFormations() {
         return new Select().from(Formation.class).execute();
     }

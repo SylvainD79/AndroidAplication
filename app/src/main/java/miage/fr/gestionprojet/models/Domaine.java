@@ -24,8 +24,6 @@ public class Domaine extends Model {
 
     private List<Action> lstActions;
 
-    private List<SaisieCharge> lstSaisieCharge;
-
     public Domaine(String nom, String description, Projet projet) {
         super();
         this.nom = nom;
