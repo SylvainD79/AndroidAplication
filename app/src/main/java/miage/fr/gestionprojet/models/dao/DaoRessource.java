@@ -23,7 +23,7 @@ public class DaoRessource {
                 .execute();
     }
 
-    public  List<Ressource> loadAllWithInitialNotEmpty(){
+    public static List<Ressource> loadAllWithInitialNotEmpty(){
 
         List<Ressource> listeRessource=loadAll();
         List<Ressource> listeRessourceFinal=new ArrayList<>();
@@ -36,7 +36,7 @@ public class DaoRessource {
         return listeRessourceFinal;
     }
 
-    public List<String> getAllRessourceInitials(){
+    public static List<String> getAllRessourceInitials(){
         List<Ressource> listeRessource=new Select().from(Ressource.class).execute();
         List<String> listeInitials=new ArrayList<>();
 

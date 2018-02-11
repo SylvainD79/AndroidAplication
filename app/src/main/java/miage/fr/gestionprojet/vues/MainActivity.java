@@ -39,8 +39,7 @@ public class MainActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //on récupère la liste des projet dont la date de fin n'est passé
-        DaoProjet daoProjet = new DaoProjet();
-        lstProjets = daoProjet.getProjetEnCours(new Date());
+        lstProjets = DaoProjet.getProjetEnCours(new Date());
         liste = (ListView) findViewById(R.id.listViewProjet);
 
         // si le nombre de projet en cours est supérieur à 1 on affiche une liste

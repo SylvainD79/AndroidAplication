@@ -24,7 +24,7 @@ public class DaoProjet {
         // private constructor for static class
     }
 
-    public List<Projet> getProjetEnCours(Date dateDuJour){
+    public static List<Projet> getProjetEnCours(Date dateDuJour){
         return new Select()
                 .from(Projet.class)
                 .where("date_fin_initiale>? or date_fin_reelle>?", dateDuJour.getTime(),dateDuJour.getTime())
