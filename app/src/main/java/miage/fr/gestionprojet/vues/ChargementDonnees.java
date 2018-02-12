@@ -59,6 +59,7 @@ import miage.fr.gestionprojet.models.dao.DaoDomaine;
 import miage.fr.gestionprojet.models.dao.DaoProjet;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
+import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.Outils;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -71,7 +72,6 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
     private Button idButtonParDefaut;
     private EditText buttonInput;
 
-    private String spreadsheetId ;
     private static String spreadsheetIdParDefaut= "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -168,7 +168,6 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         boolean projetIdVide = buttonInput.length() <= 0;
 
         if(!projetIdVide) {
-            spreadsheetId = buttonInput.getText().toString();
             if (!isGooglePlayServicesAvailable()) {
                 acquireGooglePlayServices();
             } else if (mCredential.getSelectedAccountName() == null) {
@@ -356,7 +355,6 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         }
     }
 
-
     /**
      * Display an error dialog showing that Google Play Services is missing
      * or out of date.
@@ -403,7 +401,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             } catch (Exception e) {
                 mLastError = e;
                 cancel(true);
-                return null;
+                return new ArrayList<>();
             }
         }
 
@@ -493,10 +491,6 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             if (valuesMEsure != null) {
                 initialiserMesures(reglerDonnees(valuesMEsure));
             }
-            for (List row : valuesformation) {
-
-
-            }
             return results;
         }
 
@@ -516,12 +510,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         }
 
         public Date chainetoDate(String date) throws ParseException {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date resultat;
             if (date == null ||date.equals("") || date.equals("NON PREVU")) {
-                resultat = sdf.parse("00/00/0000");
+                resultat = Constants.DATE_FORMATTER.parse("00/00/0000");
             } else {
-                resultat = sdf.parse(date);
+                resultat = Constants.DATE_FORMATTER.parse(date);
             }
             return resultat;
         }
@@ -787,15 +780,13 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                         saisiecharge.setPrctChargeFaiteParSemaineParChargeEstimee(chainetofloat(row.get(17).toString().replace('%', ' ')));
                         List<Action> listesActions = DaoAction.getActionbyCode(row.get(2).toString());
 
-                        if (listesActions.size() > 0) {
-                            Action actionsaisie = new Action();
-                            actionsaisie = listesActions.get(0);
-                            saisiecharge.setAction(actionsaisie);
+                        if (!listesActions.isEmpty()) {
+                            saisiecharge.setAction(listesActions.get(0));
                         }
 
 
                         saisiecharge.save();
-                        List<SaisieCharge> listes = DaoSaisieCharge.loadAll();
+                        List<SaisieCharge> listes = DaoSaisieCharge.loadAll(); // todo utilité ?
 
 
                         ActiveAndroid.setTransactionSuccessful();
@@ -809,21 +800,18 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         public void initialiserMesures(List<List<Object>> values) throws ParseException {
             new Delete().from(Mesure.class).execute();
 
-            List<Mesure>listfi = new ArrayList<>();
-
-            SaisieCharge action = new SaisieCharge();
             ActiveAndroid.beginTransaction();
             try {
                 for (List row : values) {
                     Mesure mesure = new Mesure();
                     List<SaisieCharge> listsaisieCharges= new ArrayList<>();
                     List<Action> listeaction = DaoAction.getActionbyCode(row.get(0).toString());
-                    if (listeaction.size() > 0){
+                    if (!listeaction.isEmpty()){
                         listsaisieCharges=DaoSaisieCharge.loadSaisiebyAction(listeaction.get(0));
                     }
 
-                    if(listsaisieCharges.size()>0) {
-                        action =  listsaisieCharges.get(0);
+                    if(!listsaisieCharges.isEmpty()) {
+                        SaisieCharge action =  listsaisieCharges.get(0);
                         mesure.setAction(action);
                     }
 

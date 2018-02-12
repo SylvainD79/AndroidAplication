@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.activeandroid.Model;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,6 +23,7 @@ import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoMesure;
+import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.Outils;
 
 public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
@@ -61,9 +60,8 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
 
             TextView txtDateDeb = (TextView) findViewById(R.id.txtDtDeb);
             TextView txtDateFin = (TextView) findViewById(R.id.txtDtFin);
-            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            txtDateDeb.setText(df.format(saisieCharge.getAction().getDtDeb()));
-            txtDateFin.setText(df.format(saisieCharge.getAction().getDtFinPrevue()));
+            txtDateDeb.setText(Constants.DATE_FORMATTER.format(saisieCharge.getAction().getDtDeb()));
+            txtDateFin.setText(Constants.DATE_FORMATTER.format(saisieCharge.getAction().getDtFinPrevue()));
 
             ProgressBar progressBarDate = (ProgressBar) findViewById(R.id.progressBarDate);
             Calendar c = Calendar.getInstance();
@@ -91,8 +89,6 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
             });
 
         }
-
-
     }
 
     //ajout du menu
@@ -103,6 +99,7 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch(id){

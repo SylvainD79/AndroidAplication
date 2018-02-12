@@ -110,12 +110,14 @@ public class ActivityBudget extends AppCompatActivity {
         this.liste.setAdapter(adapter);
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.initial_utilisateur, menu);
         menu.findItem(R.id.initial_utilisateur).setTitle(initialUtilisateur);
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement

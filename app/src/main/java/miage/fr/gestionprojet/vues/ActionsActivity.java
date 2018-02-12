@@ -36,6 +36,7 @@ import miage.fr.gestionprojet.adapter.ActionsAdapter;
 import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
 import miage.fr.gestionprojet.models.dao.DaoAction;
+import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.DividerItemDecoration;
 import miage.fr.gestionprojet.outils.Outils;
 
@@ -179,7 +180,6 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         yearEditText.setError(null);
         weekEditText.setError(null);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         switch (view.getId()){
             case R.id.week_minus:
                 week = (Integer.parseInt(weekEditText.getText().toString()) - 1) % 53;
@@ -238,9 +238,8 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         TextView estimation = (TextView) layout.findViewById(R.id.estimation);
         phase.setText(action.getPhase());
         name.setText(action.getCode());
-        SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-        dtDebut.setText("Date Debut : "+ sf.format(action.getDtDeb()));
-        dtFin.setText("Date Fin Prevue: "+ sf.format(action.getDtFinPrevue()));
+        dtDebut.setText("Date Debut : "+ Constants.DATE_FORMATTER.format(action.getDtDeb()));
+        dtFin.setText("Date Fin Prevue: "+ Constants.DATE_FORMATTER.format(action.getDtFinPrevue()));
         nbJr.setText("Nombre de jour prevu : " +action.getNbJoursPrevus());
         estimation.setText("Cout par jour : "+action.getCoutParJour());
         final PopupWindow popup = new PopupWindow(layout,400,400, true);

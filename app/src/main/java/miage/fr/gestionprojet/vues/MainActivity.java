@@ -78,6 +78,7 @@ public class MainActivity  extends AppCompatActivity {
 
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.initial_utilisateur, menu);
         menu.findItem(R.id.initial_utilisateur).setTitle(initialUtilisateur);
@@ -103,6 +104,4 @@ public class MainActivity  extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

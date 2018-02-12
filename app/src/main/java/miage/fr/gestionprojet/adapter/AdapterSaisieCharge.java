@@ -12,13 +12,13 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoMesure;
+import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.Outils;
 import miage.fr.gestionprojet.vues.ActivityIndicateursSaisieCharge;
 
@@ -87,8 +87,7 @@ public class AdapterSaisieCharge extends ArrayAdapter<SaisieCharge>{
         Mesure mesure = DaoMesure.getLastMesureBySaisieCharge(getItem(position).getId());
         holder.avancement.setProgress(Outils.calculerPourcentage(mesure.getNbUnitesMesures(),getItem(position).getNbUnitesCibles()));
 
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        holder.date.setText(df.format(getItem(position).getAction().getDtFinPrevue()));
+        holder.date.setText(Constants.DATE_FORMATTER.format(getItem(position).getAction().getDtFinPrevue()));
         return convertView;
     }
 

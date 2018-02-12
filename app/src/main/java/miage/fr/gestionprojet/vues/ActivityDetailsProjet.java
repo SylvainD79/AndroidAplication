@@ -188,7 +188,6 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 buttonSaisies.setBackgroundColor(Color.YELLOW);
             }
         }
-
     }
 
     //ajout du menu
@@ -199,6 +198,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch(id){
@@ -215,9 +215,5 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void definirCouleurBouton(){
-
     }
 }

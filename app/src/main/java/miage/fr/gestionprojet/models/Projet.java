@@ -4,10 +4,10 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import miage.fr.gestionprojet.outils.Constants;
 
 /**
  * Created by Audrey on 23/01/2017.
@@ -88,7 +88,10 @@ public class Projet extends Model {
     }
     @Override
     public String toString() {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        return this.nom+"            "+df.format(this.dateDebut)+"-"+df.format(this.dateFinReelle);
+        return this.nom
+                + "            "
+                + Constants.DATE_FORMATTER.format(this.dateDebut)
+                + "-"
+                + Constants.DATE_FORMATTER.format(this.dateFinReelle);
     }
 }

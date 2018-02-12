@@ -104,11 +104,13 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
         findViewById(R.id.disconnect_button).setOnClickListener(this);
     }
 
+    @Override
     protected void onStart() {
         super.onStart();
         google_api_client.connect();
     }
 
+    @Override
     protected void onStop() {
         super.onStop();
         if (google_api_client.isConnected()) {
@@ -116,6 +118,7 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
         }
     }
 
+    @Override
     protected void onResume(){
         super.onResume();
         if (google_api_client.isConnected()) {
@@ -391,8 +394,8 @@ public class ActivityConnexion extends AppCompatActivity implements GoogleApiCli
             return new_icon;
         }
 
+        @Override
         protected void onPostExecute(Bitmap result_img) {
-
             bitmap_img.setImageBitmap(result_img);
         }
     }

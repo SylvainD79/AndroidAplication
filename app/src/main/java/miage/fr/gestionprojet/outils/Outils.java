@@ -11,9 +11,12 @@ public class Outils {
 
     private static final long CONST_DURATION_OF_DAY = 1000l * 60 * 60 * 24;
 
-    public static int calculerPourcentage(double valeurReleve, double valeurCible){
-        int result = (int) ((valeurReleve/valeurCible)*100);
-        return result;
+    private Outils() {
+        // private constructor
+    }
+
+    public static int calculerPourcentage(double valeurRelevee, double valeurCible){
+        return (int) ((valeurRelevee / valeurCible) * 100);
     }
 
     public static Date weekOfYearToDate(int year, int week){
@@ -24,7 +27,6 @@ public class Outils {
     }
 
     public static long dureeEntreDeuxDates(Date dateInf, Date datePost){
-        long duree = datePost.getTime() - dateInf.getTime();
-        return duree / CONST_DURATION_OF_DAY;
+        return (datePost.getTime() - dateInf.getTime()) / CONST_DURATION_OF_DAY;
     }
 }
