@@ -238,8 +238,8 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         TextView estimation = (TextView) layout.findViewById(R.id.estimation);
         phase.setText(action.getPhase());
         name.setText(action.getCode());
-        dtDebut.setText("Date Debut : "+ Constants.DATE_FORMATTER.format(action.getDtDeb()));
-        dtFin.setText("Date Fin Prevue: "+ Constants.DATE_FORMATTER.format(action.getDtFinPrevue()));
+        dtDebut.setText("Date Debut : "+ new SimpleDateFormat(Constants.DATE_FORMAT).format(action.getDtDeb()));
+        dtFin.setText("Date Fin Prevue: "+ new SimpleDateFormat(Constants.DATE_FORMAT).format(action.getDtFinPrevue()));
         nbJr.setText("Nombre de jour prevu : " +action.getNbJoursPrevus());
         estimation.setText("Cout par jour : "+action.getCoutParJour());
         final PopupWindow popup = new PopupWindow(layout,400,400, true);

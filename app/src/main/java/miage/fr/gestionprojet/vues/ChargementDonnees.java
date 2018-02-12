@@ -512,9 +512,9 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         public Date chainetoDate(String date) throws ParseException {
             Date resultat;
             if (date == null ||date.equals("") || date.equals("NON PREVU")) {
-                resultat = Constants.DATE_FORMATTER.parse("00/00/0000");
+                resultat = new SimpleDateFormat(Constants.DATE_FORMAT).parse("00/00/0000");
             } else {
-                resultat = Constants.DATE_FORMATTER.parse(date);
+                resultat = new SimpleDateFormat(Constants.DATE_FORMAT).parse(date);
             }
             return resultat;
         }

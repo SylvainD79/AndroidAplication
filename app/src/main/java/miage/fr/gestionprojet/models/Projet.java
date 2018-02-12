@@ -4,6 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -90,8 +91,8 @@ public class Projet extends Model {
     public String toString() {
         return this.nom
                 + "            "
-                + Constants.DATE_FORMATTER.format(this.dateDebut)
+                + new SimpleDateFormat(Constants.DATE_FORMAT).format(this.dateDebut)
                 + "-"
-                + Constants.DATE_FORMATTER.format(this.dateFinReelle);
+                + new SimpleDateFormat(Constants.DATE_FORMAT).format(this.dateFinReelle);
     }
 }

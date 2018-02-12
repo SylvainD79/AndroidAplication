@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
@@ -60,7 +61,7 @@ public class AdapterMesure extends ArrayAdapter<Mesure>{
 
         // on définit le text à afficher
         holder.nbUnite.setText("Nombre de saisies : "+String.valueOf(getItem(position).getNbUnitesMesures()));
-        holder.date.setText(Constants.DATE_FORMATTER.format(getItem(position).getDtMesure()));
+        holder.date.setText(new SimpleDateFormat(Constants.DATE_FORMAT).format(getItem(position).getDtMesure()));
         return convertView;
     }
 

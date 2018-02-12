@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.activeandroid.Model;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -60,8 +61,8 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
 
             TextView txtDateDeb = (TextView) findViewById(R.id.txtDtDeb);
             TextView txtDateFin = (TextView) findViewById(R.id.txtDtFin);
-            txtDateDeb.setText(Constants.DATE_FORMATTER.format(saisieCharge.getAction().getDtDeb()));
-            txtDateFin.setText(Constants.DATE_FORMATTER.format(saisieCharge.getAction().getDtFinPrevue()));
+            txtDateDeb.setText(new SimpleDateFormat(Constants.DATE_FORMAT).format(saisieCharge.getAction().getDtDeb()));
+            txtDateFin.setText(new SimpleDateFormat(Constants.DATE_FORMAT).format(saisieCharge.getAction().getDtFinPrevue()));
 
             ProgressBar progressBarDate = (ProgressBar) findViewById(R.id.progressBarDate);
             Calendar c = Calendar.getInstance();
@@ -89,6 +90,7 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
             });
 
         }
+
     }
 
     //ajout du menu
