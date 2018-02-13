@@ -4,12 +4,8 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Audrey on 25/02/2017.
- */
 @Table(name="SaisieCharge")
 public class SaisieCharge extends Model {
 
@@ -51,10 +47,7 @@ public class SaisieCharge extends Model {
     @Column(name="prct_charge_faite_par_semaine_par_cahre_estimee")
     private float prctChargeFaiteParSemaineParChargeEstimee;
 
-
-
-
-     private List<Mesure> lstMesures;
+    private List<Mesure> mesures;
 
     public SaisieCharge() {
         super();
@@ -148,13 +141,12 @@ public class SaisieCharge extends Model {
         this.prctChargeFaiteParSemaineParChargeEstimee = prctChargeFaiteParSemaineParChargeEstimee;
     }
 
-    public List<Mesure> getLstMesures() {
-        this.lstMesures = getMany(Mesure.class, "action");
-       return this.lstMesures;
+    public List<Mesure> getMesures() {
+       return getMany(Mesure.class, "action");
     }
 
-    public void setLstMesures(ArrayList<Mesure> lstMesures) {
-      this.lstMesures = lstMesures;
+    public void setMesures(List<Mesure> mesures) {
+      this.mesures = mesures;
     }
 
     @Override

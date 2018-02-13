@@ -4,10 +4,6 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-/**
- * Created by Audrey on 25/02/2017.
- */
-
 @Table(name="Ressource")
 public class Ressource extends Model{
 
@@ -36,7 +32,7 @@ public class Ressource extends Model{
     private String telephoneMobile;
 
     @Column(name="informations_diverses")
-    private String InformationsDiverses;
+    private String informationsDiverses;
 
     public String getInitiales() {
         return initiales;
@@ -103,11 +99,11 @@ public class Ressource extends Model{
     }
 
     public String getInformationsDiverses() {
-        return InformationsDiverses;
+        return informationsDiverses;
     }
 
     public void setInformationsDiverses(String informationsDiverses) {
-        InformationsDiverses = informationsDiverses;
+        this.informationsDiverses = informationsDiverses;
     }
 
     @Override

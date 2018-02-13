@@ -237,8 +237,8 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         dtDebut.setText(dateDebut);
         String dateFin = "Date Fin Prevue: "+ new SimpleDateFormat(Constants.DATE_FORMAT).format(action.getDtFinPrevue());
         dtFin.setText(dateFin);
-        String NombreJours = "Nombre de jours prevus : " + action.getNbJoursPrevus();
-        nbJr.setText(NombreJours);
+        String nombreJours = "Nombre de jours prevus : " + action.getNbJoursPrevus();
+        nbJr.setText(nombreJours);
         String estimationText = "Cout par jour : " + action.getCoutParJour();
         estimation.setText(estimationText);
         final PopupWindow popup = new PopupWindow(layout,400,400, true);

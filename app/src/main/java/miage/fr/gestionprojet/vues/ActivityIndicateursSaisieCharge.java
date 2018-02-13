@@ -42,7 +42,7 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
         setContentView(R.layout.activity_indicateurs_saisie_charge);
         Intent intent = getIntent();
         //on récupère le projet sélectionné
-        long id =  intent.getLongExtra(ActivityDetailsProjet.PROJET,0);
+        long id =  intent.getLongExtra(ActivityDetailsProjet.PROJET_VISU,0);
         liste = (ListView) findViewById(R.id.listViewSaisieCharge);
         initialUtilisateur = intent.getStringExtra(ActivityDetailsProjet.EXTRA_INITIAL);
 
@@ -53,9 +53,9 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
             saisiesCharge = new ArrayList<>();
             List<Domaine> domaines = projet.getLstDomaines();
             for(Domaine domaine : domaines){
-                for(Action action : domaine.getLstActions()){
+                for(Action action : domaine.getActions()){
                     if(action.getTypeTravail().equals("Saisie") || action.getTypeTravail().equals("Test")){
-                        SaisieCharge s = DaoSaisieCharge.loadSaisieChargeByAction(action.getId());
+                        SaisieCharge s = DaoSaisieCharge.loadSaisiesChargeByAction(action.getId());
                         if(s != null){
                             saisiesCharge.add(s);
                         }
@@ -158,7 +158,7 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
                     if (item.getItemId() == R.id.all) {
                         refreshAdapter(saisiesCharge);
                     } else {
-                        refreshAdapter(DaoSaisieCharge.loadSaisieChargesByDomaine(item.getItemId()));
+                        refreshAdapter(DaoSaisieCharge.loadSaisiesChargesByDomaine(item.getItemId()));
                     }
                     return true;
                 }
@@ -178,7 +178,7 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
                     if (item.getItemId() == R.id.all) {
                         refreshAdapter(saisiesCharge);
                     } else {
-                        refreshAdapter(DaoSaisieCharge.loadSaisieChargeByUtilisateur(item.getItemId()));
+                        refreshAdapter(DaoSaisieCharge.loadSaisiesChargeByUtilisateur(item.getItemId()));
                     }
                     return true;
                 }

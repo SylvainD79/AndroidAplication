@@ -32,7 +32,7 @@ public class ActivityMesures extends AppCompatActivity {
         if (id > 0) {
             Model.load(SaisieCharge.class, id);
             ListView lstViewMesures = (ListView) findViewById(R.id.lstViewMesures);
-            List<Mesure> lstMesures = DaoMesure.getListtMesureByAction(id);
+            List<Mesure> lstMesures = DaoMesure.getMesureByAction(id);
             final AdapterMesure adapter = new AdapterMesure(this, R.layout.lst_view_mesures, lstMesures);
             lstViewMesures.setAdapter(adapter);
         }

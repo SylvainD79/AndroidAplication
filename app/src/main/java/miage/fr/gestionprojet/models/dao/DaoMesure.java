@@ -6,10 +6,6 @@ import java.util.List;
 
 import miage.fr.gestionprojet.models.Mesure;
 
-/**
- * Created by Audrey on 27/02/2017.
- */
-
 public class DaoMesure {
 
     private DaoMesure() {
@@ -17,32 +13,27 @@ public class DaoMesure {
     }
 
     public static Mesure getLastMesureBySaisieCharge(long idSaisieCharge){
-        List<Mesure> lstMesures =
+        List<Mesure> mesures =
                 new Select()
                 .from(Mesure.class)
                 .where("action=?", idSaisieCharge)
                 .orderBy("dt_mesure DESC")
                 .execute();
-        if (lstMesures.size() > 0) {
-            return lstMesures.get(0);
+        if (!mesures.isEmpty()) {
+            return mesures.get(0);
         } else {
             return new Mesure();
         }
     }
 
-    public static List<Mesure> getListtMesureByAction(long idSaisieCharge) {
-        List<Mesure> mesures = new Select().from(Mesure.class).execute();
-        List<Mesure> lstMesures =
-                new Select()
-                        .from(Mesure.class)
-                        .where("action=?", idSaisieCharge)
-                        .execute();
-
-        return lstMesures;
+    public static List<Mesure> getMesureByAction(long idSaisieCharge) {
+        return new Select()
+                .from(Mesure.class)
+                .where("action=?", idSaisieCharge)
+                .execute();
     }
 
     public static List<Mesure> loadAll() {
         return new Select().from(Mesure.class).execute();
     }
-
 }

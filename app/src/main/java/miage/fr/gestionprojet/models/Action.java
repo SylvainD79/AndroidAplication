@@ -6,13 +6,8 @@ import com.activeandroid.annotation.Table;
 
 import java.util.Date;
 
-/**
- * Created by Audrey on 25/02/2017.
- */
-
 @Table(name="Action")
 public class Action extends Model{
-
 
     @Column(name="typeTravail")
     private String typeTravail;
@@ -45,10 +40,10 @@ public class Action extends Model{
     private float coutParJour;
 
     @Column(name="resp_oeu")
-    private Ressource RespOeu;
+    private Ressource respOeu;
 
     @Column(name="resp_ouv")
-    private Ressource RespOuv;
+    private Ressource respOuv;
 
     //@Column(name="utilisateurs_ouv")
    // private ArrayList<Ressource> lstUtilisateursOuv;
@@ -67,7 +62,6 @@ public class Action extends Model{
 
     @Column(name="ecart_projete")
     private float ecartProjete;
-
 
     public Action() {
         super();
@@ -145,19 +139,19 @@ public class Action extends Model{
         this.coutParJour = coutParJour;
     }
     public Ressource getRespOeu() {
-        return RespOeu;
+        return respOeu;
     }
 
     public void setRespOeu(Ressource respOeu) {
-        RespOeu = respOeu;
+        this.respOeu = respOeu;
     }
 
     public Ressource getRespOuv() {
-        return RespOuv;
+        return respOuv;
     }
 
     public void setRespOuv(Ressource respOuv) {
-        RespOuv = respOuv;
+        this.respOuv = respOuv;
     }
 
     /*public ArrayList<Ressource> getLstUtilisateursOuv() {
@@ -211,7 +205,7 @@ public class Action extends Model{
         return ecartProjete;
     }
 
-    public void setResteAFaire(float p_RAF) {this.resteAFaire=p_RAF;}
+    public void setResteAFaire(float resteAFaire) {this.resteAFaire = resteAFaire;}
 
-    public void setEcartProjete(float p_ecart) {this.ecartProjete= p_ecart;}
+    public void setEcartProjete(float ecartProjete) {this.ecartProjete = ecartProjete;}
 }

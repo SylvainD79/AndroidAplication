@@ -6,10 +6,6 @@ import java.util.List;
 
 import miage.fr.gestionprojet.models.Domaine;
 
-/**
- * Created by Audrey on 26/04/2017.
- */
-
 public class DaoDomaine {
 
     private DaoDomaine() {
@@ -22,14 +18,14 @@ public class DaoDomaine {
                 .execute();
     }
 
-    public static Domaine getByName(String name){
-        List<Domaine> lst = new Select()
+    public static Domaine getDomaineByName(String name){
+        List<Domaine> domaines = new Select()
                 .from(Domaine.class)
                 .where("nom = ?",name)
                 .execute();
-        if(lst.size()>0){
-            return lst.get(0);
-        }else{
+        if (!domaines.isEmpty()) {
+            return domaines.get(0);
+        } else {
             return null;
         }
     }

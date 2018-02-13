@@ -55,7 +55,7 @@ public class ActivityBudget extends AppCompatActivity {
         spinChoixAffichage.setAdapter(adapter);
         //on récupère le projet sélectionné
         Intent intent = getIntent();
-        long id =  intent.getLongExtra(ActivityDetailsProjet.PROJET,0);
+        long id =  intent.getLongExtra(ActivityDetailsProjet.PROJET_VISU,0);
         if (id > 0) {
             projet = Model.load(Projet.class, id);
         } else {

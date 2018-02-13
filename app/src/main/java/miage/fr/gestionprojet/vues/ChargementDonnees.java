@@ -554,7 +554,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                     action.setPhase(row.get(4).toString());
                     action.setCode(row.get(5).toString());
 
-                    Domaine domaine = DaoDomaine.getByName(row.get(3).toString());
+                    Domaine domaine = DaoDomaine.getDomaineByName(row.get(3).toString());
                     if (domaine == null) {
                         domaine = new Domaine(row.get(3).toString(), "description demo", projet);
                         domaine.save();
@@ -564,7 +564,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                         respOuv = new Ressource();
                         respOuv.setInitiales("");
                     }
-                    respOuv = DaoRessource.getRessourceByInitial(row.get(13).toString());
+                    respOuv = DaoRessource.getRessourcesByInitial(row.get(13).toString());
                     if (respOuv == null) {
                         respOuv = new Ressource();
                         respOuv.setInitiales(row.get(13).toString());
@@ -584,7 +584,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                         respOeu = new Ressource();
                         respOeu.setInitiales("");
                     }
-                    respOeu = DaoRessource.getRessourceByInitial(row.get(12).toString());
+                    respOeu = DaoRessource.getRessourcesByInitial(row.get(12).toString());
                     if (respOeu == null) {
                         respOeu = new Ressource();
                         respOeu.setInitiales(row.get(12).toString());
@@ -723,7 +723,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                     List<SaisieCharge> listsaisieCharges= new ArrayList<>();
                     List<Action> listeaction = DaoAction.getActionbyCode(row.get(0).toString());
                     if (!listeaction.isEmpty()){
-                        listsaisieCharges=DaoSaisieCharge.loadSaisiebyAction(listeaction.get(0));
+                        listsaisieCharges=DaoSaisieCharge.loadSaisiesByAction(listeaction.get(0));
                     }
 
                     if(!listsaisieCharges.isEmpty()) {

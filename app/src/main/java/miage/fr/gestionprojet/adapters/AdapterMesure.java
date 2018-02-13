@@ -63,7 +63,7 @@ public class AdapterMesure extends ArrayAdapter<Mesure>{
         }
 
         // on définit le text à afficher
-        String nbUnites = "Nombre de saisies : " + String.valueOf(getItem(position).getNbUnitesMesures());
+        String nbUnites = "Nombre de saisies : " + getItem(position).getNbUnitesMesures();
         holder.nbUnites.setText(nbUnites);
         String date = new SimpleDateFormat(Constants.DATE_FORMAT).format(getItem(position).getDtMesure());
         holder.date.setText(date);

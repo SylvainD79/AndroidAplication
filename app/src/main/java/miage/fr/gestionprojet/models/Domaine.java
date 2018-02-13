@@ -6,10 +6,6 @@ import com.activeandroid.annotation.Table;
 
 import java.util.List;
 
-/**
- * Created by Audrey on 23/01/2017.
- */
-
 @Table(name="Domaine")
 public class Domaine extends Model {
 
@@ -22,14 +18,11 @@ public class Domaine extends Model {
     @Column(name="projet")
     private Projet projet;
 
-    private List<Action> lstActions;
-
     public Domaine(String nom, String description, Projet projet) {
         super();
         this.nom = nom;
         this.description = description;
         this.projet = projet;
-
     }
 
     public Domaine() {
@@ -60,11 +53,9 @@ public class Domaine extends Model {
         this.projet = projet;
     }
 
-    public List<Action> getLstActions() {
-        this.lstActions = getMany(Action.class, "domaine");
-        return this.lstActions;
+    public List<Action> getActions() {
+        return getMany(Action.class, "domaine");
     }
-
 
     @Override
     public String toString() {

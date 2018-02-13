@@ -4,38 +4,34 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by Audrey on 25/02/2017.
- */
 
 @Table(name = "Formation")
 public class Formation extends Model {
-
 
     @Column(name="action")
     private Action action;
 
     @Column(name="avancement_total")
     private float avancementTotal;
+
     @Column(name="avancement_pre_requis")
     private float avancementPreRequis;
+
     @Column(name="avancement_objectif")
     private float avancementObjectif;
+
     @Column(name="avancement_post_formation")
     private float avancementPostFormation;
 
-    private List<EtapeFormation> lstEtapesFormation;
+    private List<EtapeFormation> etapesFormation;
 
     public Formation() {
         super();
     }
 
-    public List<EtapeFormation> getLstEtapesFormations() {
-        this.lstEtapesFormation = getMany(EtapeFormation.class, "formation");
-        return this.lstEtapesFormation;
+    public List<EtapeFormation> getEtapesFormation() {
+        return getMany(EtapeFormation.class, "formation");
     }
 
     public float getAvancementTotal() {
@@ -70,12 +66,8 @@ public class Formation extends Model {
         this.avancementPostFormation = avancementPostFormation;
     }
 
-    public List<EtapeFormation> getLstEtapesFormation() {
-        return lstEtapesFormation;
-    }
-
-    public void setLstEtapesFormation(ArrayList<EtapeFormation> lstEtapesFormation) {
-        this.lstEtapesFormation = lstEtapesFormation;
+    public void setEtapesFormation(List<EtapeFormation> etapesFormation) {
+        this.etapesFormation = etapesFormation;
     }
     public Action getAction() {
         return action;
@@ -84,6 +76,4 @@ public class Formation extends Model {
     public void setAction(Action action) {
         this.action = action;
     }
-
-
 }

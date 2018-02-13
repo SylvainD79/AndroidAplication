@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
@@ -27,12 +28,10 @@ public class DaoAction {
     }
 
     public static List<Action> loadActionsByCode(String code) {
-        //getAll
-        List<Action> actions = new Select()
+        return new Select()
                 .from(Action.class)
                 .where("code=?",code)
                 .execute();
-        return actions;
     }
 
     public static List<Action> loadActionsByType(String type, long idProjet) {
@@ -73,8 +72,7 @@ public class DaoAction {
     }
 
     public static List<Action> loadAll(){
-        List<Action> actions = new Select().from(Action.class).execute();
-        return actions;
+        return new Select().from(Action.class).execute();
     }
 
     public static List<Action> loadActionsOrderByNomAndDate(Date d, long idProjet){
@@ -111,7 +109,7 @@ public class DaoAction {
     }
 
 
-    public static HashMap<String,Integer> getNbActionRealiseeGroupByDomaine(){
+    public static Map<String,Integer> getNbActionRealiseeGroupByDomaine(){
         String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
@@ -129,7 +127,7 @@ public class DaoAction {
         return lstResult;
     }
 
-    public static HashMap<String,Integer> getNbActionTotalGroupByDomaine(){
+    public static Map<String,Integer> getNbActionTotalGroupByDomaine(){
         String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
@@ -148,7 +146,7 @@ public class DaoAction {
     }
 
 
-    public static HashMap<String,Integer> getNbActionRealiseeGroupByTypeTravail(){
+    public static Map<String,Integer> getNbActionRealiseeGroupByTypeTravail(){
         String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
@@ -166,7 +164,7 @@ public class DaoAction {
         return lstResult;
     }
 
-    public static HashMap<String,Integer> getNbActionTotalGroupByTypeTravail(){
+    public static Map<String,Integer> getNbActionTotalGroupByTypeTravail(){
         String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
@@ -203,7 +201,7 @@ public class DaoAction {
     }
 
 
-    public static HashMap<String,Integer> getNbActionRealiseeGroupByUtilisateurOeu(){
+    public static Map<String,Integer> getNbActionRealiseeGroupByUtilisateurOeu(){
         String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
@@ -221,7 +219,7 @@ public class DaoAction {
         return lstResult;
     }
 
-    public static HashMap<String,Integer> getNbActionRealiseeGroupByUtilisateurOuv(){
+    public static Map<String,Integer> getNbActionRealiseeGroupByUtilisateurOuv(){
         String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
@@ -239,7 +237,7 @@ public class DaoAction {
         return lstResult;
     }
 
-    public static HashMap<String,Integer> getNbActionTotalGroupByUtilisateurOeu(){
+    public static Map<String,Integer> getNbActionTotalGroupByUtilisateurOeu(){
         String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
@@ -257,7 +255,7 @@ public class DaoAction {
         return lstResult;
     }
 
-    public static HashMap<String,Integer> getNbActionTotalGroupByUtilisateurOuv(){
+    public static Map<String,Integer> getNbActionTotalGroupByUtilisateurOuv(){
         String tableName = Cache.getTableInfo(Action.class).getTableName();
         Cursor c = ActiveAndroid
                 .getDatabase()
@@ -275,7 +273,7 @@ public class DaoAction {
         return lstResult;
     }
 
-    public static List<Action> getActionRealiseesByProjet(long idProjet){
+    public static List<Action> getActionsRealiseesByProjet(long idProjet){
         Projet proj = Model.load(Projet.class,idProjet);
         List<Domaine> lstDomaines = proj.getLstDomaines();
         List<Action> lstActionRealisees = new ArrayList<>();
@@ -302,8 +300,4 @@ public class DaoAction {
         }
         return lstAction;
     }
-
-
-
-
 }

@@ -7,10 +7,6 @@ import java.util.List;
 
 import miage.fr.gestionprojet.models.Ressource;
 
-/**
- * Created by gamouzou on 01/03/2017.
- */
-
 public class DaoRessource {
 
     private DaoRessource() {
@@ -24,38 +20,38 @@ public class DaoRessource {
     }
 
     public static List<Ressource> loadAllWithInitialNotEmpty(){
-
-        List<Ressource> listeRessource=loadAll();
-        List<Ressource> listeRessourceFinal=new ArrayList<>();
-
-        for ( int i=0; i < listeRessource.size();i++){
-            if (!listeRessource.get(i).getInitiales().equals("") && listeRessource.get(i).getInitiales().length()>0) {
-                listeRessourceFinal.add(listeRessource.get(i));
+        List<Ressource> ressources = loadAll();
+        List<Ressource> ressourcesFinales = new ArrayList<>();
+        for (int i=0; i < ressources.size(); i++){
+            if (!ressources.get(i).getInitiales().equals("")
+                    && ressources.get(i).getInitiales().length() > 0) {
+                ressourcesFinales.add(ressources.get(i));
             }
         }
-        return listeRessourceFinal;
+        return ressourcesFinales;
     }
 
-    public static List<String> getAllRessourceInitials(){
-        List<Ressource> listeRessource=new Select().from(Ressource.class).execute();
-        List<String> listeInitials=new ArrayList<>();
+    public static List<String> getAllRessourcesInitiales(){
+        List<Ressource> ressources = new Select().from(Ressource.class).execute();
+        List<String> initiales = new ArrayList<>();
 
-        for ( int i=0; i < listeRessource.size();i++){
-            if (!listeRessource.get(i).getInitiales().equals("") && listeRessource.get(i).getInitiales().length()>0) {
-                listeInitials.add(listeRessource.get(i).getInitiales());
+        for (int i=0; i < ressources.size(); i++){
+            if (!ressources.get(i).getInitiales().equals("")
+                    && ressources.get(i).getInitiales().length() > 0) {
+                initiales.add(ressources.get(i).getInitiales());
             }
         }
-        return listeInitials;
+        return initiales;
     }
 
-    public static Ressource getRessourceByInitial(String initiales){
-        List<Ressource> lst = new Select()
+    public static Ressource getRessourcesByInitial(String initiales){
+        List<Ressource> ressources = new Select()
                 .from(Ressource.class)
                 .where("initiales = ?", initiales)
                 .execute();
-        if(lst.size()>0){
-            return lst.get(0);
-        }else{
+        if (!ressources.isEmpty()) {
+            return ressources.get(0);
+        } else {
             return null;
         }
     }

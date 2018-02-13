@@ -34,7 +34,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
     private static final String FORMATIONS = "Avancement des formations";
     private static final String PLANNING = "Planning détaillé";
     private static final String BUDGET = "Suivi du budget";
-    public static final String PROJET = "projet visu";
+    public static final String PROJET_VISU = "projet visu";
     public static final  String EXTRA_INITIAL = "initial";
     private ArrayList <String> actions;
     private Projet projet;
@@ -78,7 +78,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                         case 0:
                             intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
                             intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                            intent.putExtra(PROJET, projet.getId());
+                            intent.putExtra(PROJET_VISU, projet.getId());
                             startActivity(intent);
                             break;
 
@@ -91,14 +91,14 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                         case 2:
                             intent = new Intent(ActivityDetailsProjet.this, ActionsActivity.class);
                             intent.putExtra(EXTRA_INITIAL, initialUtilisateur);
-                            intent.putExtra(PROJET, projet.getId());
+                            intent.putExtra(PROJET_VISU, projet.getId());
                             startActivity(intent);
                             break;
 
                         case 3:
                             intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
                             intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                            intent.putExtra(PROJET, projet.getId());
+                            intent.putExtra(PROJET_VISU, projet.getId());
                             startActivity(intent);
                             break;
 
@@ -110,7 +110,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
 
             //avancement du projet
             ProgressBar progress = (ProgressBar) findViewById(R.id.progressBarProjet);
-            int nbActionsRealise = DaoAction.getActionRealiseesByProjet(this.projet.getId()).size();
+            int nbActionsRealise = DaoAction.getActionsRealiseesByProjet(this.projet.getId()).size();
             int nbActions = DaoAction.getAllActionsByProjet(this.projet.getId()).size();
             int ratioBudget = Outils.calculerPourcentage(nbActionsRealise,nbActions);
             progress.setProgress(ratioBudget);
@@ -121,7 +121,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
                     intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                    intent.putExtra(PROJET, projet.getId());
+                    intent.putExtra(PROJET_VISU, projet.getId());
                     startActivity(intent);
                 }
             });
@@ -142,7 +142,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
                     intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                    intent.putExtra(PROJET, projet.getId());
+                    intent.putExtra(PROJET_VISU, projet.getId());
                     startActivity(intent);
                 }
             });
