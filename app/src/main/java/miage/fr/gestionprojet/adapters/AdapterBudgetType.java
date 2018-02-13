@@ -9,8 +9,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -74,7 +74,7 @@ public class AdapterBudgetType extends ArrayAdapter<String> {
     private void chargerNbAction(){
         this.nbActions = new ArrayList<>();
         this.nbActionsRealisees = new ArrayList<>();
-        HashMap<String, Integer> results= DaoAction.getNbActionRealiseeGroupByTypeTravail();
+        Map<String, Integer> results= DaoAction.getNbActionRealiseeGroupByTypeTravail();
         if (!results.isEmpty()) {
             for (String typeTravail : this.typesTravail){
                 if (results.get(typeTravail) != null) {

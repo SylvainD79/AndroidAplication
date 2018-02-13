@@ -9,8 +9,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -76,7 +76,7 @@ public class AdapterBudgetDomaine extends ArrayAdapter<Domaine> {
     private void chargerNbAction(){
         this.nbActions = new ArrayList<>();
         this.nbActionsRealisees = new ArrayList<>();
-        HashMap<String, Integer> results = DaoAction.getNbActionRealiseeGroupByDomaine();
+        Map<String, Integer> results = DaoAction.getNbActionRealiseeGroupByDomaine();
         if (!results.isEmpty()) {
             for (Domaine domaine : this.domaines) {
                 if (results.get(String.valueOf(domaine.getId())) != null) {
