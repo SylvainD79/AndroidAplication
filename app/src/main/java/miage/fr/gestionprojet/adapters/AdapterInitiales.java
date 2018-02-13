@@ -1,4 +1,4 @@
-package miage.fr.gestionprojet.adapter;
+package miage.fr.gestionprojet.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -12,35 +12,31 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.vues.ActivityGestionDesInitials;
 
-/**
- * Created by gamouzou on 04/05/2017.
- */
-
 public class AdapterInitiales extends ArrayAdapter<Ressource> {
 
-
-    private List<Ressource> lstInitiales;
+    private List<Ressource> initiales;
     private ActivityGestionDesInitials activity;
 
     public AdapterInitiales(ActivityGestionDesInitials context, int resource, List<Ressource> objects) {
         super(context, resource, objects);
         this.activity = context;
-        this.lstInitiales = objects;
-
+        this.initiales = objects;
     }
 
     @Override
     public int getCount() {
-        return lstInitiales.size();
+        return initiales.size();
     }
 
     @Override
     public Ressource getItem(int position) {
-        return lstInitiales.get(position);
+        return initiales.get(position);
     }
 
     @Override
@@ -49,7 +45,8 @@ public class AdapterInitiales extends ArrayAdapter<Ressource> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Nonnull
+    public View getView(int position, View convertView, @Nonnull ViewGroup parent) {
         AdapterInitiales.ViewHolder holder;
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -66,9 +63,7 @@ public class AdapterInitiales extends ArrayAdapter<Ressource> {
         String firstLetter = String.valueOf(getItem(position).getInitiales());
 
         ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
-        // generate random color
         int color = generator.getColor(getItem(position));
-        //int color = generator.getRandomColor();
 
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound(firstLetter, color); // radius in px
@@ -86,9 +81,4 @@ public class AdapterInitiales extends ArrayAdapter<Ressource> {
             imageView = (ImageView) v.findViewById(R.id.icon_ttravail);
         }
     }
-
 }
-
-
-
-

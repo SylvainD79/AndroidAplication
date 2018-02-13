@@ -1,4 +1,4 @@
-package miage.fr.gestionprojet.adapter;
+package miage.fr.gestionprojet.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -15,6 +15,8 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.SaisieCharge;
@@ -23,38 +25,35 @@ import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.Outils;
 import miage.fr.gestionprojet.vues.ActivityIndicateursSaisieCharge;
 
-/**
- * Created by Audrey on 01/02/2017.
- */
-
 public class AdapterSaisieCharge extends ArrayAdapter<SaisieCharge>{
 
-    private List<SaisieCharge> lstSaisieCharge;
+    private List<SaisieCharge> saisiesCharge;
     private ActivityIndicateursSaisieCharge activity;
 
     public AdapterSaisieCharge(ActivityIndicateursSaisieCharge context, int resource, List<SaisieCharge> objects) {
         super(context, resource, objects);
         this.activity = context;
-        this.lstSaisieCharge = objects;
-
+        this.saisiesCharge = objects;
     }
 
     @Override
     public int getCount() {
-        return lstSaisieCharge.size();
+        return saisiesCharge.size();
     }
 
     @Override
     public SaisieCharge getItem(int position) {
-        return lstSaisieCharge.get(position);
+        return saisiesCharge.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         return position;
     }
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Nonnull
+    public View getView(int position, View convertView, @Nonnull ViewGroup parent) {
         ViewHolder holder;
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -76,7 +75,6 @@ public class AdapterSaisieCharge extends ArrayAdapter<SaisieCharge>{
         ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
         // generate random color
         int color = generator.getColor(getItem(position));
-        //int color = generator.getRandomColor();
 
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound(firstLetter, color); // radius in px
@@ -88,7 +86,8 @@ public class AdapterSaisieCharge extends ArrayAdapter<SaisieCharge>{
         Mesure mesure = DaoMesure.getLastMesureBySaisieCharge(getItem(position).getId());
         holder.avancement.setProgress(Outils.calculerPourcentage(mesure.getNbUnitesMesures(),getItem(position).getNbUnitesCibles()));
 
-        holder.date.setText(new SimpleDateFormat(Constants.DATE_FORMAT).format(getItem(position).getAction().getDtFinPrevue()));
+        String date = new SimpleDateFormat(Constants.DATE_FORMAT).format(getItem(position).getAction().getDtFinPrevue());
+        holder.date.setText(date);
         return convertView;
     }
 
@@ -105,5 +104,4 @@ public class AdapterSaisieCharge extends ArrayAdapter<SaisieCharge>{
             date = (TextView) v.findViewById(R.id.textViewDateSaisieCharge);
         }
     }
-
 }

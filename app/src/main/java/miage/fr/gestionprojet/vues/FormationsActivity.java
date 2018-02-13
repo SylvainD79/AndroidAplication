@@ -11,7 +11,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.adapter.FormationsAdapter;
+import miage.fr.gestionprojet.adapters.FormationsAdapter;
 import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
 

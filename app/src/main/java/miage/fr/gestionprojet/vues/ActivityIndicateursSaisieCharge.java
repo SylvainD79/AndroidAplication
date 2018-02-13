@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.adapter.AdapterSaisieCharge;
+import miage.fr.gestionprojet.adapters.AdapterSaisieCharge;
 import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
 import miage.fr.gestionprojet.models.Projet;

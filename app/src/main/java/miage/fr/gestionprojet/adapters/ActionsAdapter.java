@@ -1,4 +1,4 @@
-package miage.fr.gestionprojet.adapter;
+package miage.fr.gestionprojet.adapters;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -55,11 +55,12 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
     public void onClick(View view) {
         int position = (int) view.getTag();
         Action action = actions.get(position);
-        if(mListener != null)
-            mListener.SelectedAction(action);
+        if(mListener != null) {
+            mListener.selectedAction(action);
+        }
     }
 
-    public static String getDateFormat(Long time){
+    private static String getDateFormat(Long time){
         return DateUtils.getRelativeTimeSpanString(time, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS).toString();
     }
 
@@ -79,9 +80,5 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             mDomaineTextView = (TextView) itemView.findViewById(R.id.domain);
             mActionContainer = (LinearLayout) itemView.findViewById(R.id.actionContainer);
         }
-    }
-
-    public interface ActionClicked{
-        void SelectedAction(Action action);
     }
 }

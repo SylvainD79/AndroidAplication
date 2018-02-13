@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.adapter.AdapterInitiales;
+import miage.fr.gestionprojet.adapters.AdapterInitiales;
 import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 

@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.adapter.AdapterBudgetDomaine;
-import miage.fr.gestionprojet.adapter.AdapterBudgetType;
-import miage.fr.gestionprojet.adapter.AdapterBudgetUtilisateur;
+import miage.fr.gestionprojet.adapters.AdapterBudgetDomaine;
+import miage.fr.gestionprojet.adapters.AdapterBudgetType;
+import miage.fr.gestionprojet.adapters.AdapterBudgetUtilisateur;
 import miage.fr.gestionprojet.models.Domaine;
 import miage.fr.gestionprojet.models.Projet;
 import miage.fr.gestionprojet.models.Ressource;

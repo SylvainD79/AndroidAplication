@@ -12,7 +12,7 @@ import com.activeandroid.Model;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.adapter.AdapterMesure;
+import miage.fr.gestionprojet.adapters.AdapterMesure;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoMesure;

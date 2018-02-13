@@ -1,4 +1,4 @@
-package miage.fr.gestionprojet.adapter;
+package miage.fr.gestionprojet.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
@@ -12,31 +12,29 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.vues.FormationsActivity;
 
-/**
- * Created by Romain on 28/04/2017.
- */
-
 public class FormationsAdapter extends ArrayAdapter<Formation> {
 
-    private List<Formation> formationsData;
+    private List<Formation> formations;
 
     public FormationsAdapter(FormationsActivity formationsActivity, int ressource, List<Formation> formations) {
         super(formationsActivity, ressource);
-        formationsData = formations;
+        this.formations = formations;
     }
 
     @Override
     public int getCount() {
-        return formationsData.size();
+        return formations.size();
     }
 
     @Override
     public Formation getItem(int position) {
-        return formationsData.get(position);
+        return formations.get(position);
     }
 
     @Override
@@ -45,7 +43,8 @@ public class FormationsAdapter extends ArrayAdapter<Formation> {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    @Nonnull
+    public View getView(int position, View view, @Nonnull ViewGroup parent) {
         FormationViewHolder formationHolder;
         LayoutInflater formationInflater = (LayoutInflater) this.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -58,11 +57,11 @@ public class FormationsAdapter extends ArrayAdapter<Formation> {
             formationHolder = (FormationsAdapter.FormationViewHolder) view.getTag();
         }
 
-        Formation formation = formationsData.get(position);
-
+        Formation formation = formations.get(position);
         formationHolder.formationName.setText(formation.getAction().getCode());
         formationHolder.formationPhase.setText(formation.getAction().getPhase());
-        formationHolder.formationPercentage.setText(((int) formation.getAvancementTotal())+"%");
+        String formationPercentage  = ((int) formation.getAvancementTotal()) + "%";
+        formationHolder.formationPercentage.setText(formationPercentage);
         formationHolder.formationProgressBar.setProgress((int) formation.getAvancementTotal());
 
         return view;

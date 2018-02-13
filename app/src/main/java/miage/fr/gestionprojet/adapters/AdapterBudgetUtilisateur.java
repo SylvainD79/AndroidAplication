@@ -1,4 +1,4 @@
-package miage.fr.gestionprojet.adapter;
+package miage.fr.gestionprojet.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.dao.DaoAction;
@@ -23,36 +25,37 @@ import miage.fr.gestionprojet.vues.ActivityBudget;
  */
 
 public class AdapterBudgetUtilisateur extends ArrayAdapter<Ressource> {
-    private List<Ressource> lstUtilisateurs;
-    private ActivityBudget activity;
-    private ArrayList<Integer> lstNbActionsRealisees;
-    private ArrayList<Integer> lstNbActions;
 
+    private List<Ressource> utilisateurs;
+    private ActivityBudget activity;
+    private ArrayList<Integer> nbActionsRealisees;
+    private ArrayList<Integer> nbActions;
 
     public AdapterBudgetUtilisateur(ActivityBudget context,  int resource,  List<Ressource> objects) {
         super(context, resource, objects);
         this.activity = context;
-        this.lstUtilisateurs= objects;
+        this.utilisateurs = objects;
         chargerNbAction();
     }
 
-
     @Override
     public int getCount() {
-        return lstUtilisateurs.size();
+        return utilisateurs.size();
     }
 
     @Override
     public Ressource getItem(int position) {
-        return lstUtilisateurs.get(position);
+        return utilisateurs.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         return position;
     }
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Nonnull
+    public View getView(int position, View convertView, @Nonnull ViewGroup parent) {
         AdapterBudgetUtilisateur.ViewHolder holder;
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -67,70 +70,71 @@ public class AdapterBudgetUtilisateur extends ArrayAdapter<Ressource> {
 
         // on définit le texte à afficher
         holder.utilisateur.setText(getItem(position).toString());
-        holder.nbActionRealisees.setText(this.lstNbActionsRealisees.get(position) + "/" + this.lstNbActions.get(position));
-        holder.avancement.setProgress(Outils.calculerPourcentage(this.lstNbActionsRealisees.get(position),this.lstNbActions.get(position)));
+        String actionsProgress = this.nbActionsRealisees.get(position) + "/" + this.nbActions.get(position);
+        holder.nbActionsRealisees.setText(actionsProgress);
+        holder.avancement.setProgress(Outils.calculerPourcentage(this.nbActionsRealisees.get(position),this.nbActions.get(position)));
         return convertView;
     }
 
     private void chargerNbAction(){
-        this.lstNbActions = new ArrayList<>();
-        this.lstNbActionsRealisees = new ArrayList<>();
+        this.nbActions = new ArrayList<>();
+        this.nbActionsRealisees = new ArrayList<>();
         HashMap<String, Integer> results= DaoAction.getNbActionRealiseeGroupByUtilisateurOeu();
-        if(results.size()>0){
-            for(Ressource r : this.lstUtilisateurs){
-                if(results.get(String.valueOf(r.getId()))!=null) {
-                    this.lstNbActionsRealisees.add(results.get(String.valueOf(r.getId())));
-                }else{
-                    this.lstNbActionsRealisees.add(0);
+        if (!results.isEmpty()) {
+            for (Ressource ressource : this.utilisateurs) {
+                if (results.get(String.valueOf(ressource.getId())) != null) {
+                    this.nbActionsRealisees.add(results.get(String.valueOf(ressource.getId())));
+                } else {
+                    this.nbActionsRealisees.add(0);
                 }
             }
 
         }
 
         results= DaoAction.getNbActionRealiseeGroupByUtilisateurOuv();
-        if(results.size()>0){
-            for(int i =0; i<this.lstUtilisateurs.size(); i++){
-                if(results.get(String.valueOf(this.lstUtilisateurs.get(i).getId()))!=null) {
-                    this.lstNbActionsRealisees.add(i,this.lstNbActionsRealisees.get(i)+results.get(String.valueOf(this.lstUtilisateurs.get(i).getId())));
-                }else{
-                    this.lstNbActionsRealisees.add(0);
+        if (!results.isEmpty()) {
+            for (int i = 0; i<this.utilisateurs.size(); i++) {
+                if (results.get(String.valueOf(this.utilisateurs.get(i).getId())) != null) {
+                    this.nbActionsRealisees.add(i,
+                            this.nbActionsRealisees.get(i) + results.get(String.valueOf(this.utilisateurs.get(i).getId())));
+                } else {
+                    this.nbActionsRealisees.add(0);
                 }
             }
-
         }
 
         results= DaoAction.getNbActionTotalGroupByUtilisateurOeu();
-        if(results.size()>0){
-            for(Ressource r : this.lstUtilisateurs){
-                if(results.get(String.valueOf(r.getId()))!=null) {
-                    this.lstNbActions.add(results.get(String.valueOf(r.getId())));
-                }else{
-                    this.lstNbActions.add(0);
+        if (!results.isEmpty()) {
+            for (Ressource ressource : this.utilisateurs){
+                if (results.get(String.valueOf(ressource.getId())) != null) {
+                    this.nbActions.add(results.get(String.valueOf(ressource.getId())));
+                } else {
+                    this.nbActions.add(0);
                 }
             }
-
         }
 
         results= DaoAction.getNbActionTotalGroupByUtilisateurOuv();
-        if(results.size()>0){
-            for(int i =0; i<this.lstUtilisateurs.size(); i++){
-                if(results.get(String.valueOf(this.lstUtilisateurs.get(i).getId()))!=null) {
-                    this.lstNbActions.add(i,this.lstNbActions.get(i)+results.get(String.valueOf(this.lstUtilisateurs.get(i).getId())));
-                }else{
-                    this.lstNbActions.add(0);
+        if (!results.isEmpty()) {
+            for (int i = 0; i<this.utilisateurs.size(); i++){
+                if (results.get(String.valueOf(this.utilisateurs.get(i).getId())) != null) {
+                    this.nbActions.add(i,
+                            this.nbActions.get(i) + results.get(String.valueOf(this.utilisateurs.get(i).getId())));
+                } else {
+                    this.nbActions.add(0);
                 }
             }
-
         }
     }
+
     private class ViewHolder {
         private TextView utilisateur;
-        private TextView nbActionRealisees;
+        private TextView nbActionsRealisees;
         private ProgressBar avancement;
 
         public ViewHolder(View v) {
             utilisateur = (TextView) v.findViewById(R.id.typeAffiche);
-            nbActionRealisees = (TextView) v.findViewById(R.id.nbActionRealisees);
+            nbActionsRealisees = (TextView) v.findViewById(R.id.nbActionRealisees);
             avancement = (ProgressBar) v.findViewById(R.id.progress_bar_budget);
         }
     }

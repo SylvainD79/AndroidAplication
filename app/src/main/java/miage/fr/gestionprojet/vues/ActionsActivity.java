@@ -24,7 +24,6 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +31,8 @@ import java.util.Date;
 import java.util.List;
 
 import miage.fr.gestionprojet.R;
-import miage.fr.gestionprojet.adapter.ActionsAdapter;
+import miage.fr.gestionprojet.adapters.ActionClicked;
+import miage.fr.gestionprojet.adapters.ActionsAdapter;
 import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
 import miage.fr.gestionprojet.models.dao.DaoAction;
@@ -40,7 +40,7 @@ import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.DividerItemDecoration;
 import miage.fr.gestionprojet.outils.Outils;
 
-public class ActionsActivity extends AppCompatActivity implements View.OnClickListener, ActionsAdapter.ActionClicked{
+public class ActionsActivity extends AppCompatActivity implements View.OnClickListener, ActionClicked {
     private String initial;
     private RecyclerView mRecyclerView;
     private ImageButton yearPlus;
@@ -223,7 +223,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void SelectedAction(Action action) {
+    public void selectedAction(Action action) {
         showDialog(action);
     }
 
