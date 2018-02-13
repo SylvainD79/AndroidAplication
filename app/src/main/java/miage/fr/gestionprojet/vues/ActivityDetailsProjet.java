@@ -30,15 +30,14 @@ import miage.fr.gestionprojet.outils.Outils;
 
 public class ActivityDetailsProjet extends AppCompatActivity {
 
-    private final static String RESSOURCES = "Avancement des saisies";
-    private final static String FORMATIONS = "Avancement des formations";
-    private final static String PLANNING = "Planning détaillé";
-    private final static String BUDGET = "Suivi du budget";
-    public final static String PROJET = "projet visu";
-    private ListView liste = null;
-    public final static String EXTRA_INITIAL = "initial";
-    private ArrayList <String> lstActions;
-    private Projet proj;
+    private static final String RESSOURCES = "Avancement des saisies";
+    private static final String FORMATIONS = "Avancement des formations";
+    private static final String PLANNING = "Planning détaillé";
+    private static final String BUDGET = "Suivi du budget";
+    public static final String PROJET = "projet visu";
+    public static final  String EXTRA_INITIAL = "initial";
+    private ArrayList <String> actions;
+    private Projet projet;
     private String initialUtilisateur;
 
     @Override
@@ -53,24 +52,23 @@ public class ActivityDetailsProjet extends AppCompatActivity {
         // s'il n'y pas d'erreur, un projet est sélectionné
         if (id > 0) {
             // on récupère toutes les données de ce projet
-            proj = Model.load(Projet.class, id);
+            projet = Model.load(Projet.class, id);
 
             // on récupère les différents élements de la vue
             TextView txtNomProj = (TextView) findViewById(R.id.textViewNomProjet);
 
             // on alimente ces différents éléments
-            txtNomProj.setText(proj.getNom());
+            txtNomProj.setText(projet.getNom());
 
             // on constitue une liste d'action
-            liste = (ListView) findViewById(R.id.listViewAction);
-            lstActions = new ArrayList<String>();
-            lstActions.add(RESSOURCES);
-            lstActions.add(FORMATIONS);
-            lstActions.add(PLANNING);
-            lstActions.add(BUDGET);
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lstActions);
+            ListView liste = (ListView) findViewById(R.id.listViewAction);
+            actions = new ArrayList<>();
+            actions.add(RESSOURCES);
+            actions.add(FORMATIONS);
+            actions.add(PLANNING);
+            actions.add(BUDGET);
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, actions);
             liste.setAdapter(adapter);
-
 
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -80,7 +78,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                         case 0:
                             intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
                             intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                            intent.putExtra(PROJET, proj.getId());
+                            intent.putExtra(PROJET, projet.getId());
                             startActivity(intent);
                             break;
 
@@ -93,28 +91,27 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                         case 2:
                             intent = new Intent(ActivityDetailsProjet.this, ActionsActivity.class);
                             intent.putExtra(EXTRA_INITIAL, initialUtilisateur);
-                            intent.putExtra(PROJET, proj.getId());
+                            intent.putExtra(PROJET, projet.getId());
                             startActivity(intent);
                             break;
 
                         case 3:
                             intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
                             intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                            intent.putExtra(PROJET, proj.getId());
+                            intent.putExtra(PROJET, projet.getId());
                             startActivity(intent);
                             break;
 
                         default:
                             break;
                     }
-
                 }
             });
 
             //avancement du projet
             ProgressBar progress = (ProgressBar) findViewById(R.id.progressBarProjet);
-            int nbActionsRealise = DaoAction.getActionRealiseesByProjet(this.proj.getId()).size();
-            int nbActions = DaoAction.getAllActionsByProjet(this.proj.getId()).size();
+            int nbActionsRealise = DaoAction.getActionRealiseesByProjet(this.projet.getId()).size();
+            int nbActions = DaoAction.getAllActionsByProjet(this.projet.getId()).size();
             int ratioBudget = Outils.calculerPourcentage(nbActionsRealise,nbActions);
             progress.setProgress(ratioBudget);
 
@@ -124,7 +121,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
                     intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                    intent.putExtra(PROJET, proj.getId());
+                    intent.putExtra(PROJET, projet.getId());
                     startActivity(intent);
                 }
             });
@@ -145,52 +142,51 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
                     intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                    intent.putExtra(PROJET, proj.getId());
+                    intent.putExtra(PROJET, projet.getId());
                     startActivity(intent);
                 }
             });
 
             //proportion de durée
-            Date dateFin = DaoProjet.getDateFin(this.proj.getId());
+            Date dateFin = DaoProjet.getDateFin(this.projet.getId());
             long dureeRestante = Outils.dureeEntreDeuxDates(Calendar.getInstance().getTime(),dateFin);
-            long dureeTotal = Outils.dureeEntreDeuxDates(DaoProjet.getDateDebut(this.proj.getId()),DaoProjet.getDateFin(this.proj.getId()));
+            long dureeTotal = Outils.dureeEntreDeuxDates(DaoProjet.getDateDebut(this.projet.getId()),DaoProjet.getDateFin(this.projet.getId()));
             int ratioDuree  = Outils.calculerPourcentage(dureeRestante,dureeTotal);
 
             //détermination de la couleur du bouton budget en fonction du temps restant et du nombre d'actions déjà réalisées
-            if(ratioDuree<100-ratioBudget){
+            if (ratioDuree < 100 - ratioBudget) {
                 buttonBudget.setBackgroundColor(Color.RED);
-            }else if(ratioDuree>100-ratioBudget){
+            } else if(ratioDuree > 100 - ratioBudget) {
                 buttonBudget.setBackgroundColor(Color.GREEN);
-            }else{
+            } else {
                 buttonBudget.setBackgroundColor(Color.YELLOW);
             }
 
             //détermination de la couleur du bouton formation
-            float avancementTotalFormation = DaoFormation.getAvancementTotal(this.proj.getId());
+            float avancementTotalFormation = DaoFormation.getAvancementTotal(this.projet.getId());
             int ratioFormation = Outils.calculerPourcentage(avancementTotalFormation,100);
-            if(ratioDuree<100-ratioFormation){
+            if (ratioDuree < 100 - ratioFormation ){
                 buttonFormations.setBackgroundColor(Color.RED);
-            }else if(ratioDuree>100-ratioFormation){
+            } else if(ratioDuree > 100 - ratioFormation) {
                 buttonFormations.setBackgroundColor(Color.GREEN);
-            }else{
+            } else {
                 buttonFormations.setBackgroundColor(Color.YELLOW);
             }
 
             //détermination de la couleur du bouton action
-            int nbUniteesSaisies = DaoSaisieCharge.getNbUnitesSaisies(this.proj.getId());
-            int nbUniteesCibles = DaoSaisieCharge.getNbUnitesCibles(this.proj.getId());
+            int nbUniteesSaisies = DaoSaisieCharge.getNbUnitesSaisies(this.projet.getId());
+            int nbUniteesCibles = DaoSaisieCharge.getNbUnitesCibles(this.projet.getId());
             int ratioSaisies = Outils.calculerPourcentage(nbUniteesSaisies,nbUniteesCibles);
-            if(ratioDuree<100-ratioSaisies){
+            if (ratioDuree < 100 - ratioSaisies) {
                 buttonSaisies.setBackgroundColor(Color.RED);
-            }else if(ratioDuree>100-ratioSaisies){
+            } else if(ratioDuree > 100 - ratioSaisies) {
                 buttonSaisies.setBackgroundColor(Color.GREEN);
-            }else{
+            } else {
                 buttonSaisies.setBackgroundColor(Color.YELLOW);
             }
         }
     }
 
-    //ajout du menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.initial_utilisateur, menu);

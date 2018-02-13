@@ -17,15 +17,10 @@ import miage.fr.gestionprojet.adapters.AdapterInitiales;
 import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 
-/**
- * Created by gamouzou on 01/03/2017.
- */
-
 public class ActivityGestionDesInitials extends AppCompatActivity {
 
-    private ListView liste = null;
-    private List<Ressource> lstRessourceInitials = null;
-    public final static String EXTRA_INITIAL = "Initial";
+    private List<Ressource> ressourcesInitiales = null;
+    public static final String EXTRA_INITIAL = "Initial";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,35 +28,29 @@ public class ActivityGestionDesInitials extends AppCompatActivity {
         ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_gestion_des_initials);
 
-
-
-
         //on récupère la liste des ressources
-        lstRessourceInitials = DaoRessource.loadAllWithInitialNotEmpty();
-        liste = (ListView) findViewById(R.id.listViewInitials);
+        ressourcesInitiales = DaoRessource.loadAllWithInitialNotEmpty();
+        ListView liste = (ListView) findViewById(R.id.listViewInitials);
 
         // si le nombre de ressource est supérieur à 1 on affiche une liste
-        if(lstRessourceInitials.size()>0) {
+        if (!ressourcesInitiales.isEmpty()) {
             //on affiche cette liste
-            final ArrayAdapter<Ressource> adapter2 = new AdapterInitiales(this, R.layout.list_view_initiales, lstRessourceInitials);
+            final ArrayAdapter<Ressource> adapter2 = new AdapterInitiales(this, R.layout.list_view_initiales, ressourcesInitiales);
             liste.setAdapter(adapter2);
-
-            //liste.setAdapter(adapter);
-
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Intent intent = new Intent(ActivityGestionDesInitials.this, MainActivity.class);
-                    intent.putExtra(EXTRA_INITIAL, (lstRessourceInitials.get(position).getInitiales()));
+                    intent.putExtra(EXTRA_INITIAL, (ressourcesInitiales.get(position).getInitiales()));
                     startActivity(intent);
                 }
             });
-        }else{
+        } else {
                 // sinon on affiche un message indiquand qu'il n'y a aucun projet en cours
                 ArrayList<String> list = new ArrayList<>(1);
                 list.add("Cliquez ici !!");
-                final ArrayAdapter<String> adapter_2 = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
-                liste.setAdapter(adapter_2);
+                final ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
+                liste.setAdapter(adapter2);
 
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -72,9 +61,5 @@ public class ActivityGestionDesInitials extends AppCompatActivity {
                 }
             });
         }
-        }
-
-
-
     }
-
+}

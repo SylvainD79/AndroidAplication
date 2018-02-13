@@ -67,7 +67,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         try {
             initial = getIntent().getStringExtra(ActivityDetailsProjet.EXTRA_INITIAL);
             idProjet = getIntent().getLongExtra(EXTRA_PROJET,0);
-        }catch(Exception e){
+        } catch(Exception e) {
             Log.e(TAG, e.getMessage());
             finish();
         }
@@ -76,9 +76,11 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         Calendar c = Calendar.getInstance();
         week = c.get(Calendar.WEEK_OF_YEAR);
         year = c.get(Calendar.YEAR);
-        if(toolbar!=null) {
+        if (toolbar!=null) {
             setSupportActionBar(toolbar);
-            if (getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -104,14 +106,13 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         weekEditText.setText(String.valueOf(week));
         yearEditText.setText(String.valueOf(year));
         yearEditText.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -120,21 +121,20 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                     year = Integer.parseInt(editable.toString());
                     dateSaisie = Outils.weekOfYearToDate(year,week);
                     refreshAdapter(DaoAction.loadActionsByDate(dateSaisie, idProjet));
-                }catch(Exception e){
+                } catch(Exception e) {
                     Log.e(TAG, e.getMessage());
                     yearEditText.setError("");
                 }
             }
         });
         weekEditText.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -143,15 +143,13 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                     week = Integer.parseInt(editable.toString());
                     dateSaisie = Outils.weekOfYearToDate(year,week);
                     refreshAdapter(DaoAction.loadActionsByDate(dateSaisie, idProjet));
-                }catch(Exception e){
+                } catch(Exception e) {
                     Log.e(TAG, e.getMessage());
                     weekEditText.setError("");
                 }
             }
         });
     }
-
-
 
     @Override
     protected void onStart() {
@@ -160,17 +158,15 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         refreshAdapter(DaoAction.loadActionsByDate(dateSaisie, idProjet));
     }
 
-
-
     private void refreshAdapter(List<Action> actions){
-        if(actions != null && actions.size() > 0) {
+        if (!actions.isEmpty()) {
             mEmptyView.setVisibility(View.INVISIBLE);
             mRecyclerView.setVisibility(View.VISIBLE);
             ActionsAdapter adapter = new ActionsAdapter(actions);
             adapter.setmListener(this);
             mRecyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-        }else{
+        } else {
             mEmptyView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
         }
@@ -184,7 +180,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.week_minus:
                 week = (Integer.parseInt(weekEditText.getText().toString()) - 1) % 53;
                 weekEditText.setText(String.valueOf(week));
-                if(week == 0){
+                if (week == 0) {
                     week = 52;
                     year = year -1;
                     weekEditText.setText(String.valueOf(week));
@@ -208,7 +204,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.year_minus :
                 year = Integer.parseInt(yearEditText.getText().toString()) - 1;
                 dateSaisie = Outils.weekOfYearToDate(year,week);
-                if(year < 2000){
+                if (year < 2000) {
                     yearEditText.setError("");
                     return;
                 }
@@ -218,7 +214,6 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             default:
                 break;
         }
-
         refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
     }
 
@@ -238,10 +233,14 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         TextView estimation = (TextView) layout.findViewById(R.id.estimation);
         phase.setText(action.getPhase());
         name.setText(action.getCode());
-        dtDebut.setText("Date Debut : "+ new SimpleDateFormat(Constants.DATE_FORMAT).format(action.getDtDeb()));
-        dtFin.setText("Date Fin Prevue: "+ new SimpleDateFormat(Constants.DATE_FORMAT).format(action.getDtFinPrevue()));
-        nbJr.setText("Nombre de jour prevu : " +action.getNbJoursPrevus());
-        estimation.setText("Cout par jour : "+action.getCoutParJour());
+        String dateDebut = "Date Debut : "+ new SimpleDateFormat(Constants.DATE_FORMAT).format(action.getDtDeb());
+        dtDebut.setText(dateDebut);
+        String dateFin = "Date Fin Prevue: "+ new SimpleDateFormat(Constants.DATE_FORMAT).format(action.getDtFinPrevue());
+        dtFin.setText(dateFin);
+        String NombreJours = "Nombre de jours prevus : " + action.getNbJoursPrevus();
+        nbJr.setText(NombreJours);
+        String estimationText = "Cout par jour : " + action.getCoutParJour();
+        estimation.setText(estimationText);
         final PopupWindow popup = new PopupWindow(layout,400,400, true);
         popup.setOutsideTouchable(true);
         popup.setTouchable(true);
@@ -303,12 +302,11 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         ContextThemeWrapper wrapper = new ContextThemeWrapper(this, R.style.MyPopupMenu);
         PopupMenu popupMenu = new PopupMenu(wrapper, mEmptyView);
         Menu menu = popupMenu.getMenu();
-        if(cat.equalsIgnoreCase("type")){
+        if (cat.equalsIgnoreCase("type")) {
             popupMenu.getMenuInflater().inflate(R.menu.popup_menu_type, menu);
             popupMenu.setGravity(Gravity.CENTER);
             ArrayList<String> types = getTypeTravailAffiche();
-            int i = 0;
-            for(i=0; i<types.size();i++){
+            for(int i = 0; i < types.size(); i++){
                 menu.add(0, i, 0, types.get(i));
             }
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -323,23 +321,20 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                 }
             });
             popupMenu.show();
-
         }
-        if(cat.equalsIgnoreCase("phase")){
+        if (cat.equalsIgnoreCase("phase")) {
             popupMenu.getMenuInflater().inflate(R.menu.popup_menu_phase, menu);
             popupMenu.setGravity(Gravity.CENTER);
             ArrayList<String> phases = getPhasesAffiches();
-            int i = 0 ;
-            for(i=0; i<phases.size(); i++){
+            for(int i = 0; i < phases.size(); i++){
                 menu.add(0, i, 0, phases.get(i));
             }
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-
-                    if(item.getItemId()==R.id.all) {
+                    if (item.getItemId() == R.id.all) {
                         refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
-                    }else{
+                    } else {
                         refreshAdapter(DaoAction.loadActionsByPhaseAndDate(item.getTitle().toString(),dateSaisie,idProjet));
                     }
                     return true;
@@ -348,20 +343,19 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             popupMenu.show();
         }
 
-        if(cat.equalsIgnoreCase("domaine")){
+        if (cat.equalsIgnoreCase("domaine")) {
             popupMenu.getMenuInflater().inflate(R.menu.popup_menu_domaine, menu);
             popupMenu.setGravity(Gravity.CENTER);
-            ArrayList<Domaine> doms = getDomainesAffiches();
-            for(Domaine d : doms){
-                menu.add(0,(int)(long) d.getId(), 0, d.getNom());
+            ArrayList<Domaine> domaines = getDomainesAffiches();
+            for(Domaine domaine : domaines){
+                menu.add(0,(int)(long) domaine.getId(), 0, domaine.getNom());
             }
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-
-                    if(item.getItemId()==R.id.all) {
+                    if (item.getItemId() == R.id.all) {
                         refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
-                    }else{
+                    } else {
                         refreshAdapter(DaoAction.loadActionsByDomaineAndDate(item.getItemId(),dateSaisie,idProjet));
                     }
                     return true;
@@ -369,51 +363,38 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             });
             popupMenu.show();
         }
-
     }
 
     private ArrayList<String> getTypeTravailAffiche(){
         ArrayList<String> result = new ArrayList<>();
-        List<Action> lstActions = DaoAction.loadActionsByDate(dateSaisie,idProjet);
-        for(Action a : lstActions){
-            if(result.indexOf(a.getTypeTravail())<0){
-                result.add(a.getTypeTravail());
+        List<Action> actions = DaoAction.loadActionsByDate(dateSaisie,idProjet);
+        for(Action action : actions){
+            if (result.indexOf(action.getTypeTravail()) < 0) {
+                result.add(action.getTypeTravail());
             }
         }
         return result;
-
     }
 
     private ArrayList<String> getPhasesAffiches(){
         ArrayList<String> result = new ArrayList<>();
-        List<Action> lstActions = DaoAction.loadActionsByDate(dateSaisie,idProjet);
-        for(Action a : lstActions){
-            if(result.indexOf(a.getPhase())<0){
-                result.add(a.getPhase());
+        List<Action> actions = DaoAction.loadActionsByDate(dateSaisie,idProjet);
+        for(Action action : actions){
+            if (result.indexOf(action.getPhase()) < 0) {
+                result.add(action.getPhase());
             }
         }
         return result;
-
     }
 
     private ArrayList<Domaine> getDomainesAffiches() {
         ArrayList<Domaine> result = new ArrayList<>();
-        List<Action> lstActions = DaoAction.loadActionsByDate(dateSaisie,idProjet);
-        for(Action a : lstActions){
-            if(result.indexOf(a.getDomaine())<0){
-                result.add(a.getDomaine());
+        List<Action> actions = DaoAction.loadActionsByDate(dateSaisie,idProjet);
+        for(Action action : actions){
+            if (result.indexOf(action.getDomaine()) < 0) {
+                result.add(action.getDomaine());
             }
         }
-
-
-
         return result;
     }
-
-
-
-
-
-
-
 }

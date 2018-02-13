@@ -12,10 +12,6 @@ import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
 
-/**
- * Created by Romain on 28/04/2017.
- */
-
 public class FormationActivity extends AppCompatActivity {
 
     // TODO rendre "transparent"

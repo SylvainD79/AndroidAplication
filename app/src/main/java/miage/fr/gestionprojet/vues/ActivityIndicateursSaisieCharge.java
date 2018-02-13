@@ -29,11 +29,11 @@ import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
 
 public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
 
-    private Projet proj;
-    private List<SaisieCharge> lstSaisieCharge;
+    private Projet projet;
+    private List<SaisieCharge> saisiesCharge;
     private ListView liste;
     public static final String SAISIECHARGE = "saisie charge";
-    public final static String EXTRA_INITIAL = "initial";
+    public static final String EXTRA_INITIAL = "initial";
     private String initialUtilisateur;
 
     @Override
@@ -48,31 +48,30 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
 
         if (id > 0 ) {
             // on récupère les données associées à ce projet
-            proj = Model.load(Projet.class, id);
+            projet = Model.load(Projet.class, id);
             // on récupère la liste des travaux à afficher
-            lstSaisieCharge= new ArrayList<SaisieCharge>();
-            List<Domaine> lstDomaines = proj.getLstDomaines();
-            for(Domaine d : lstDomaines){
-                for(Action a: d.getLstActions()){
-                    if(a.getTypeTravail().equals("Saisie")||a.getTypeTravail().equals("Test")){
-                        SaisieCharge s = DaoSaisieCharge.loadSaisieChargeByAction(a.getId());
-                        if(s!=null){
-                            lstSaisieCharge.add(s);
+            saisiesCharge = new ArrayList<>();
+            List<Domaine> domaines = projet.getLstDomaines();
+            for(Domaine domaine : domaines){
+                for(Action action : domaine.getLstActions()){
+                    if(action.getTypeTravail().equals("Saisie") || action.getTypeTravail().equals("Test")){
+                        SaisieCharge s = DaoSaisieCharge.loadSaisieChargeByAction(action.getId());
+                        if(s != null){
+                            saisiesCharge.add(s);
                         }
                     }
                 }
-
             }
 
             //on affiche cette liste
-            final ArrayAdapter<SaisieCharge> adapter = new AdapterSaisieCharge(this, R.layout.list_view_layout_saisie_charge, lstSaisieCharge);
+            final ArrayAdapter<SaisieCharge> adapter = new AdapterSaisieCharge(this, R.layout.list_view_layout_saisie_charge, saisiesCharge);
             liste.setAdapter(adapter);
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(ActivityIndicateursSaisieCharge.this, ActivityDetailsIndicateursSaisieCharge.class);
-                    intent.putExtra(SAISIECHARGE, lstSaisieCharge.get(position).getId());
+                    intent.putExtra(SAISIECHARGE, saisiesCharge.get(position).getId());
                     intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
                     startActivity(intent);
                 }
@@ -81,120 +80,118 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
             // si pas de saisiecharge en cours
             ArrayList<String> list = new ArrayList<>(1);
             list.add("Aucune saisie en cours");
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
             liste.setAdapter(adapter);
         }
     }
 
-    //ajout du menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.initial_utilisateur, menu);
         menu.findItem(R.id.initial_utilisateur).setTitle(initialUtilisateur);
         getMenuInflater().inflate(R.menu.activity_indicateurs_saisie_charge, menu);
-
         return true;
     }
 
-    // action à réaliser pour chaque item du menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.initial_utilisateur:
                 return true;
+
             case R.id.charger_donnees:
                 Intent intent = new Intent(ActivityIndicateursSaisieCharge.this, ChargementDonnees.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
+
             case R.id.menu_trie_utilisateur:
                 showPopup("utilisateurs");
                 return true;
+
             case R.id.menu_trie_domaine:
                 showPopup("domaine");
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private ArrayList<Domaine> getDomainesAffiches(){
-        ArrayList<Domaine> doms = new ArrayList<>();
-        for(SaisieCharge s : lstSaisieCharge){
-            if(doms.indexOf(s.getAction().getDomaine())<0){
-                doms.add(s.getAction().getDomaine());
+        ArrayList<Domaine> domaines = new ArrayList<>();
+        for(SaisieCharge s : saisiesCharge){
+            if (domaines.indexOf(s.getAction().getDomaine()) < 0) {
+                domaines.add(s.getAction().getDomaine());
             }
         }
-        return doms;
+        return domaines;
     }
 
     private ArrayList<Ressource> getRessourcesAffiches(){
-        ArrayList<Ressource> res = new ArrayList<>();
-        for(SaisieCharge s : lstSaisieCharge){
-            if(res.indexOf(s.getAction().getRespOeu())<0){
-                res.add(s.getAction().getRespOeu());
+        ArrayList<Ressource> ressources = new ArrayList<>();
+        for(SaisieCharge s : saisiesCharge){
+            if(ressources.indexOf(s.getAction().getRespOeu())<0){
+                ressources.add(s.getAction().getRespOeu());
             }
-            if(res.indexOf(s.getAction().getRespOuv())<0){
-                res.add(s.getAction().getRespOuv());
+            if(ressources.indexOf(s.getAction().getRespOuv())<0){
+                ressources.add(s.getAction().getRespOuv());
             }
         }
-        return res;
+        return ressources;
     }
 
     private void showPopup(String type){
         ContextThemeWrapper wrapper = new ContextThemeWrapper(this, R.style.MyPopupMenu);
         PopupMenu pMenu = new PopupMenu(wrapper,liste);
         Menu menu = pMenu.getMenu();
-        if(type.equalsIgnoreCase("domaine")){
+        if (type.equalsIgnoreCase("domaine")) {
             pMenu.getMenuInflater().inflate(R.menu.popup_menu_domaine,menu);
             pMenu.setGravity(Gravity.CENTER);
             ArrayList<Domaine> doms = getDomainesAffiches();
-            for(Domaine d : doms){
-                menu.add(0, (int)(long)d.getId(), 0, d.getNom());
+            for (Domaine domaine : doms) {
+                menu.add(0, (int)(long)domaine.getId(), 0, domaine.getNom());
             }
             pMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    if(item.getItemId() == R.id.all) {
-                        refreshAdapter(lstSaisieCharge);
-                    }else{
+                    if (item.getItemId() == R.id.all) {
+                        refreshAdapter(saisiesCharge);
+                    } else {
                         refreshAdapter(DaoSaisieCharge.loadSaisieChargesByDomaine(item.getItemId()));
                     }
                     return true;
                 }
             });
-
         }
 
-        if(type.equalsIgnoreCase("utilisateurs")){
+        if (type.equalsIgnoreCase("utilisateurs")) {
             pMenu.getMenuInflater().inflate(R.menu.popup_menu_utilisateur,menu);
             pMenu.setGravity(Gravity.CENTER);
-            ArrayList<Ressource> res = getRessourcesAffiches();
-            for(Ressource r : res){
-                menu.add(0, (int)(long)r.getId(), 0, r.getInitiales());
+            ArrayList<Ressource> ressources = getRessourcesAffiches();
+            for (Ressource ressource : ressources) {
+                menu.add(0, (int)(long)ressource.getId(), 0, ressource.getInitiales());
             }
             pMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    if(item.getItemId()==R.id.all){
-                        refreshAdapter(lstSaisieCharge);
-                    }else {
+                    if (item.getItemId() == R.id.all) {
+                        refreshAdapter(saisiesCharge);
+                    } else {
                         refreshAdapter(DaoSaisieCharge.loadSaisieChargeByUtilisateur(item.getItemId()));
                     }
                     return true;
                 }
             });
-
         }
         pMenu.show();
     }
 
     private void refreshAdapter(List<SaisieCharge> actions){
-        if(actions != null && actions.size() > 0) {
+        if (!actions.isEmpty()) {
             AdapterSaisieCharge adapter = new AdapterSaisieCharge(this, R.layout.list_view_layout_saisie_charge,actions);
             liste.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
     }
 }
-

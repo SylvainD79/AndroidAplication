@@ -29,8 +29,7 @@ public class ActivityMesures extends AppCompatActivity {
         long id = intent.getLongExtra(ActivityIndicateursSaisieCharge.SAISIECHARGE,0);
         initialUtilisateur = intent.getStringExtra(EXTRA_INITIAL);
 
-
-        if(id > 0) {
+        if (id > 0) {
             Model.load(SaisieCharge.class, id);
             ListView lstViewMesures = (ListView) findViewById(R.id.lstViewMesures);
             List<Mesure> lstMesures = DaoMesure.getListtMesureByAction(id);

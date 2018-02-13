@@ -14,8 +14,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 
     public DividerItemDecoration(Context context) {
-        if(context == null)
+        if (context == null) {
             context = MyApplication.getContext();
+        }
         mDivider = ContextCompat.getDrawable(context, R.drawable.line_divider);
     }
 

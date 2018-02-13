@@ -30,8 +30,7 @@ import miage.fr.gestionprojet.outils.Outils;
 public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
 
     private SaisieCharge saisieCharge = null;
-    private TextView txtSaisieCharge;
-    public final static String EXTRA_INITIAL = "initial";
+    public static final String EXTRA_INITIAL = "initial";
     public static final String EXTRA_SAISIECHARGE = "saisie charge";
     private String initialUtilisateur;
 
@@ -44,11 +43,10 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
         long id = intent.getLongExtra(ActivityIndicateursSaisieCharge.SAISIECHARGE,0);
         initialUtilisateur = intent.getStringExtra(EXTRA_INITIAL);
 
-
-        if(id > 0){
+        if (id > 0) {
             saisieCharge = Model.load(SaisieCharge.class, id);
             Mesure mesure = DaoMesure.getLastMesureBySaisieCharge(saisieCharge.getId());
-            txtSaisieCharge = (TextView) findViewById(R.id.textViewSaisieCharge);
+            TextView txtSaisieCharge = (TextView) findViewById(R.id.textViewSaisieCharge);
             txtSaisieCharge.setText(saisieCharge.toString());
 
             int progression = Outils.calculerPourcentage(mesure.getNbUnitesMesures(),saisieCharge.getNbUnitesCibles());
@@ -56,13 +54,16 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
             circularProgressBar.setProgress(progression);
 
             TextView txtPrct = (TextView) findViewById(R.id.textViewPrct);
-            txtPrct.setText("Heure/unite:"+saisieCharge.getHeureParUnite()+"\n"+"ChargeTotale:"+saisieCharge.getChargeTotaleEstimeeEnHeure()
-            +"\n"+"Charge/semaine:"+saisieCharge.getChargeEstimeeParSemaine());
+            String textViewPrct = "Heure/unite:"+saisieCharge.getHeureParUnite()+"\n"+"ChargeTotale:"+saisieCharge.getChargeTotaleEstimeeEnHeure()
+                    +"\n"+"Charge/semaine:"+saisieCharge.getChargeEstimeeParSemaine();
+            txtPrct.setText(textViewPrct);
 
             TextView txtDateDeb = (TextView) findViewById(R.id.txtDtDeb);
             TextView txtDateFin = (TextView) findViewById(R.id.txtDtFin);
-            txtDateDeb.setText(new SimpleDateFormat(Constants.DATE_FORMAT).format(saisieCharge.getAction().getDtDeb()));
-            txtDateFin.setText(new SimpleDateFormat(Constants.DATE_FORMAT).format(saisieCharge.getAction().getDtFinPrevue()));
+            String dateDeb = new SimpleDateFormat(Constants.DATE_FORMAT).format(saisieCharge.getAction().getDtDeb());
+            txtDateDeb.setText(dateDeb);
+            String dateFin = new SimpleDateFormat(Constants.DATE_FORMAT).format(saisieCharge.getAction().getDtFinPrevue());
+            txtDateFin.setText(dateFin);
 
             ProgressBar progressBarDate = (ProgressBar) findViewById(R.id.progressBarDate);
             Calendar c = Calendar.getInstance();
@@ -75,7 +76,7 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
             indicateurs.add("Nombre d'unités produites:"+mesure.getNbUnitesMesures()+"/"+saisieCharge.getNbUnitesCibles());
             indicateurs.add("Temps restant (semaines): "+saisieCharge.getNbSemainesRestantes());
             indicateurs.add("Dernière mesure saisie:"+mesure.getDtMesure());
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, indicateurs);
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, indicateurs);
             lstViewIndicateur.setAdapter(adapter);
 
             Button btnMessures = (Button) findViewById(R.id.btnMesures);
@@ -88,12 +89,9 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
         }
-
     }
 
-    //ajout du menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.initial_utilisateur, menu);
@@ -119,5 +117,4 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

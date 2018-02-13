@@ -72,18 +72,15 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
     private Button idButtonParDefaut;
     private EditText buttonInput;
 
-    private static String spreadsheetIdParDefaut= "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
-
+    static String spreadsheetIdParDefaut= "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-
-
-    private static final String BUTTON_TEXT = "Charger la base de données ";
-    private static final String BUTTON_ID = "Id par defaut";
-    private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
+    static final String BUTTON_TEXT = "Charger la base de données ";
+    static final String BUTTON_ID = "Id par defaut";
+    static final String PREF_ACCOUNT_NAME = "accountName";
+    static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
 
     /**
      * Create the main activity.
@@ -124,11 +121,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         mOutputText.setPadding(16, 16, 16, 16);
         mOutputText.setVerticalScrollBarEnabled(true);
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
-        mOutputText.setText(
-                "Clicker sur \'" + BUTTON_TEXT + "\' pour charger ou mettre à jour les données .");
+        String text = "Clicker sur \'" + BUTTON_TEXT + "\' pour charger ou mettre à jour les données .";
+        mOutputText.setText(text);
         activityLayout.addView(mOutputText);
 
-        buttonInput=new EditText(this);
+        buttonInput = new EditText(this);
         activityLayout.addView(buttonInput);
 
         mProgress = new ProgressDialog(this);
@@ -141,13 +138,12 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 getIdProjetParDefaut();
             }
 
-
             private void getIdProjetParDefaut() {
                 buttonInput.setText(spreadsheetIdParDefaut);
             }
         });
-        activityLayout.addView(idButtonParDefaut);
 
+        activityLayout.addView(idButtonParDefaut);
         setContentView(activityLayout);
 
         // Initialize credentials and service object.
@@ -155,7 +151,6 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
     }
-
 
     /**
      * Attempt to call the API, after verifying that all the preconditions are
@@ -165,9 +160,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      * appropriate.
      */
     private void getResultsFromApi() {
-        boolean projetIdVide = buttonInput.length() <= 0;
-
-        if(!projetIdVide) {
+        if (buttonInput.length() > 0) {
             if (!isGooglePlayServicesAvailable()) {
                 acquireGooglePlayServices();
             } else if (mCredential.getSelectedAccountName() == null) {
@@ -177,7 +170,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             } else {
                 new MakeRequestTask(mCredential).execute();
             }
-        }else{
+        } else {
             Toast.makeText(this, "Renseignez Id du projet", Toast.LENGTH_SHORT).show();
         }
     }
@@ -229,15 +222,14 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      *                    activity result.
      */
     @Override
-    protected void onActivityResult(
-            int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
-                    mOutputText.setText(
-                            "This app requires Google Play Services. Please install " +
-                                    "Google Play Services on your device and relaunch this app.");
+                    String text = "This app requires Google Play Services. Please install " +
+                            "Google Play Services on your device and relaunch this app.";
+                    mOutputText.setText(text);
                 } else {
                     getResultsFromApi();
                 }
@@ -246,11 +238,9 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             case REQUEST_ACCOUNT_PICKER:
                 if (resultCode == RESULT_OK && data != null &&
                         data.getExtras() != null) {
-                    String accountName =
-                            data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                    String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
-                        SharedPreferences settings =
-                                getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
@@ -289,30 +279,12 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 requestCode, permissions, grantResults, this);
     }
 
-    /**
-     * Callback for when a permission is granted using the EasyPermissions
-     * library.
-     *
-     * @param requestCode The request code associated with the requested
-     *                    permission
-     * @param list        The requested permission list. Never null.
-     */
     @Override
     public void onPermissionsGranted(int requestCode, List<String> list) {
-        // Do nothing.
     }
 
-    /**
-     * Callback for when a permission is denied using the EasyPermissions
-     * library.
-     *
-     * @param requestCode The request code associated with the requested
-     *                    permission
-     * @param list        The requested permission list. Never null.
-     */
     @Override
     public void onPermissionsDenied(int requestCode, List<String> list) {
-        // Do nothing.
     }
 
     /**
@@ -321,8 +293,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      * @return true if the device has a network connection, false otherwise.
      */
     private boolean isDeviceOnline() {
-        ConnectivityManager connMgr =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
@@ -334,10 +305,8 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      * date on this device; false otherwise.
      */
     private boolean isGooglePlayServicesAvailable() {
-        GoogleApiAvailability apiAvailability =
-                GoogleApiAvailability.getInstance();
-        final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
         return connectionStatusCode == ConnectionResult.SUCCESS;
     }
 
@@ -346,10 +315,8 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      * Play Services installation via a user dialog, if possible.
      */
     private void acquireGooglePlayServices() {
-        GoogleApiAvailability apiAvailability =
-                GoogleApiAvailability.getInstance();
-        final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
         if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
             showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
         }
@@ -362,8 +329,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      * @param connectionStatusCode code describing the presence (or lack of)
      *                             Google Play Services on this device.
      */
-    void showGooglePlayServicesAvailabilityErrorDialog(
-            final int connectionStatusCode) {
+    void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
                 ChargementDonnees.this,
@@ -465,29 +431,23 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 initialiserPojet(valueproject);
             }
             if (valuesressources != null) {
-                initialiserressource(reglerDonnees(valuesressources));
-
-
+                initialiserRessource(reglerDonnees(valuesressources));
             }
             mProgress.setProgress(Outils.calculerPourcentage(6, 7));
             if (values != null && valuesDcConso != null) {
-
-
                 initialiserAction(reglerDonnees(values), reglerDonnees(valuesDcConso));
-
             }
 
             mProgress.setProgress(Outils.calculerPourcentage(7, 7));
             List<List<Object>> valuesformation = responseformation.getValues();
             if (valuesformation != null) {
                 intialiserFormation(reglerDonnees(valuesformation));
-
-
             }
 
             if (valuesSaisieCharge != null) {
                 initialiserSaisieCharge(reglerDonnees(valuesSaisieCharge));
             }
+
             if (valuesMEsure != null) {
                 initialiserMesures(reglerDonnees(valuesMEsure));
             }
@@ -499,19 +459,17 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
          */
         public List<List<Object>> reglerDonnees(List<List<Object>> values) {
             for (List row : values) {
-                int indexe = 26 - row.size();
-                for (int i = 0; i < indexe; i++) {
+                int index = 26 - row.size();
+                for (int i = 0; i < index; i++) {
                     row.add("");
-
                 }
-
             }
             return values;
         }
 
-        public Date chainetoDate(String date) throws ParseException {
+        public Date chaineToDate(String date) throws ParseException {
             Date resultat;
-            if (date == null ||date.equals("") || date.equals("NON PREVU")) {
+            if (date == null || date.equals("") || date.equals("NON PREVU")) {
                 resultat = new SimpleDateFormat(Constants.DATE_FORMAT).parse("00/00/0000");
             } else {
                 resultat = new SimpleDateFormat(Constants.DATE_FORMAT).parse(date);
@@ -519,23 +477,24 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             return resultat;
         }
 
-        public Boolean chainetoBoolean(String booleanString) {
+        public Boolean chaineToBoolean(String booleanString) {
             return booleanString.equals("1");
         }
 
-        public int chainetoint(String integer) {
+        public int chaineToInteger(String integer) {
             int resultat;
             if (integer == null || integer.equals("") || integer.matches("%[a-zA-Z]%")) {
                 resultat = 0;
             } else {
-                resultat = new Integer(integer);
+                resultat = Integer.valueOf(integer);
             }
             return resultat;
         }
 
-        public Float chainetofloat(String s) {
+        public Float chaineToFloat(String s) {
             Float resultat;
-            if (s == null || s.equals("") || s.equals("-") || s.matches(".*[a-zA-Z]+.*") || s.equals("RETARD") || s.equals("#DIV/0!")) {
+            if (s == null || s.equals("") || s.equals("-") || s.matches(".*[a-zA-Z]+.*")
+                    || s.equals("RETARD") || s.equals("#DIV/0!")) {
                 resultat = (float)0.0;
             } else {
                 resultat = Float.parseFloat(s.replace(',', '.'));
@@ -543,7 +502,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             return resultat;
         }
 
-        public void initialiserressource(List<List<Object>> values) {
+        public void initialiserRessource(List<List<Object>> values) {
             new Delete().from(Ressource.class).execute();
 
             Ressource resource = new Ressource();
@@ -576,26 +535,21 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             } finally {
                 ActiveAndroid.endTransaction();
             }
-
         }
 
         public void initialiserAction(List<List<Object>> values, List<List<Object>> valuesDcConso) throws ParseException {
             new Delete().from(Action.class).execute();
             new Delete().from(Domaine.class).execute();
 
-            /*
-             */
             Projet projet = DaoProjet.loadAll().get(0);
-            /*
-             */
+
             ActiveAndroid.beginTransaction();
             try {
                 for (List row : values) {
                     Action action = new Action();
                     action.setCode(row.get(5).toString());
-                    action.setOrdre(chainetoint(row.get(1).toString()));
+                    action.setOrdre(chaineToInteger(row.get(1).toString()));
                     action.setTarif(row.get(2).toString());
-
                     action.setTypeTravail(row.get(0).toString());
                     action.setPhase(row.get(4).toString());
                     action.setCode(row.get(5).toString());
@@ -648,83 +602,59 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
 
                     action.setDomaine(domaine);
 
-                    action.setApparaitrePlanning(chainetoBoolean(row.get(6).toString()));
+                    action.setApparaitrePlanning(chaineToBoolean(row.get(6).toString()));
                     action.setTypeFacturation(row.get(7).toString());
-                    action.setNbJoursPrevus(chainetofloat(row.get(8).toString()));
-                    action.setCoutParJour(chainetofloat(row.get(11).toString()));
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-                    Date datedebut = chainetoDate(row.get(9).toString());
-                    Date datefin = chainetoDate(row.get(10).toString());
+                    action.setNbJoursPrevus(chaineToFloat(row.get(8).toString()));
+                    action.setCoutParJour(chaineToFloat(row.get(11).toString()));
+                    Date datedebut = chaineToDate(row.get(9).toString());
+                    Date datefin = chaineToDate(row.get(10).toString());
                     action.setDtDeb(datedebut);
                     action.setDtFinPrevue(datefin);
                     action.setDtFinReelle(datefin);
 
                     for (List row_Dc : valuesDcConso) {
-
                         if (action.getCode().equals(row_Dc.get(5).toString())) {
-
                             if (row_Dc.get(20).toString() == null || row_Dc.get(20).toString().length() == 0) {
                                 action.setEcartProjete(0);
                             } else {
-                                action.setEcartProjete(chainetofloat(row_Dc.get(20).toString()));
+                                action.setEcartProjete(chaineToFloat(row_Dc.get(20).toString()));
                             }
-
                             if (row_Dc.get(18).toString() == null || row_Dc.get(18).toString().length() == 0) {
                                 action.setResteAFaire(0);
                             } else {
-                                action.setResteAFaire(chainetofloat(row_Dc.get(18).toString()));
+                                action.setResteAFaire(chaineToFloat(row_Dc.get(18).toString()));
                             }
                         }
                     }
-
-               /*  */
                     action.save();
                 }
-
                 ActiveAndroid.setTransactionSuccessful();
             } finally {
                 ActiveAndroid.endTransaction();
             }
-
         }
 
         public void intialiserFormation(List<List<Object>> values) {
             new Delete().from(Formation.class).execute();
 
-
-            List<Action> actionList = new ArrayList<>();
             Action action = new Action();
             ActiveAndroid.beginTransaction();
             try {
 
                 for (List row : values) {
                     Formation formation = new Formation();
+                    List<Action> actionList = DaoAction.getActionbyCode(row.get(5).toString());
 
-                    ;
-
-                    actionList = DaoAction.getActionbyCode(row.get(5).toString());
-
-                    if (actionList.size() >0){
-
+                    if (!actionList.isEmpty()){
                         action = actionList.get(0);
-
                         formation.setAction(action);
-                        formation.setAvancementObjectif(chainetofloat(row.get(8).toString().replace('%', '0')));
-                        formation.setAvancementTotal(chainetofloat(row.get(6).toString().replace('%', '0')));
-                        formation.setAvancementPreRequis(chainetofloat(row.get(7).toString().replace('%', '0')));
-
-                        formation.setAvancementPostFormation(chainetofloat(row.get(9).toString().replace('%', '0')));
-
+                        formation.setAvancementObjectif(chaineToFloat(row.get(8).toString().replace('%', '0')));
+                        formation.setAvancementTotal(chaineToFloat(row.get(6).toString().replace('%', '0')));
+                        formation.setAvancementPreRequis(chaineToFloat(row.get(7).toString().replace('%', '0')));
+                        formation.setAvancementPostFormation(chaineToFloat(row.get(9).toString().replace('%', '0')));
                     }
                     formation.save();
-
-
-
                 }
-
-
-
-
                 ActiveAndroid.setTransactionSuccessful();
             } finally {
                 ActiveAndroid.endTransaction();
@@ -736,18 +666,16 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             Projet projet = new Projet();
             projet.setDescription("");
             projet.setNom("");
-            projet.setDateDebut(chainetoDate("20/01/2017"));
-            projet.setDateFinReelle(chainetoDate("20/05/2018"));
-            projet.setDateFinInitiale(chainetoDate("20/05/2018"));
+            projet.setDateDebut(chaineToDate("20/01/2017"));
+            projet.setDateFinReelle(chaineToDate("20/05/2018"));
+            projet.setDateFinInitiale(chaineToDate("20/05/2018"));
             ActiveAndroid.beginTransaction();
             try {
-
                 for (List row : values) {
                     projet.setNom(row.get(0).toString());
                     projet.setDescription("Projet_Master2_MIAGE");
                     projet.save();
                 }
-
                 ActiveAndroid.setTransactionSuccessful();
             } finally {
                 ActiveAndroid.endTransaction();
@@ -756,39 +684,27 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
 
         public void initialiserSaisieCharge(List<List<Object>> values) throws ParseException {
             new Delete().from(SaisieCharge.class).execute();
-
-
-
-
-
             for (List row : values) {
                 SaisieCharge saisiecharge = new SaisieCharge();
                 if (!row.get(0).equals("")) {
                     ActiveAndroid.beginTransaction();
                     try {
-                        saisiecharge.setNbSemainePassee(chainetoint(row.get(11).toString()));
-                        saisiecharge.setNbSemaines(chainetofloat(row.get(8).toString()));
-                        saisiecharge.setChargeEstimeeParSemaine(chainetofloat(row.get(9).toString()));
-                        saisiecharge.setChargeRestanteEstimeeEnHeure(chainetofloat(row.get(12).toString()));
-                        saisiecharge.setChargeTotaleEstimeeEnHeure(chainetofloat(row.get(5).toString()));
-                        saisiecharge.setHeureParUnite(chainetofloat(row.get(4).toString()));
-
-                        saisiecharge.setNbUnitesCibles(chainetoint(row.get(3).toString()));
-
-                        saisiecharge.setChargeRestanteParSemaine(chainetofloat(row.get(15).toString()));
-
-                        saisiecharge.setPrctChargeFaiteParSemaineParChargeEstimee(chainetofloat(row.get(17).toString().replace('%', ' ')));
+                        saisiecharge.setNbSemainePassee(chaineToInteger(row.get(11).toString()));
+                        saisiecharge.setNbSemaines(chaineToFloat(row.get(8).toString()));
+                        saisiecharge.setChargeEstimeeParSemaine(chaineToFloat(row.get(9).toString()));
+                        saisiecharge.setChargeRestanteEstimeeEnHeure(chaineToFloat(row.get(12).toString()));
+                        saisiecharge.setChargeTotaleEstimeeEnHeure(chaineToFloat(row.get(5).toString()));
+                        saisiecharge.setHeureParUnite(chaineToFloat(row.get(4).toString()));
+                        saisiecharge.setNbUnitesCibles(chaineToInteger(row.get(3).toString()));
+                        saisiecharge.setChargeRestanteParSemaine(chaineToFloat(row.get(15).toString()));
+                        saisiecharge.setPrctChargeFaiteParSemaineParChargeEstimee(chaineToFloat(row.get(17).toString().replace('%', ' ')));
                         List<Action> listesActions = DaoAction.getActionbyCode(row.get(2).toString());
-
                         if (!listesActions.isEmpty()) {
                             saisiecharge.setAction(listesActions.get(0));
                         }
 
-
                         saisiecharge.save();
                         List<SaisieCharge> listes = DaoSaisieCharge.loadAll(); // todo utilité ?
-
-
                         ActiveAndroid.setTransactionSuccessful();
                     } finally {
                         ActiveAndroid.endTransaction();
@@ -815,11 +731,10 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                         mesure.setAction(action);
                     }
 
-                    mesure.setDtMesure(chainetoDate(row.get(2).toString()));
-                    mesure.setNbUnitesMesures(chainetoint(row.get(1).toString()));
+                    mesure.setDtMesure(chaineToDate(row.get(2).toString()));
+                    mesure.setNbUnitesMesures(chaineToInteger(row.get(1).toString()));
                     mesure.save();
                 }
-
                 ActiveAndroid.setTransactionSuccessful();
             } finally {
                 ActiveAndroid.endTransaction();
@@ -835,12 +750,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         @Override
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
-            if (output == null || output.size() == 0) {
+            if (output.isEmpty()) {
                 mOutputText.setText("No results returned.");
             } else {
                 output.add(0, "Data retrieved using the Google Sheets API:");
                 mOutputText.setText(TextUtils.join("\n", output));
-
             }
             Intent intentInitial = getIntent();
             String initialUtilisateur = intentInitial.getStringExtra(ActivityGestionDesInitials.EXTRA_INITIAL);
@@ -862,10 +776,9 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             ChargementDonnees.REQUEST_AUTHORIZATION);
                 } else {
-                    mOutputText.setText("The following error occurred:\n"
-                            + mLastError.getMessage());
+                    String text = "The following error occurred:\n" + mLastError.getMessage();
+                    mOutputText.setText(text);
                 }
-
             } else {
                 mOutputText.setText("Request cancelled.");
             }

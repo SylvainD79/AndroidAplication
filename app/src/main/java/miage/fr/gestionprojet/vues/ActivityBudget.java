@@ -27,16 +27,15 @@ import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 
 public class ActivityBudget extends AppCompatActivity {
-    private Spinner spinChoixAffichage;
     private ListView liste;
-    private ArrayList<String> lstChoixAffichage;
+    private ArrayList<String> choixAffichage;
     private String initialUtilisateur;
-    private Projet proj;
+    private Projet projet;
 
-    private final static String DOMAINE = "Domaine";
-    private final static String TYPE = "Type";
-    private final static String UTILISATEUR = "Utilisateur";
-    public final static String EXTRA_INITIAL = "initial";
+    private static final String DOMAINE = "Domaine";
+    private static final String TYPE = "Type";
+    private static final String UTILISATEUR = "Utilisateur";
+    public static final String EXTRA_INITIAL = "initial";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,38 +44,38 @@ public class ActivityBudget extends AppCompatActivity {
 
         Intent intentInitial = getIntent();
         initialUtilisateur = intentInitial.getStringExtra(EXTRA_INITIAL);
-        lstChoixAffichage = new ArrayList<>();
-        lstChoixAffichage.add(DOMAINE);
-        lstChoixAffichage.add(TYPE);
-        lstChoixAffichage.add(UTILISATEUR);
+        choixAffichage = new ArrayList<>();
+        choixAffichage.add(DOMAINE);
+        choixAffichage.add(TYPE);
+        choixAffichage.add(UTILISATEUR);
 
-        spinChoixAffichage = (Spinner) findViewById(R.id.spinnerChoixAffichage);
+        Spinner spinChoixAffichage = (Spinner) findViewById(R.id.spinnerChoixAffichage);
         this.liste = (ListView) findViewById(R.id.lstViewBudget);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lstChoixAffichage);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, choixAffichage);
         spinChoixAffichage.setAdapter(adapter);
         //on récupère le projet sélectionné
         Intent intent = getIntent();
         long id =  intent.getLongExtra(ActivityDetailsProjet.PROJET,0);
-        if(id>0){
-            proj = Model.load(Projet.class, id);
-        }else{
-            proj = new Projet();
+        if (id > 0) {
+            projet = Model.load(Projet.class, id);
+        } else {
+            projet = new Projet();
         }
         spinChoixAffichage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String valeurSelectionne = lstChoixAffichage.get(i);
-                switch(valeurSelectionne){
+                String valeurSelectionnee = choixAffichage.get(i);
+                switch(valeurSelectionnee){
                     case DOMAINE:
-                        AffichageDomaine();
+                        affichageDomaine();
                         break;
 
                     case TYPE:
-                        AffichageType();
+                        affichageType();
                         break;
 
                     case UTILISATEUR:
-                        AffichageUtilisateur();
+                        affichageUtilisateur();
                         break;
 
                     default:
@@ -86,27 +85,26 @@ public class ActivityBudget extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
     }
 
-    private void AffichageDomaine(){
-        List<Domaine> lstDomaines = proj.getLstDomaines();
-        AdapterBudgetDomaine adapter = new AdapterBudgetDomaine(ActivityBudget.this,R.layout.lst_view_budget,lstDomaines);
+    private void affichageDomaine(){
+        List<Domaine> domaines = projet.getLstDomaines();
+        AdapterBudgetDomaine adapter = new AdapterBudgetDomaine(ActivityBudget.this,R.layout.lst_view_budget,domaines);
         this.liste.setAdapter(adapter);
     }
 
-    private void AffichageType(){
-        List<String> lstTypes = DaoAction.getLstTypeTravail();
-        AdapterBudgetType adapter = new AdapterBudgetType(ActivityBudget.this,R.layout.lst_view_budget,lstTypes);
+    private void affichageType(){
+        List<String> types = DaoAction.getLstTypeTravail();
+        AdapterBudgetType adapter = new AdapterBudgetType(ActivityBudget.this,R.layout.lst_view_budget,types);
         this.liste.setAdapter(adapter);
     }
 
-    private void AffichageUtilisateur(){
-        List<Ressource> lstUtilisateurs = DaoRessource.loadAll();
-        AdapterBudgetUtilisateur adapter = new AdapterBudgetUtilisateur(ActivityBudget.this,R.layout.lst_view_budget,lstUtilisateurs);
+    private void affichageUtilisateur(){
+        List<Ressource> utilisateurs = DaoRessource.loadAll();
+        AdapterBudgetUtilisateur adapter = new AdapterBudgetUtilisateur(ActivityBudget.this,R.layout.lst_view_budget,utilisateurs);
         this.liste.setAdapter(adapter);
     }
 

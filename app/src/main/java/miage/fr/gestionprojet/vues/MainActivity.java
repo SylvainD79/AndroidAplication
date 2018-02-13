@@ -22,10 +22,9 @@ import miage.fr.gestionprojet.models.dao.DaoProjet;
 
 public class MainActivity  extends AppCompatActivity {
 
-    public final static String EXTRA_PROJET = "projetChoisi";
-    public final static String EXTRA_INITIAL = "initial";
-    private ListView liste = null;
-    private List<Projet> lstProjets = null;
+    public static final String EXTRA_PROJET = "projetChoisi";
+    public static final String EXTRA_INITIAL = "initial";
+    private List<Projet> projets = null;
     private String initialUtilisateur = null;
 
     @Override
@@ -35,47 +34,40 @@ public class MainActivity  extends AppCompatActivity {
 
         Intent intentInitial = getIntent();
         initialUtilisateur = intentInitial.getStringExtra(ActivityGestionDesInitials.EXTRA_INITIAL);
-
         setContentView(R.layout.activity_main);
 
         //on récupère la liste des projet dont la date de fin n'est passé
-        lstProjets = DaoProjet.getProjetEnCours(new Date());
-        liste = (ListView) findViewById(R.id.listViewProjet);
+        projets = DaoProjet.getProjetEnCours(new Date());
+        ListView liste = (ListView) findViewById(R.id.listViewProjet);
 
         // si le nombre de projet en cours est supérieur à 1 on affiche une liste
-        if(lstProjets.size()>1) {
-            final ArrayAdapter<Projet> adapter = new ArrayAdapter<Projet>(this, android.R.layout.simple_list_item_1, lstProjets);
+        if (projets.size() > 1) {
+            final ArrayAdapter<Projet> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, projets);
             liste.setAdapter(adapter);
-
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Intent intent = new Intent(MainActivity.this, ActivityDetailsProjet.class);
-                    intent.putExtra(EXTRA_PROJET, (lstProjets.get(position).getId()));
+                    intent.putExtra(EXTRA_PROJET, (projets.get(position).getId()));
                     intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-
                     startActivity(intent);
                 }
             });
-        }else{
-
+        } else {
             // sinon, on affiche directement les détails du projet en cours
-            if(lstProjets.size()==1) {
+            if (projets.size() == 1) {
                 Intent intent = new Intent(MainActivity.this, ActivityDetailsProjet.class);
-                intent.putExtra(EXTRA_PROJET, (lstProjets.get(0).getId()));
+                intent.putExtra(EXTRA_PROJET, (projets.get(0).getId()));
                 intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-
                 startActivity(intent);
-            }else{
-
+            } else {
                 // sinon on affiche un message indiquand qu'il n'y a aucun projet en cours
                 ArrayList<String> list = new ArrayList<>(1);
                 list.add("Aucun projet en cours");
-                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
+                final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
                 liste.setAdapter(adapter);
             }
         }
-
     }
 
     @Override

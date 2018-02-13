@@ -18,11 +18,10 @@ import miage.fr.gestionprojet.models.dao.DaoFormation;
 public class FormationsActivity extends AppCompatActivity {
 
     private static final String EXTRA_INITIAL = "initial";
-    protected ListView formationsList;
-    protected List<Formation> formationsData;
     public static final String FORMATION_SELECTED = "formation-selected";
+    protected ListView formationsListView;
+    protected List<Formation> formations;
     private String initialUtilisateur = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +29,8 @@ public class FormationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_formations);
 
         initialUtilisateur = getIntent().getStringExtra(EXTRA_INITIAL);
-        formationsList = (ListView) findViewById(R.id.formationsList);
-        formationsData = DaoFormation.getFormations();
+        formationsListView = (ListView) findViewById(R.id.formationsList);
+        formations = DaoFormation.getFormations();
 
         fillFormationsList();
         setFormationItemClickListener();
@@ -45,21 +44,20 @@ public class FormationsActivity extends AppCompatActivity {
     }
 
     protected void fillFormationsList() {
-        FormationsAdapter formationsAdapter = new FormationsAdapter(this, R.layout.item_formation, formationsData);
-        formationsList.setAdapter(formationsAdapter);
+        FormationsAdapter formationsAdapter = new FormationsAdapter(this, R.layout.item_formation, formations);
+        formationsListView.setAdapter(formationsAdapter);
         formationsAdapter.notifyDataSetChanged();
         System.out.println("remplissage de la liste");
     }
 
     protected void setFormationItemClickListener() {
-        formationsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        formationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(), FormationActivity.class);
-                intent.putExtra(FORMATION_SELECTED, (formationsData.get(i).getId()));
+                intent.putExtra(FORMATION_SELECTED, (formations.get(i).getId()));
                 startActivity(intent);
             }
         });
     }
-
 }
