@@ -396,7 +396,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             ValueRange reponsesmesure = this.mService.spreadsheets().values()
                     .get(spreadsheetId, rangeMesure)
                     .execute();
-            List<String> results = new ArrayList<String>();
+            List<String> results = new ArrayList<>();
             ValueRange responseproject = this.mService.spreadsheets().values()
                     .get(spreadsheetId, rangeProject)
                     .execute();

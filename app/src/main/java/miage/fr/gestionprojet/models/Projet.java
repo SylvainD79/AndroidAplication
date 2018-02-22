@@ -10,9 +10,6 @@ import java.util.List;
 
 import miage.fr.gestionprojet.outils.Constants;
 
-/**
- * Created by Audrey on 23/01/2017.
- */
 @Table(name="Projet")
 public class Projet extends Model {
 

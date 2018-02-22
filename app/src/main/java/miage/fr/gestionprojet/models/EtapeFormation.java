@@ -4,14 +4,10 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-/**
- * Created by Audrey on 25/02/2017.
- */
-
 @Table(name="EtapeFormation")
 public class EtapeFormation extends Model{
 
-    @Column(name="formation")
+    @Column(name="formation", onDelete = Column.ForeignKeyAction.CASCADE)
     private Formation formation;
 
     @Column(name="type_element")

@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "Formation")
 public class Formation extends Model {
 
-    @Column(name="action")
+    @Column(name="action", onDelete = Column.ForeignKeyAction.CASCADE)
     private Action action;
 
     @Column(name="avancement_total")

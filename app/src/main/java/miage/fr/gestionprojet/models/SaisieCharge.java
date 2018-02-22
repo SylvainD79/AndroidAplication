@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name="SaisieCharge")
 public class SaisieCharge extends Model {
 
-    @Column(name="action")
+    @Column(name="action", onDelete = Column.ForeignKeyAction.CASCADE)
     Action action;
 
     @Column(name="nb_unites_cibles")

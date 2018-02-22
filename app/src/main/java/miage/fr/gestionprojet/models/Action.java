@@ -24,7 +24,7 @@ public class Action extends Model{
     @Column(name="code")
     private String code;
 
-    @Column(name="domaine")
+    @Column(name="domaine", onDelete = Column.ForeignKeyAction.CASCADE)
     private Domaine domaine;
 
     @Column(name="apparaitr_planing")
@@ -39,10 +39,10 @@ public class Action extends Model{
     @Column(name="cout_par_pour")
     private float coutParJour;
 
-    @Column(name="resp_oeu")
+    @Column(name="resp_oeu", onDelete = Column.ForeignKeyAction.CASCADE)
     private Ressource respOeu;
 
-    @Column(name="resp_ouv")
+    @Column(name="resp_ouv", onDelete = Column.ForeignKeyAction.CASCADE)
     private Ressource respOuv;
 
     //@Column(name="utilisateurs_ouv")

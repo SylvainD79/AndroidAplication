@@ -15,7 +15,7 @@ public class Domaine extends Model {
     @Column(name="description")
     private String description;
 
-    @Column(name="projet")
+    @Column(name="projet", onDelete = Column.ForeignKeyAction.CASCADE)
     private Projet projet;
 
     public Domaine(String nom, String description, Projet projet) {

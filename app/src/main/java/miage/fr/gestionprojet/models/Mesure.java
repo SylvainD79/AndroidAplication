@@ -6,14 +6,10 @@ import com.activeandroid.annotation.Table;
 
 import java.util.Date;
 
-/**
- * Created by Audrey on 25/02/2017.
- */
-
 @Table(name="Mesure")
 public class Mesure extends Model {
 
-    @Column(name="action")
+    @Column(name="action", onDelete = Column.ForeignKeyAction.CASCADE)
     private SaisieCharge action;
 
     @Column(name="nb_unites_mesures")
