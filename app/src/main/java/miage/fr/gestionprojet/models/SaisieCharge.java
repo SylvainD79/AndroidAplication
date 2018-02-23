@@ -47,8 +47,6 @@ public class SaisieCharge extends Model {
     @Column(name="prct_charge_faite_par_semaine_par_cahre_estimee")
     private float prctChargeFaiteParSemaineParChargeEstimee;
 
-    private List<Mesure> mesures;
-
     public SaisieCharge() {
         super();
     }
@@ -143,10 +141,6 @@ public class SaisieCharge extends Model {
 
     public List<Mesure> getMesures() {
        return getMany(Mesure.class, "action");
-    }
-
-    public void setMesures(List<Mesure> mesures) {
-      this.mesures = mesures;
     }
 
     @Override

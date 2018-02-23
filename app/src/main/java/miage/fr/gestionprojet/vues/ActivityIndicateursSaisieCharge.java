@@ -29,7 +29,6 @@ import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
 
 public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
 
-    private Projet projet;
     private List<SaisieCharge> saisiesCharge;
     private ListView liste;
     public static final String SAISIECHARGE = "saisie charge";
@@ -48,7 +47,7 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
 
         if (id > 0 ) {
             // on récupère les données associées à ce projet
-            projet = Model.load(Projet.class, id);
+            Projet projet = Model.load(Projet.class, id);
             // on récupère la liste des travaux à afficher
             saisiesCharge = new ArrayList<>();
             List<Domaine> domaines = projet.getLstDomaines();

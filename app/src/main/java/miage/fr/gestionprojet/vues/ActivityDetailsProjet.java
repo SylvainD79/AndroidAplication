@@ -36,7 +36,6 @@ public class ActivityDetailsProjet extends AppCompatActivity {
     private static final String BUDGET = "Suivi du budget";
     public static final String PROJET_VISU = "projet visu";
     public static final  String EXTRA_INITIAL = "initial";
-    private ArrayList <String> actions;
     private Projet projet;
     private String initialUtilisateur;
 
@@ -62,7 +61,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
 
             // on constitue une liste d'action
             ListView liste = (ListView) findViewById(R.id.listViewAction);
-            actions = new ArrayList<>();
+            ArrayList<String> actions = new ArrayList<>();
             actions.add(RESSOURCES);
             actions.add(FORMATIONS);
             actions.add(PLANNING);

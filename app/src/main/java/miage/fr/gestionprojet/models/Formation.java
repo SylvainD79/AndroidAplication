@@ -24,8 +24,6 @@ public class Formation extends Model {
     @Column(name="avancement_post_formation")
     private float avancementPostFormation;
 
-    private List<EtapeFormation> etapesFormation;
-
     public Formation() {
         super();
     }
@@ -66,9 +64,6 @@ public class Formation extends Model {
         this.avancementPostFormation = avancementPostFormation;
     }
 
-    public void setEtapesFormation(List<EtapeFormation> etapesFormation) {
-        this.etapesFormation = etapesFormation;
-    }
     public Action getAction() {
         return action;
     }

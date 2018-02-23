@@ -64,7 +64,7 @@ public class AdapterBudgetType extends ArrayAdapter<String> {
         }
 
         // on définit le texte à afficher
-        holder.type.setText(getItem(position).toString());
+        holder.type.setText(getItem(position));
         String actionsProgress = this.nbActionsRealisees.get(position) + "/" + this.nbActions.get(position);
         holder.actionsRealisees.setText(actionsProgress);
         holder.avancement.setProgress(Outils.calculerPourcentage(this.nbActionsRealisees.get(position),this.nbActions.get(position)));

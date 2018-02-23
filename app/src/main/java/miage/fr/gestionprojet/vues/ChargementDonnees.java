@@ -457,7 +457,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         /*
             homogéner les données
          */
-        public List<List<Object>> reglerDonnees(List<List<Object>> values) {
+        private List<List<Object>> reglerDonnees(List<List<Object>> values) {
             for (List row : values) {
                 int index = 26 - row.size();
                 for (int i = 0; i < index; i++) {
@@ -467,7 +467,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             return values;
         }
 
-        public Date chaineToDate(String date) throws ParseException {
+        private Date chaineToDate(String date) throws ParseException {
             Date resultat;
             if (date == null || date.equals("") || date.equals("NON PREVU")) {
                 resultat = new SimpleDateFormat(Constants.DATE_FORMAT).parse("00/00/0000");
@@ -477,11 +477,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             return resultat;
         }
 
-        public Boolean chaineToBoolean(String booleanString) {
+        private Boolean chaineToBoolean(String booleanString) {
             return booleanString.equals("1");
         }
 
-        public int chaineToInteger(String integer) {
+        private int chaineToInteger(String integer) {
             int resultat;
             if (integer == null || integer.equals("") || integer.matches("%[a-zA-Z]%")) {
                 resultat = 0;
@@ -491,7 +491,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             return resultat;
         }
 
-        public Float chaineToFloat(String s) {
+        private Float chaineToFloat(String s) {
             Float resultat;
             if (s == null || s.equals("") || s.equals("-") || s.matches(".*[a-zA-Z]+.*")
                     || s.equals("RETARD") || s.equals("#DIV/0!")) {
@@ -502,7 +502,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             return resultat;
         }
 
-        public void initialiserRessource(List<List<Object>> values) {
+        private void initialiserRessource(List<List<Object>> values) {
             new Delete().from(Ressource.class).execute();
 
             Ressource resource = new Ressource();
@@ -537,7 +537,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
         }
 
-        public void initialiserAction(List<List<Object>> values, List<List<Object>> valuesDcConso) throws ParseException {
+        private void initialiserAction(List<List<Object>> values, List<List<Object>> valuesDcConso) throws ParseException {
             new Delete().from(Action.class).execute();
             new Delete().from(Domaine.class).execute();
 
@@ -634,7 +634,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
         }
 
-        public void intialiserFormation(List<List<Object>> values) {
+        private void intialiserFormation(List<List<Object>> values) {
             new Delete().from(Formation.class).execute();
 
             Action action = new Action();
@@ -661,7 +661,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
         }
 
-        public void initialiserPojet(List<List<Object>> values) throws ParseException {
+        private void initialiserPojet(List<List<Object>> values) throws ParseException {
             new Delete().from(Projet.class).execute();
             Projet projet = new Projet();
             projet.setDescription("");
@@ -682,7 +682,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
         }
 
-        public void initialiserSaisieCharge(List<List<Object>> values) throws ParseException {
+        private void initialiserSaisieCharge(List<List<Object>> values) throws ParseException {
             new Delete().from(SaisieCharge.class).execute();
             for (List row : values) {
                 SaisieCharge saisiecharge = new SaisieCharge();
@@ -702,9 +702,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                         if (!listesActions.isEmpty()) {
                             saisiecharge.setAction(listesActions.get(0));
                         }
-
                         saisiecharge.save();
-                        List<SaisieCharge> listes = DaoSaisieCharge.loadAll(); // todo utilité ?
                         ActiveAndroid.setTransactionSuccessful();
                     } finally {
                         ActiveAndroid.endTransaction();
@@ -713,7 +711,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
         }
 
-        public void initialiserMesures(List<List<Object>> values) throws ParseException {
+        private void initialiserMesures(List<List<Object>> values) throws ParseException {
             new Delete().from(Mesure.class).execute();
 
             ActiveAndroid.beginTransaction();
