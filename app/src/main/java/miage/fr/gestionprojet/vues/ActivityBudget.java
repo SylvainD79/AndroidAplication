@@ -118,7 +118,6 @@ public class ActivityBudget extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
         switch(id){
             case R.id.initial_utilisateur:
                 return true;

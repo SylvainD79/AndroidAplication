@@ -691,7 +691,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
         }
 
-        private void initialiserSaisieCharge(List<List<Object>> values) throws ParseException {
+        private void initialiserSaisieCharge(List<List<Object>> values) {
             new Delete().from(SaisieCharge.class).execute();
             for (List row : values) {
                 SaisieCharge saisiecharge = new SaisieCharge();
@@ -720,7 +720,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
         }
 
-        private void initialiserMesures(List<List<Object>> values) throws ParseException {
+        private void initialiserMesures(List<List<Object>> values) {
             new Delete().from(Mesure.class).execute();
 
             ActiveAndroid.beginTransaction();
@@ -737,8 +737,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                         SaisieCharge action =  listsaisieCharges.get(0);
                         mesure.setAction(action);
                     }
-
-                    mesure.setDtMesure(chaineToDate(row.get(2).toString()));
+                    try {
+                        mesure.setDtMesure(chaineToDate(row.get(2).toString()));
+                    } catch (ParseException e) {
+                        mesure.setDtMesure(null);
+                    }
                     mesure.setNbUnitesMesures(chaineToInteger(row.get(1).toString()));
                     mesure.save();
                 }
