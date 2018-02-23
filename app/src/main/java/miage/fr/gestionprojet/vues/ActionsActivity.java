@@ -178,7 +178,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         weekEditText.setError(null);
         switch (view.getId()){
             case R.id.week_minus:
-                week = (Integer.parseInt(weekEditText.getText().toString()) - 1) % 53;
+                week = Integer.parseInt(weekEditText.getText().toString()) - 1;
                 weekEditText.setText(String.valueOf(week));
                 if (week == 0) {
                     week = 52;
@@ -190,7 +190,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.week_plus:
-                week = (Integer.parseInt(weekEditText.getText().toString()) + 1);
+                week = Integer.parseInt(weekEditText.getText().toString()) + 1;
                 if (week > 52) {
                     week = 1;
                     year++;
