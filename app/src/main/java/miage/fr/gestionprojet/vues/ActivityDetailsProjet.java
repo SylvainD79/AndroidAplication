@@ -39,6 +39,44 @@ public class ActivityDetailsProjet extends AppCompatActivity {
     private Projet projet;
     private String initialUtilisateur;
 
+    private AdapterView.OnItemClickListener customAdapterViewOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            Intent intent;
+            switch (position) {
+                case 0:
+                    intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
+                    intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
+                    intent.putExtra(PROJET_VISU, projet.getId());
+                    startActivity(intent);
+                    break;
+
+                case 1:
+                    intent = new Intent(ActivityDetailsProjet.this, FormationsActivity.class);
+                    intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
+                    startActivity(intent);
+                    break;
+
+                case 2:
+                    intent = new Intent(ActivityDetailsProjet.this, ActionsActivity.class);
+                    intent.putExtra(EXTRA_INITIAL, initialUtilisateur);
+                    intent.putExtra(PROJET_VISU, projet.getId());
+                    startActivity(intent);
+                    break;
+
+                case 3:
+                    intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
+                    intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
+                    intent.putExtra(PROJET_VISU, projet.getId());
+                    startActivity(intent);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,43 +107,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
             final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, actions);
             liste.setAdapter(adapter);
 
-            liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Intent intent;
-                    switch (position) {
-                        case 0:
-                            intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
-                            intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                            intent.putExtra(PROJET_VISU, projet.getId());
-                            startActivity(intent);
-                            break;
-
-                        case 1:
-                            intent = new Intent(ActivityDetailsProjet.this, FormationsActivity.class);
-                            intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                            startActivity(intent);
-                            break;
-
-                        case 2:
-                            intent = new Intent(ActivityDetailsProjet.this, ActionsActivity.class);
-                            intent.putExtra(EXTRA_INITIAL, initialUtilisateur);
-                            intent.putExtra(PROJET_VISU, projet.getId());
-                            startActivity(intent);
-                            break;
-
-                        case 3:
-                            intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
-                            intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                            intent.putExtra(PROJET_VISU, projet.getId());
-                            startActivity(intent);
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-            });
+            liste.setOnItemClickListener(customAdapterViewOnItemClickListener);
 
             //avancement du projet
             ProgressBar progress = (ProgressBar) findViewById(R.id.progressBarProjet);
@@ -155,7 +157,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
             //détermination de la couleur du bouton budget en fonction du temps restant et du nombre d'actions déjà réalisées
             if (ratioDuree < 100 - ratioBudget) {
                 buttonBudget.setBackgroundColor(Color.RED);
-            } else if(ratioDuree > 100 - ratioBudget) {
+            } else if (ratioDuree > 100 - ratioBudget) {
                 buttonBudget.setBackgroundColor(Color.GREEN);
             } else {
                 buttonBudget.setBackgroundColor(Color.YELLOW);
@@ -166,7 +168,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
             int ratioFormation = Outils.calculerPourcentage(avancementTotalFormation,100);
             if (ratioDuree < 100 - ratioFormation ){
                 buttonFormations.setBackgroundColor(Color.RED);
-            } else if(ratioDuree > 100 - ratioFormation) {
+            } else if (ratioDuree > 100 - ratioFormation) {
                 buttonFormations.setBackgroundColor(Color.GREEN);
             } else {
                 buttonFormations.setBackgroundColor(Color.YELLOW);
@@ -178,7 +180,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
             int ratioSaisies = Outils.calculerPourcentage(nbUniteesSaisies,nbUniteesCibles);
             if (ratioDuree < 100 - ratioSaisies) {
                 buttonSaisies.setBackgroundColor(Color.RED);
-            } else if(ratioDuree > 100 - ratioSaisies) {
+            } else if (ratioDuree > 100 - ratioSaisies) {
                 buttonSaisies.setBackgroundColor(Color.GREEN);
             } else {
                 buttonSaisies.setBackgroundColor(Color.YELLOW);

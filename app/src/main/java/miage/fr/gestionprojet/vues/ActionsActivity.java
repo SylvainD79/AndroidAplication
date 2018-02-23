@@ -58,6 +58,9 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
     public static final  String EXTRA_INITIAL = "initial";
     public static final String EXTRA_PROJET = "projet visu";
     private static final String TAG = "[ActionsActivity]";
+    private static final String TYPE = "type";
+    private static final String PHASE = "phase";
+    private static final String DOMAINE = "domaine";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,15 +280,15 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                 return true;
 
             case R.id.type:
-                showPopUp("type");
+                showPopUp(TYPE);
                 return true;
 
             case R.id.domain:
-                showPopUp("domaine");
+                showPopUp(DOMAINE);
                 return true;
 
             case R.id.phase:
-                showPopUp("phase");
+                showPopUp(PHASE);
                 return true;
 
             case R.id.initial_utilisateur:
@@ -307,67 +310,76 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         ContextThemeWrapper wrapper = new ContextThemeWrapper(this, R.style.MyPopupMenu);
         PopupMenu popupMenu = new PopupMenu(wrapper, mEmptyView);
         Menu menu = popupMenu.getMenu();
-        if (cat.equalsIgnoreCase("type")) {
-            popupMenu.getMenuInflater().inflate(R.menu.popup_menu_type, menu);
-            popupMenu.setGravity(Gravity.CENTER);
-            ArrayList<String> types = getTypeTravailAffiche();
-            for(int i = 0; i < types.size(); i++){
-                menu.add(0, i, 0, types.get(i));
-            }
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if(item.getItemId()==R.id.all) {
-                        refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
-                    }else{
-                        refreshAdapter(DaoAction.loadActionsByType(item.getTitle().toString(),idProjet));
-                    }
-                    return true;
-                }
-            });
-            popupMenu.show();
+        if (TYPE.equalsIgnoreCase(cat)) {
+            manageTypePopup(popupMenu, menu);
+        } else if (PHASE.equalsIgnoreCase(cat)) {
+            managePhasePopup(popupMenu, menu);
+        } else if (DOMAINE.equalsIgnoreCase(cat)) {
+            manageDomainePopup(popupMenu, menu);
         }
-        if (cat.equalsIgnoreCase("phase")) {
-            popupMenu.getMenuInflater().inflate(R.menu.popup_menu_phase, menu);
-            popupMenu.setGravity(Gravity.CENTER);
-            ArrayList<String> phases = getPhasesAffiches();
-            for(int i = 0; i < phases.size(); i++){
-                menu.add(0, i, 0, phases.get(i));
-            }
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.all) {
-                        refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
-                    } else {
-                        refreshAdapter(DaoAction.loadActionsByPhaseAndDate(item.getTitle().toString(),dateSaisie,idProjet));
-                    }
-                    return true;
-                }
-            });
-            popupMenu.show();
-        }
+    }
 
-        if (cat.equalsIgnoreCase("domaine")) {
-            popupMenu.getMenuInflater().inflate(R.menu.popup_menu_domaine, menu);
-            popupMenu.setGravity(Gravity.CENTER);
-            ArrayList<Domaine> domaines = getDomainesAffiches();
-            for(Domaine domaine : domaines){
-                menu.add(0,(int)(long) domaine.getId(), 0, domaine.getNom());
-            }
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.all) {
-                        refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
-                    } else {
-                        refreshAdapter(DaoAction.loadActionsByDomaineAndDate(item.getItemId(),dateSaisie,idProjet));
-                    }
-                    return true;
-                }
-            });
-            popupMenu.show();
+    private void manageTypePopup(PopupMenu popupMenu, Menu menu) {
+        popupMenu.getMenuInflater().inflate(R.menu.popup_menu_type, menu);
+        popupMenu.setGravity(Gravity.CENTER);
+        ArrayList<String> types = getTypeTravailAffiche();
+        for (int i = 0; i < types.size(); i++) {
+            menu.add(0, i, 0, types.get(i));
         }
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.all) {
+                    refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
+                } else {
+                    refreshAdapter(DaoAction.loadActionsByType(item.getTitle().toString(),idProjet));
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void managePhasePopup(PopupMenu popupMenu, Menu menu) {
+        popupMenu.getMenuInflater().inflate(R.menu.popup_menu_phase, menu);
+        popupMenu.setGravity(Gravity.CENTER);
+        ArrayList<String> phases = getPhasesAffiches();
+        for(int i = 0; i < phases.size(); i++){
+            menu.add(0, i, 0, phases.get(i));
+        }
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.all) {
+                    refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
+                } else {
+                    refreshAdapter(DaoAction.loadActionsByPhaseAndDate(item.getTitle().toString(),dateSaisie,idProjet));
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void manageDomainePopup(PopupMenu popupMenu, Menu menu) {
+        popupMenu.getMenuInflater().inflate(R.menu.popup_menu_domaine, menu);
+        popupMenu.setGravity(Gravity.CENTER);
+        ArrayList<Domaine> domaines = getDomainesAffiches();
+        for(Domaine domaine : domaines){
+            menu.add(0,(int)(long) domaine.getId(), 0, domaine.getNom());
+        }
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.all) {
+                    refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
+                } else {
+                    refreshAdapter(DaoAction.loadActionsByDomaineAndDate(item.getItemId(),dateSaisie,idProjet));
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
     }
 
     private ArrayList<String> getTypeTravailAffiche(){

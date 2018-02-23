@@ -35,6 +35,9 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
     public static final String EXTRA_INITIAL = "initial";
     private String initialUtilisateur;
 
+    private static final String SAISIE = "Saisie";
+    private static final String TEST = "Test";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +56,7 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
             List<Domaine> domaines = projet.getLstDomaines();
             for(Domaine domaine : domaines){
                 for(Action action : domaine.getActions()){
-                    if(action.getTypeTravail().equals("Saisie") || action.getTypeTravail().equals("Test")){
-                        SaisieCharge s = DaoSaisieCharge.loadSaisiesChargeByAction(action.getId());
-                        if(s != null){
-                            saisiesCharge.add(s);
-                        }
-                    }
+                    manageSaisiesCharge(action);
                 }
             }
 
@@ -75,12 +73,21 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-        }else{
+        } else {
             // si pas de saisiecharge en cours
             ArrayList<String> list = new ArrayList<>(1);
             list.add("Aucune saisie en cours");
             final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
             liste.setAdapter(adapter);
+        }
+    }
+
+    private void manageSaisiesCharge(Action action) {
+        if(SAISIE.equals(action.getTypeTravail()) || TEST.equals(action.getTypeTravail())){
+            SaisieCharge s = DaoSaisieCharge.loadSaisiesChargeByAction(action.getId());
+            if(s != null){
+                saisiesCharge.add(s);
+            }
         }
     }
 

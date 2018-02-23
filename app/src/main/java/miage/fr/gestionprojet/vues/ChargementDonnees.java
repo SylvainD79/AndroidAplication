@@ -545,92 +545,101 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
 
             ActiveAndroid.beginTransaction();
             try {
-                for (List row : values) {
-                    Action action = new Action();
-                    action.setCode(row.get(5).toString());
-                    action.setOrdre(chaineToInteger(row.get(1).toString()));
-                    action.setTarif(row.get(2).toString());
-                    action.setTypeTravail(row.get(0).toString());
-                    action.setPhase(row.get(4).toString());
-                    action.setCode(row.get(5).toString());
-
-                    Domaine domaine = DaoDomaine.getDomaineByName(row.get(3).toString());
-                    if (domaine == null) {
-                        domaine = new Domaine(row.get(3).toString(), "description demo", projet);
-                        domaine.save();
-                    }
-                    Ressource respOuv;
-                    if (row.get(13).toString() == null || row.get(13).toString().length() == 0) {
-                        respOuv = new Ressource();
-                        respOuv.setInitiales("");
-                    }
-                    respOuv = DaoRessource.getRessourcesByInitial(row.get(13).toString());
-                    if (respOuv == null) {
-                        respOuv = new Ressource();
-                        respOuv.setInitiales(row.get(13).toString());
-                        respOuv.setNom("");
-                        respOuv.setEmail("");
-                        respOuv.setEntreprise("");
-                        respOuv.setFonction("");
-                        respOuv.setInformationsDiverses("");
-                        respOuv.setPrenom("");
-                        respOuv.setTelephoneFixe("");
-                        respOuv.setTelephoneMobile("");
-                        respOuv.save();
-                    }
-                    action.setRespOuv(respOuv);
-                    Ressource respOeu;
-                    if (row.get(12).toString() == null || row.get(12).toString().length() == 0) {
-                        respOeu = new Ressource();
-                        respOeu.setInitiales("");
-                    }
-                    respOeu = DaoRessource.getRessourcesByInitial(row.get(12).toString());
-                    if (respOeu == null) {
-                        respOeu = new Ressource();
-                        respOeu.setInitiales(row.get(12).toString());
-                        respOeu.setNom("");
-                        respOeu.setEmail("");
-                        respOeu.setEntreprise("");
-                        respOeu.setFonction("");
-                        respOeu.setInformationsDiverses("");
-                        respOeu.setPrenom("");
-                        respOeu.setTelephoneFixe("");
-                        respOeu.setTelephoneMobile("");
-                        respOeu.save();
-                    }
-                    action.setRespOuv(respOuv);
-
-                    action.setDomaine(domaine);
-
-                    action.setApparaitrePlanning(chaineToBoolean(row.get(6).toString()));
-                    action.setTypeFacturation(row.get(7).toString());
-                    action.setNbJoursPrevus(chaineToFloat(row.get(8).toString()));
-                    action.setCoutParJour(chaineToFloat(row.get(11).toString()));
-                    Date datedebut = chaineToDate(row.get(9).toString());
-                    Date datefin = chaineToDate(row.get(10).toString());
-                    action.setDtDeb(datedebut);
-                    action.setDtFinPrevue(datefin);
-                    action.setDtFinReelle(datefin);
-
-                    for (List row_Dc : valuesDcConso) {
-                        if (action.getCode().equals(row_Dc.get(5).toString())) {
-                            if (row_Dc.get(20).toString() == null || row_Dc.get(20).toString().length() == 0) {
-                                action.setEcartProjete(0);
-                            } else {
-                                action.setEcartProjete(chaineToFloat(row_Dc.get(20).toString()));
-                            }
-                            if (row_Dc.get(18).toString() == null || row_Dc.get(18).toString().length() == 0) {
-                                action.setResteAFaire(0);
-                            } else {
-                                action.setResteAFaire(chaineToFloat(row_Dc.get(18).toString()));
-                            }
-                        }
-                    }
-                    action.save();
+                for (List<Object> row : values) {
+                    saveAction(row, valuesDcConso, projet);
                 }
                 ActiveAndroid.setTransactionSuccessful();
             } finally {
                 ActiveAndroid.endTransaction();
+            }
+        }
+
+        private void saveAction(List<Object> row, List<List<Object>> valuesDcConso, Projet projet) throws ParseException {
+            Action action = new Action();
+            action.setCode(row.get(5).toString());
+            action.setOrdre(chaineToInteger(row.get(1).toString()));
+            action.setTarif(row.get(2).toString());
+            action.setTypeTravail(row.get(0).toString());
+            action.setPhase(row.get(4).toString());
+            action.setCode(row.get(5).toString());
+
+            Domaine domaine = DaoDomaine.getDomaineByName(row.get(3).toString());
+            if (domaine == null) {
+                domaine = new Domaine(row.get(3).toString(), "description demo", projet);
+                domaine.save();
+            }
+            Ressource respOuv;
+            if (row.get(13).toString() == null || row.get(13).toString().length() == 0) {
+                respOuv = new Ressource();
+                respOuv.setInitiales("");
+            }
+            respOuv = DaoRessource.getRessourcesByInitial(row.get(13).toString());
+            if (respOuv == null) {
+                respOuv = new Ressource();
+                respOuv.setInitiales(row.get(13).toString());
+                respOuv.setNom("");
+                respOuv.setEmail("");
+                respOuv.setEntreprise("");
+                respOuv.setFonction("");
+                respOuv.setInformationsDiverses("");
+                respOuv.setPrenom("");
+                respOuv.setTelephoneFixe("");
+                respOuv.setTelephoneMobile("");
+                respOuv.save();
+            }
+            action.setRespOuv(respOuv);
+            Ressource respOeu;
+            if (row.get(12).toString() == null || row.get(12).toString().length() == 0) {
+                respOeu = new Ressource();
+                respOeu.setInitiales("");
+            }
+            respOeu = DaoRessource.getRessourcesByInitial(row.get(12).toString());
+            if (respOeu == null) {
+                respOeu = new Ressource();
+                respOeu.setInitiales(row.get(12).toString());
+                respOeu.setNom("");
+                respOeu.setEmail("");
+                respOeu.setEntreprise("");
+                respOeu.setFonction("");
+                respOeu.setInformationsDiverses("");
+                respOeu.setPrenom("");
+                respOeu.setTelephoneFixe("");
+                respOeu.setTelephoneMobile("");
+                respOeu.save();
+            }
+            action.setRespOuv(respOuv);
+
+            action.setDomaine(domaine);
+
+            action.setApparaitrePlanning(chaineToBoolean(row.get(6).toString()));
+            action.setTypeFacturation(row.get(7).toString());
+            action.setNbJoursPrevus(chaineToFloat(row.get(8).toString()));
+            action.setCoutParJour(chaineToFloat(row.get(11).toString()));
+            Date datedebut = chaineToDate(row.get(9).toString());
+            Date datefin = chaineToDate(row.get(10).toString());
+            action.setDtDeb(datedebut);
+            action.setDtFinPrevue(datefin);
+            action.setDtFinReelle(datefin);
+
+            manageEcartAndResteAFaire(action, valuesDcConso);
+
+            action.save();
+        }
+
+        private void manageEcartAndResteAFaire(Action action, List<List<Object>> valuesDcConso) {
+            for (List row_Dc : valuesDcConso) {
+                if (action.getCode().equals(row_Dc.get(5).toString())) {
+                    if (row_Dc.get(20).toString() == null || row_Dc.get(20).toString().length() == 0) {
+                        action.setEcartProjete(0);
+                    } else {
+                        action.setEcartProjete(chaineToFloat(row_Dc.get(20).toString()));
+                    }
+                    if (row_Dc.get(18).toString() == null || row_Dc.get(18).toString().length() == 0) {
+                        action.setResteAFaire(0);
+                    } else {
+                        action.setResteAFaire(chaineToFloat(row_Dc.get(18).toString()));
+                    }
+                }
             }
         }
 

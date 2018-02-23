@@ -79,50 +79,66 @@ public class AdapterBudgetUtilisateur extends ArrayAdapter<Ressource> {
     private void chargerNbAction(){
         this.nbActions = new ArrayList<>();
         this.nbActionsRealisees = new ArrayList<>();
-        Map<String, Integer> results= DaoAction.getNbActionRealiseeGroupByUtilisateurOeu();
-        if (!results.isEmpty()) {
-            for (Ressource ressource : this.utilisateurs) {
-                if (results.get(String.valueOf(ressource.getId())) != null) {
-                    this.nbActionsRealisees.add(results.get(String.valueOf(ressource.getId())));
-                } else {
-                    this.nbActionsRealisees.add(0);
-                }
-            }
 
+        Map<String, Integer> results = DaoAction.getNbActionRealiseeGroupByUtilisateurOeu();
+        if (!results.isEmpty()) {
+            manageActionRealiseeGroupByUtilisateurOeu(results);
         }
 
-        results= DaoAction.getNbActionRealiseeGroupByUtilisateurOuv();
+        results = DaoAction.getNbActionRealiseeGroupByUtilisateurOuv();
         if (!results.isEmpty()) {
-            for (int i = 0; i<this.utilisateurs.size(); i++) {
-                if (results.get(String.valueOf(this.utilisateurs.get(i).getId())) != null) {
-                    this.nbActionsRealisees.add(i,
-                            this.nbActionsRealisees.get(i) + results.get(String.valueOf(this.utilisateurs.get(i).getId())));
-                } else {
-                    this.nbActionsRealisees.add(0);
-                }
-            }
+            manageActionRealiseeGroupByUtilisateurOuv(results);
         }
 
-        results= DaoAction.getNbActionTotalGroupByUtilisateurOeu();
+        results = DaoAction.getNbActionTotalGroupByUtilisateurOeu();
         if (!results.isEmpty()) {
-            for (Ressource ressource : this.utilisateurs){
-                if (results.get(String.valueOf(ressource.getId())) != null) {
-                    this.nbActions.add(results.get(String.valueOf(ressource.getId())));
-                } else {
-                    this.nbActions.add(0);
-                }
-            }
+            manageActionTotalGroupByUtilisateurOeu(results);
         }
 
-        results= DaoAction.getNbActionTotalGroupByUtilisateurOuv();
+        results = DaoAction.getNbActionTotalGroupByUtilisateurOuv();
         if (!results.isEmpty()) {
-            for (int i = 0; i<this.utilisateurs.size(); i++){
-                if (results.get(String.valueOf(this.utilisateurs.get(i).getId())) != null) {
-                    this.nbActions.add(i,
-                            this.nbActions.get(i) + results.get(String.valueOf(this.utilisateurs.get(i).getId())));
-                } else {
-                    this.nbActions.add(0);
-                }
+            manageActionTotalGroupByUtilisateurOuv(results);
+        }
+    }
+
+    private void manageActionRealiseeGroupByUtilisateurOeu(Map<String, Integer> results) {
+        for (Ressource ressource : this.utilisateurs) {
+            if (results.get(String.valueOf(ressource.getId())) != null) {
+                this.nbActionsRealisees.add(results.get(String.valueOf(ressource.getId())));
+            } else {
+                this.nbActionsRealisees.add(0);
+            }
+        }
+    }
+
+    private void manageActionRealiseeGroupByUtilisateurOuv(Map<String, Integer> results) {
+        for (int i = 0; i<this.utilisateurs.size(); i++) {
+            if (results.get(String.valueOf(this.utilisateurs.get(i).getId())) != null) {
+                this.nbActionsRealisees.add(i,
+                        this.nbActionsRealisees.get(i) + results.get(String.valueOf(this.utilisateurs.get(i).getId())));
+            } else {
+                this.nbActionsRealisees.add(0);
+            }
+        }
+    }
+
+    private void manageActionTotalGroupByUtilisateurOeu(Map<String, Integer> results) {
+        for (Ressource ressource : this.utilisateurs){
+            if (results.get(String.valueOf(ressource.getId())) != null) {
+                this.nbActions.add(results.get(String.valueOf(ressource.getId())));
+            } else {
+                this.nbActions.add(0);
+            }
+        }
+    }
+
+    private void manageActionTotalGroupByUtilisateurOuv(Map<String, Integer> results) {
+        for (int i = 0; i<this.utilisateurs.size(); i++){
+            if (results.get(String.valueOf(this.utilisateurs.get(i).getId())) != null) {
+                this.nbActions.add(i,
+                        this.nbActions.get(i) + results.get(String.valueOf(this.utilisateurs.get(i).getId())));
+            } else {
+                this.nbActions.add(0);
             }
         }
     }
