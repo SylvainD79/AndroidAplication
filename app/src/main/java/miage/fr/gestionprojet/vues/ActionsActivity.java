@@ -60,7 +60,6 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
     private static final String TAG = "[ActionsActivity]";
 
     @Override
-    //TODO voir problème de date
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actions);
@@ -127,6 +126,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+
         weekEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -182,23 +182,22 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                 weekEditText.setText(String.valueOf(week));
                 if (week == 0) {
                     week = 52;
-                    year = year -1;
-                    weekEditText.setText(String.valueOf(week));
-                    yearEditText.setText(String.valueOf(year));
+                    year--;
                 }
+                weekEditText.setText(String.valueOf(week));
+                yearEditText.setText(String.valueOf(year));
                 dateSaisie = Outils.weekOfYearToDate(year,week);
                 break;
 
             case R.id.week_plus:
-                week = (Integer.parseInt(weekEditText.getText().toString()) + 1) % 53;
+                week = (Integer.parseInt(weekEditText.getText().toString()) + 1);
+                if (week > 52) {
+                    week = 1;
+                    year++;
+                }
                 weekEditText.setText(String.valueOf(week));
-                dateSaisie = Outils.weekOfYearToDate(year,week);
-                break;
-
-            case R.id.year_plus:
-                year = (Integer.parseInt(yearEditText.getText().toString()) + 1);
-                dateSaisie = Outils.weekOfYearToDate(year,week);
                 yearEditText.setText(String.valueOf(year));
+                dateSaisie = Outils.weekOfYearToDate(year,week);
                 break;
 
             case R.id.year_minus :
@@ -208,6 +207,12 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                     yearEditText.setError("");
                     return;
                 }
+                yearEditText.setText(String.valueOf(year));
+                break;
+
+            case R.id.year_plus:
+                year = Integer.parseInt(yearEditText.getText().toString()) + 1;
+                dateSaisie = Outils.weekOfYearToDate(year,week);
                 yearEditText.setText(String.valueOf(year));
                 break;
 
