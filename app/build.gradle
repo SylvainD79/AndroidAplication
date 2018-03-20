@@ -70,6 +70,13 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'org.jetbrains:annotations-java5:15.0'
     testCompile 'junit:junit:4.12'
+
+    // Ajout de la dépendance vers ButerKnife (annotation éléments UI
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    // Ajout de la dépendance vers Picasso (gestion image depuis url)
+    compile 'com.squareup.picasso:picasso:2.71828'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -13,87 +13,84 @@
     tools:context="miage.fr.gestionprojet.vues.ActivityConnexion"
     tools:showIn="@layout/activity_connexion">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:background="#00008B"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:id="@+id/account_information_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:background="@android:color/white">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/account_profile_picture"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/profilepic"
+            />
 
-    <LinearLayout
-        android:id="@+id/sign_out_and_disconnect"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true">
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_pic"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/profilepic"
-                />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/account_profile_picture" >
 
             <TextView
-                android:id="@+id/userName"
+                android:id="@+id/account_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" user name:"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
                 android:textColor="@android:color/black"
-                android:layout_toRightOf="@+id/profile_pic"
-                android:textSize="14sp"
-                />
-
-
+                android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/emailId"
+                android:id="@+id/account_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="email id:"
                 android:textColor="@android:color/black"
                 android:layout_below="@+id/userName"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                android:layout_toRightOf="@+id/profile_pic" />
+                android:textSize="14sp" />
 
+        </LinearLayout>
 
-        </RelativeLayout>
+    </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/connected_buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible">
 
         <Button
             android:id="@+id/sign_out_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_out"
-
-            android:layout_gravity="center_vertical" />
-        <Button
-            android:id="@+id/disconnect_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/disconnect"
-            android:layout_gravity="center_vertical"/>
+            android:background="@android:color/white"
+            android:text="Sign out"
+            android:layout_weight="1" />
 
         <Button
-            android:id="@+id/frnd_button"
-            android:layout_width="match_parent"
+            android:id="@+id/go_next_activity"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show friends"
-            android:layout_gravity="center_vertical" />
-
+            android:background="@android:color/white"
+            android:text="Lancer l'application"
+            android:layout_weight="1" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:text="Sign in"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"/>
 
 </RelativeLayout>
