@@ -27,6 +27,7 @@ import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
 
+
 public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
 
     private List<SaisieCharge> saisiesCharge;
@@ -137,10 +138,10 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
     private ArrayList<Ressource> getRessourcesAffiches(){
         ArrayList<Ressource> ressources = new ArrayList<>();
         for(SaisieCharge s : saisiesCharge){
-            if(ressources.indexOf(s.getAction().getRespOeu())<0){
+            if(ressources.indexOf(s.getAction().getRespOeu()) < 0 && s.getAction().getRespOeu() != null) {
                 ressources.add(s.getAction().getRespOeu());
             }
-            if(ressources.indexOf(s.getAction().getRespOuv())<0){
+            if(ressources.indexOf(s.getAction().getRespOuv()) < 0 && s.getAction().getRespOuv() != null) {
                 ressources.add(s.getAction().getRespOuv());
             }
         }
@@ -176,7 +177,9 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
             pMenu.setGravity(Gravity.CENTER);
             ArrayList<Ressource> ressources = getRessourcesAffiches();
             for (Ressource ressource : ressources) {
-                menu.add(0, (int)(long)ressource.getId(), 0, ressource.getInitiales());
+                if(!ressource.getInitiales().isEmpty()) {
+                    menu.add(0, (int)(long)ressource.getId(), 0, ressource.getInitiales());
+                }
             }
             pMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
