@@ -6,13 +6,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +30,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapters.ActionClicked;
 import miage.fr.gestionprojet.adapters.ActionsAdapter;
@@ -40,16 +43,37 @@ import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.DividerItemDecoration;
 import miage.fr.gestionprojet.outils.Outils;
 
-public class ActionsActivity extends AppCompatActivity implements View.OnClickListener, ActionClicked {
+public class ActionsActivity extends AppCompatActivity implements ActionClicked {
     private String initial;
-    private RecyclerView mRecyclerView;
-    private ImageButton yearPlus;
-    private ImageButton yearMinus;
-    private ImageButton weekPlus;
-    private ImageButton weekMinus;
-    private EditText yearEditText;
-    private EditText weekEditText;
-    private TextView mEmptyView;
+
+    @BindView(R.id.actionRecycler)
+    RecyclerView mRecyclerView;
+
+    @BindView(R.id.year_plus)
+    ImageButton yearPlus;
+
+    @BindView(R.id.year_minus)
+    ImageButton yearMinus;
+
+    @BindView(R.id.week_plus)
+    ImageButton weekPlus;
+
+    @BindView(R.id.week_minus)
+    ImageButton weekMinus;
+
+    @BindView(R.id.edit_text_year)
+    EditText yearEditText;
+
+    @BindView(R.id.edit_text_week)
+    EditText weekEditText;
+
+    @BindView(R.id.emptyView)
+    TextView mEmptyView;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+
     private int year;
     private int week;
     private Date dateSaisie;
@@ -66,6 +90,8 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actions);
+        ButterKnife.bind(this);
+
         try {
             initial = getIntent().getStringExtra(ActivityDetailsProjet.EXTRA_INITIAL);
             idProjet = getIntent().getLongExtra(EXTRA_PROJET,0);
@@ -74,7 +100,6 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             finish();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Calendar c = Calendar.getInstance();
         week = c.get(Calendar.WEEK_OF_YEAR);
         year = c.get(Calendar.YEAR);
@@ -91,20 +116,8 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
             });
         }
 
-        mEmptyView = (TextView) findViewById(R.id.emptyView);
-        mRecyclerView = (RecyclerView) findViewById(R.id.actionRecycler);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
-        yearPlus = (ImageButton) findViewById(R.id.year_plus);
-        yearMinus = (ImageButton) findViewById(R.id.year_minus);
-        weekPlus = (ImageButton) findViewById(R.id.week_plus);
-        weekMinus = (ImageButton) findViewById(R.id.week_minus);
-        yearPlus.setOnClickListener(this);
-        yearMinus.setOnClickListener(this);
-        weekPlus.setOnClickListener(this);
-        weekMinus.setOnClickListener(this);
-        yearEditText = (EditText) findViewById(R.id.edit_text_year);
-        weekEditText = (EditText) findViewById(R.id.edit_text_week);
         weekEditText.setText(String.valueOf(week));
         yearEditText.setText(String.valueOf(year));
         yearEditText.addTextChangedListener(new TextWatcher() {
@@ -175,53 +188,59 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    @Override
-    public void onClick(View view) {
+    private void resetErrors() {
         yearEditText.setError(null);
         weekEditText.setError(null);
-        switch (view.getId()){
-            case R.id.week_minus:
-                week = Integer.parseInt(weekEditText.getText().toString()) - 1;
-                weekEditText.setText(String.valueOf(week));
-                if (week == 0) {
-                    week = 52;
-                    year--;
-                }
-                weekEditText.setText(String.valueOf(week));
-                yearEditText.setText(String.valueOf(year));
-                dateSaisie = Outils.weekOfYearToDate(year,week);
-                break;
+    }
 
-            case R.id.week_plus:
-                week = Integer.parseInt(weekEditText.getText().toString()) + 1;
-                if (week > 52) {
-                    week = 1;
-                    year++;
-                }
-                weekEditText.setText(String.valueOf(week));
-                yearEditText.setText(String.valueOf(year));
-                dateSaisie = Outils.weekOfYearToDate(year,week);
-                break;
-
-            case R.id.year_minus :
-                year = Integer.parseInt(yearEditText.getText().toString()) - 1;
-                dateSaisie = Outils.weekOfYearToDate(year,week);
-                if (year < 2000) {
-                    yearEditText.setError("");
-                    return;
-                }
-                yearEditText.setText(String.valueOf(year));
-                break;
-
-            case R.id.year_plus:
-                year = Integer.parseInt(yearEditText.getText().toString()) + 1;
-                dateSaisie = Outils.weekOfYearToDate(year,week);
-                yearEditText.setText(String.valueOf(year));
-                break;
-
-            default:
-                break;
+    @OnClick(R.id.week_minus)
+    public void onWeekMinusClick() {
+        resetErrors();
+        week = Integer.parseInt(weekEditText.getText().toString()) - 1;
+        weekEditText.setText(String.valueOf(week));
+        if (week == 0) {
+            week = 52;
+            year--;
         }
+        weekEditText.setText(String.valueOf(week));
+        yearEditText.setText(String.valueOf(year));
+        dateSaisie = Outils.weekOfYearToDate(year,week);
+        refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
+    }
+
+    @OnClick(R.id.week_plus)
+    public void onWeekPlusClick() {
+        resetErrors();
+        week = Integer.parseInt(weekEditText.getText().toString()) + 1;
+        if (week > 52) {
+            week = 1;
+            year++;
+        }
+        weekEditText.setText(String.valueOf(week));
+        yearEditText.setText(String.valueOf(year));
+        dateSaisie = Outils.weekOfYearToDate(year,week);
+        refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
+    }
+
+    @OnClick(R.id.year_minus)
+    public void onYearMinusClick() {
+        resetErrors();
+        year = Integer.parseInt(yearEditText.getText().toString()) - 1;
+        dateSaisie = Outils.weekOfYearToDate(year,week);
+        if (year < 2000) {
+            yearEditText.setError("");
+            return;
+        }
+        yearEditText.setText(String.valueOf(year));
+        refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
+    }
+
+    @OnClick(R.id.year_plus)
+    public void onYearPlusClick() {
+        resetErrors();
+        year = Integer.parseInt(yearEditText.getText().toString()) + 1;
+        dateSaisie = Outils.weekOfYearToDate(year,week);
+        yearEditText.setText(String.valueOf(year));
         refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
     }
 
@@ -261,7 +280,7 @@ public class ActionsActivity extends AppCompatActivity implements View.OnClickLi
                 return true;
             }
         });
-        popup.showAtLocation(this.findViewById(R.id.actionRecycler), Gravity.CENTER, 0, 0);
+        popup.showAtLocation(mRecyclerView, Gravity.CENTER, 0, 0);
     }
 
     @Override
