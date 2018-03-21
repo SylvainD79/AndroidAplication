@@ -15,12 +15,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +43,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
 import miage.fr.gestionprojet.models.Formation;
@@ -65,25 +65,35 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class ChargementDonnees extends Activity implements EasyPermissions.PermissionCallbacks {
-    GoogleAccountCredential mCredential;
-    private TextView mOutputText;
-    private Button mCallApiButton;
-    ProgressDialog mProgress;
-
-    private Button idButtonParDefaut;
-    private EditText buttonInput;
 
     private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
-    static final int REQUEST_ACCOUNT_PICKER = 1000;
-    static final int REQUEST_AUTHORIZATION = 1001;
-    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-    static final String BUTTON_TEXT = "Charger la base de données ";
-    static final String BUTTON_ID = "Id par defaut";
-    static final String PREF_ACCOUNT_NAME = "accountName";
-    static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
+
+    private static final String PREF_ACCOUNT_NAME = "accountName";
+
+    private static final int REQUEST_ACCOUNT_PICKER = 1000;
+
+    private static final int REQUEST_AUTHORIZATION = 1001;
+
+    private static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+
+    private static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+
+    private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
+
+    private GoogleAccountCredential mCredential;
+
+    private ProgressDialog mProgress;
 
     private String userInput;
+
+    @BindView(R.id.call_api_button)
+    Button callApiButton;
+
+    @BindView(R.id.information_text)
+    TextView informationText;
+
+    @BindView(R.id.user_input)
+    EditText userInputEditText;
 
     /**
      * Create the main activity.
@@ -93,68 +103,30 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        LinearLayout activityLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        activityLayout.setLayoutParams(lp);
-        activityLayout.setOrientation(LinearLayout.VERTICAL);
-        activityLayout.setPadding(16, 16, 16, 16);
-
-        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        mCallApiButton = new Button(this);
-        mCallApiButton.setText(BUTTON_TEXT);
-        mCallApiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userInput = buttonInput.getText().toString();
-                setUserInput(userInput);
-                mCallApiButton.setEnabled(false);
-                mOutputText.setText("");
-                getResultsFromApi(userInput);
-                mCallApiButton.setEnabled(true);
-            }
-        });
-        activityLayout.addView(mCallApiButton);
-
-        mOutputText = new TextView(this);
-        mOutputText.setLayoutParams(tlp);
-        mOutputText.setPadding(16, 16, 16, 16);
-        mOutputText.setVerticalScrollBarEnabled(true);
-        mOutputText.setMovementMethod(new ScrollingMovementMethod());
-        String text = "Clicker sur \'" + BUTTON_TEXT + "\' pour charger ou mettre à jour les données .";
-        mOutputText.setText(text);
-        activityLayout.addView(mOutputText);
-
-        buttonInput = new EditText(this);
-        activityLayout.addView(buttonInput);
+        setContentView(R.layout.activity_chargement_donnees);
+        ButterKnife.bind(this);
 
         mProgress = new ProgressDialog(this);
-        mProgress.setMessage("préparation de la base de données  ...");
-        idButtonParDefaut = new Button(this);
-        idButtonParDefaut.setText(BUTTON_ID);
-        idButtonParDefaut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getIdProjetParDefaut();
-            }
-
-            private void getIdProjetParDefaut() {
-                buttonInput.setText(SPREAD_SHEET_DEFAULT_ID);
-            }
-        });
-
-        activityLayout.addView(idButtonParDefaut);
-        setContentView(activityLayout);
+        mProgress.setMessage("Préparation de la base de données  ...");
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
+    }
+
+    @OnClick(R.id.call_api_button)
+    public void loadApi() {
+        this.userInput = userInputEditText.getText().toString();
+        callApiButton.setEnabled(false);
+        informationText.setText("");
+        getResultsFromApi(userInput);
+        callApiButton.setEnabled(true);
+    }
+
+    @OnClick(R.id.defaut_id_button)
+    public void setDefaultId() {
+        userInputEditText.setText(SPREAD_SHEET_DEFAULT_ID);
     }
 
     /**
@@ -165,13 +137,13 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      * appropriate.
      */
     private void getResultsFromApi(String userInput) {
-        if (buttonInput.length() > 0) {
+        if (userInputEditText.length() > 0) {
             if (!isGooglePlayServicesAvailable()) {
                 acquireGooglePlayServices();
             } else if (mCredential.getSelectedAccountName() == null) {
                 chooseAccount();
             } else if (!isDeviceOnline()) {
-                mOutputText.setText("No network connection available.");
+                informationText.setText("No network connection available.");
             } else {
                 new MakeRequestTask(mCredential, userInput).execute();
             }
@@ -230,7 +202,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 if (resultCode != RESULT_OK) {
                     String text = "This app requires Google Play Services. Please install " +
                             "Google Play Services on your device and relaunch this app.";
-                    mOutputText.setText(text);
+                    informationText.setText(text);
                 } else {
                     getResultsFromApi(userInput);
                 }
@@ -756,7 +728,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
 
         @Override
         protected void onPreExecute() {
-            mOutputText.setText("");
+            informationText.setText("");
             mProgress.show();
         }
 
@@ -764,10 +736,10 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
             if (output.isEmpty()) {
-                mOutputText.setText("No results returned.");
+                informationText.setText("No results returned.");
             } else {
                 output.add(0, "Data retrieved using the Google Sheets API:");
-                mOutputText.setText(TextUtils.join("\n", output));
+                informationText.setText(TextUtils.join("\n", output));
             }
             Intent intentInitial = getIntent();
             String initialUtilisateur = intentInitial.getStringExtra(ActivityGestionDesInitials.EXTRA_INITIAL);
@@ -790,15 +762,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                             ChargementDonnees.REQUEST_AUTHORIZATION);
                 } else {
                     String text = "The following error occurred:\n" + mLastError.getMessage();
-                    mOutputText.setText(text);
+                    informationText.setText(text);
                 }
             } else {
-                mOutputText.setText("Request cancelled.");
+                informationText.setText("Request cancelled.");
             }
         }
-    }
-
-    public void setUserInput(String userInput) {
-        this.userInput = userInput;
     }
 }
