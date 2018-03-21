@@ -19,6 +19,7 @@ public class DaoSaisieCharge {
     }
 
     private static final String DOMAINE_FILTER = "domaine=?";
+    private static final String ACTION_FILTER = "action=?";
     private static final String SAISIE_FILTER = "Saisie";
 
     public static List<SaisieCharge> loadSaisiesByAction(Action action) {
@@ -39,10 +40,11 @@ public class DaoSaisieCharge {
         for(Action action : actions) {
             if (action.getTypeTravail().equalsIgnoreCase(SAISIE_FILTER)
                     || action.getTypeTravail().equalsIgnoreCase("Test")) {
-                SaisieCharge saisieCharge = (SaisieCharge) new Select()
+                   SaisieCharge saisieCharge = (SaisieCharge) new Select()
                         .from(SaisieCharge.class)
-                        .where(DOMAINE_FILTER, action.getId())
+                        .where(ACTION_FILTER, String.valueOf(action.getId()))
                         .execute().get(0);
+                System.out.println(saisieCharge.getHeureParUnite());;
                 saisiesCharge.add(saisieCharge);
             }
         }
@@ -60,7 +62,7 @@ public class DaoSaisieCharge {
                     || action.getTypeTravail().equalsIgnoreCase("Test")) {
                 SaisieCharge saisieCharge = (SaisieCharge) new Select()
                         .from(SaisieCharge.class)
-                        .where(DOMAINE_FILTER, action.getId())
+                        .where(ACTION_FILTER, action.getId())
                         .execute().get(0);
                 saisiesCharges.add(saisieCharge);
             }
