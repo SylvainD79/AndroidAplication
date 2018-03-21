@@ -69,10 +69,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
     private TextView mOutputText;
     private Button mCallApiButton;
     ProgressDialog mProgress;
+
     private Button idButtonParDefaut;
     private EditText buttonInput;
 
-    static String spreadsheetIdParDefaut= "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
+    private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
@@ -81,6 +82,8 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
     static final String BUTTON_ID = "Id par defaut";
     static final String PREF_ACCOUNT_NAME = "accountName";
     static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
+
+    private String userInput;
 
     /**
      * Create the main activity.
@@ -108,9 +111,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         mCallApiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String userInput = buttonInput.getText().toString();
+                setUserInput(userInput);
                 mCallApiButton.setEnabled(false);
                 mOutputText.setText("");
-                getResultsFromApi();
+                getResultsFromApi(userInput);
                 mCallApiButton.setEnabled(true);
             }
         });
@@ -139,7 +144,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
 
             private void getIdProjetParDefaut() {
-                buttonInput.setText(spreadsheetIdParDefaut);
+                buttonInput.setText(SPREAD_SHEET_DEFAULT_ID);
             }
         });
 
@@ -159,7 +164,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      * of the preconditions are not satisfied, the app will prompt the user as
      * appropriate.
      */
-    private void getResultsFromApi() {
+    private void getResultsFromApi(String userInput) {
         if (buttonInput.length() > 0) {
             if (!isGooglePlayServicesAvailable()) {
                 acquireGooglePlayServices();
@@ -168,7 +173,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             } else if (!isDeviceOnline()) {
                 mOutputText.setText("No network connection available.");
             } else {
-                new MakeRequestTask(mCredential).execute();
+                new MakeRequestTask(mCredential, userInput).execute();
             }
         } else {
             Toast.makeText(this, "Renseignez Id du projet", Toast.LENGTH_SHORT).show();
@@ -187,18 +192,14 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
      */
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
-        if (EasyPermissions.hasPermissions(
-                this, Manifest.permission.GET_ACCOUNTS)) {
-            String accountName = getPreferences(Context.MODE_PRIVATE)
-                    .getString(PREF_ACCOUNT_NAME, null);
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
+            String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME,null);
             if (accountName != null) {
                 mCredential.setSelectedAccountName(accountName);
-                getResultsFromApi();
+                getResultsFromApi(userInput);
             } else {
                 // Start a dialog from which the user can choose an account
-                startActivityForResult(
-                        mCredential.newChooseAccountIntent(),
-                        REQUEST_ACCOUNT_PICKER);
+                startActivityForResult(mCredential.newChooseAccountIntent(),REQUEST_ACCOUNT_PICKER);
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
@@ -231,7 +232,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                             "Google Play Services on your device and relaunch this app.";
                     mOutputText.setText(text);
                 } else {
-                    getResultsFromApi();
+                    getResultsFromApi(userInput);
                 }
                 break;
 
@@ -245,14 +246,14 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
                         mCredential.setSelectedAccountName(accountName);
-                        getResultsFromApi();
+                        getResultsFromApi(userInput);
                     }
                 }
                 break;
 
             case REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
-                    getResultsFromApi();
+                    getResultsFromApi(userInput);
                 }
                 break;
 
@@ -346,13 +347,16 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         private com.google.api.services.sheets.v4.Sheets mService = null;
         private Exception mLastError = null;
 
-        MakeRequestTask(GoogleAccountCredential credential) {
+        private String userInput;
+
+        MakeRequestTask(GoogleAccountCredential credential, String userInput) {
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
             mService = new com.google.api.services.sheets.v4.Sheets.Builder(
                     transport, jsonFactory, credential)
                     .setApplicationName("Big Follow")
                     .build();
+            this.userInput = userInput;
         }
 
         /**
@@ -363,7 +367,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         @Override
         protected List<String> doInBackground(Void... params) {
             try {
-                return getDataFromApi();
+                return getDataFromApi(userInput);
             } catch (Exception e) {
                 mLastError = e;
                 cancel(true);
@@ -378,13 +382,12 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
          * @return List of names and majors
          * @throws IOException
          */
-        private List<String> getDataFromApi() throws IOException, ParseException {
+        private List<String> getDataFromApi(String spreadsheetId) throws IOException, ParseException {
             /*tables des feuilles à parcourir
             HashMap<String,String>feuilles= new HashMap<>();
             feuilles.put("rangeActions","Liste des actions projet!A3:Z");
             feuilles.put("rangeRessources","Ressources!A2:Z");
             */
-            String spreadsheetId = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
             String rangeProject = "Informations générales!A2:E";
             String rangeActions = "Liste des actions projet!A3:Z";
             String rangeDcConso = "DC et détails conso!A5:Z";
@@ -793,5 +796,9 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 mOutputText.setText("Request cancelled.");
             }
         }
+    }
+
+    public void setUserInput(String userInput) {
+        this.userInput = userInput;
     }
 }
