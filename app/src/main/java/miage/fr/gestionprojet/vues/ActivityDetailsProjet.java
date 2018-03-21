@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Projet;
 import miage.fr.gestionprojet.models.dao.DaoAction;
@@ -38,6 +42,24 @@ public class ActivityDetailsProjet extends AppCompatActivity {
     public static final  String EXTRA_INITIAL = "initial";
     private Projet projet;
     private String initialUtilisateur;
+
+    @BindView(R.id.textViewNomProjet)
+    TextView txtNomProj;
+
+    @BindView(R.id.listViewAction)
+    ListView liste;
+
+    @BindView(R.id.progressBarProjet)
+    ProgressBar progress;
+
+    @BindView(R.id.btnSaisies)
+    Button buttonSaisies;
+
+    @BindView(R.id.btnFormations)
+    Button buttonFormations;
+
+    @BindView(R.id.btnBudget)
+    Button buttonBudget;
 
     private AdapterView.OnItemClickListener customAdapterViewOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -83,6 +105,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_projet);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         long id = intent.getLongExtra(MainActivity.EXTRA_PROJET,0);
@@ -93,14 +116,10 @@ public class ActivityDetailsProjet extends AppCompatActivity {
             // on récupère toutes les données de ce projet
             projet = Model.load(Projet.class, id);
 
-            // on récupère les différents élements de la vue
-            TextView txtNomProj = (TextView) findViewById(R.id.textViewNomProjet);
-
             // on alimente ces différents éléments
             txtNomProj.setText(projet.getNom());
 
             // on constitue une liste d'action
-            ListView liste = (ListView) findViewById(R.id.listViewAction);
             ArrayList<String> actions = new ArrayList<>();
             actions.add(RESSOURCES);
             actions.add(FORMATIONS);
@@ -112,43 +131,11 @@ public class ActivityDetailsProjet extends AppCompatActivity {
             liste.setOnItemClickListener(customAdapterViewOnItemClickListener);
 
             //avancement du projet
-            ProgressBar progress = (ProgressBar) findViewById(R.id.progressBarProjet);
             int nbActionsRealise = DaoAction.getActionsRealiseesByProjet(this.projet.getId()).size();
             int nbActions = DaoAction.getAllActionsByProjet(this.projet.getId()).size();
             int ratioBudget = Outils.calculerPourcentage(nbActionsRealise,nbActions);
             progress.setProgress(ratioBudget);
 
-            //action lors du clic sur le bouton action
-            final Button buttonSaisies = (Button) findViewById(R.id.btnSaisies);
-            buttonSaisies.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
-                    intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                    intent.putExtra(PROJET_VISU, projet.getId());
-                    startActivity(intent);
-                }
-            });
-
-            //action lors du clic sur le bouton formation
-            final Button buttonFormations = (Button) findViewById(R.id.btnFormations);
-            buttonFormations.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent intent = new Intent(ActivityDetailsProjet.this, FormationsActivity.class);
-                    intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                    startActivity(intent);
-                }
-            });
-
-            //action lors du clic sur le bouton budget
-            final Button buttonBudget = (Button) findViewById(R.id.btnBudget);
-            buttonBudget.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
-                    intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
-                    intent.putExtra(PROJET_VISU, projet.getId());
-                    startActivity(intent);
-                }
-            });
 
             //proportion de durée
             Date dateFin = DaoProjet.getDateFin(this.projet.getId());
@@ -214,5 +201,30 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @OnClick(R.id.btnSaisies)
+    public void afficherSaissi() {
+        Intent intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
+        intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
+        intent.putExtra(PROJET_VISU, projet.getId());
+        startActivity(intent);
+    }
+
+
+    @OnClick(R.id.btnFormations)
+    public void afficherFormation() {
+        Intent intent = new Intent(ActivityDetailsProjet.this, FormationsActivity.class);
+        intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btnBudget)
+    public void afficherBudget() {
+        Intent intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
+        intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
+        intent.putExtra(PROJET_VISU, projet.getId());
+        startActivity(intent);
     }
 }

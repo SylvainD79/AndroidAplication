@@ -3,8 +3,8 @@ package miage.fr.gestionprojet.vues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +18,8 @@ import com.activeandroid.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapters.AdapterSaisieCharge;
 import miage.fr.gestionprojet.models.Action;
@@ -31,7 +33,10 @@ import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
 public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
 
     private List<SaisieCharge> saisiesCharge;
-    private ListView liste;
+
+    @BindView(R.id.listViewSaisieCharge)
+    ListView liste;
+
     public static final String SAISIECHARGE = "saisie charge";
     public static final String EXTRA_INITIAL = "initial";
     private String initialUtilisateur;
@@ -43,10 +48,11 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indicateurs_saisie_charge);
+        ButterKnife.bind(this);
+
         Intent intent = getIntent();
         //on récupère le projet sélectionné
         long id =  intent.getLongExtra(ActivityDetailsProjet.PROJET_VISU,0);
-        liste = (ListView) findViewById(R.id.listViewSaisieCharge);
         initialUtilisateur = intent.getStringExtra(ActivityDetailsProjet.EXTRA_INITIAL);
 
         if (id > 0 ) {

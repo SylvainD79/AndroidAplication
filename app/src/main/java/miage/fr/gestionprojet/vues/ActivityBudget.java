@@ -16,6 +16,8 @@ import com.activeandroid.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapters.AdapterBudgetDomaine;
 import miage.fr.gestionprojet.adapters.AdapterBudgetType;
@@ -27,7 +29,12 @@ import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 
 public class ActivityBudget extends AppCompatActivity {
-    private ListView liste;
+    @BindView(R.id.lstViewBudget)
+    ListView liste;
+
+    @BindView(R.id.spinnerChoixAffichage)
+    Spinner spinChoixAffichage;
+
     private ArrayList<String> choixAffichage;
     private String initialUtilisateur;
     private Projet projet;
@@ -37,10 +44,12 @@ public class ActivityBudget extends AppCompatActivity {
     private static final String UTILISATEUR = "Utilisateur";
     public static final String EXTRA_INITIAL = "initial";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
+        ButterKnife.bind(this);
 
         Intent intentInitial = getIntent();
         initialUtilisateur = intentInitial.getStringExtra(EXTRA_INITIAL);
@@ -49,8 +58,6 @@ public class ActivityBudget extends AppCompatActivity {
         choixAffichage.add(TYPE);
         choixAffichage.add(UTILISATEUR);
 
-        Spinner spinChoixAffichage = (Spinner) findViewById(R.id.spinnerChoixAffichage);
-        this.liste = (ListView) findViewById(R.id.lstViewBudget);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, choixAffichage);
         spinChoixAffichage.setAdapter(adapter);
         //on récupère le projet sélectionné

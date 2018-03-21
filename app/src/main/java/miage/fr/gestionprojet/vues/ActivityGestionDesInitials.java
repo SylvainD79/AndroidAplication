@@ -12,6 +12,8 @@ import com.activeandroid.ActiveAndroid;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapters.AdapterInitiales;
 import miage.fr.gestionprojet.models.Ressource;
@@ -22,15 +24,20 @@ public class ActivityGestionDesInitials extends AppCompatActivity {
     private List<Ressource> ressourcesInitiales = null;
     public static final String EXTRA_INITIAL = "Initial";
 
+    @BindView(R.id.listViewInitials)
+    ListView liste;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_gestion_des_initials);
 
+        ButterKnife.bind(this);
+
         //on récupère la liste des ressources
         ressourcesInitiales = DaoRessource.loadAllWithInitialNotEmpty();
-        ListView liste = (ListView) findViewById(R.id.listViewInitials);
 
         // si le nombre de ressource est supérieur à 1 on affiche une liste
         if (!ressourcesInitiales.isEmpty()) {
