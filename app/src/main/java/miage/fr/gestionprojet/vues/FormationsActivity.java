@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapters.FormationsAdapter;
 import miage.fr.gestionprojet.models.Formation;
@@ -19,17 +21,21 @@ public class FormationsActivity extends AppCompatActivity {
 
     private static final String EXTRA_INITIAL = "initial";
     public static final String FORMATION_SELECTED = "formation-selected";
-    protected ListView formationsListView;
+
     protected List<Formation> formations;
     private String initialUtilisateur = null;
+
+    @BindView(R.id.formationsList)
+    ListView formationsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formations);
+        ButterKnife.bind(this);
 
         initialUtilisateur = getIntent().getStringExtra(EXTRA_INITIAL);
-        formationsListView = (ListView) findViewById(R.id.formationsList);
+
         formations = DaoFormation.getFormations();
 
         fillFormationsList();

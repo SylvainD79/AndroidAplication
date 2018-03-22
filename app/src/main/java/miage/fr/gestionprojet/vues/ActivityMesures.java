@@ -11,6 +11,8 @@ import com.activeandroid.Model;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapters.AdapterMesure;
 import miage.fr.gestionprojet.models.Mesure;
@@ -21,17 +23,22 @@ public class ActivityMesures extends AppCompatActivity {
     public static final String EXTRA_INITIAL = "initial";
     private String initialUtilisateur;
 
+    @BindView(R.id.lstViewMesures)
+    ListView lstViewMesures;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mesures);
+        ButterKnife.bind(this);
+
         Intent intent = getIntent();
         long id = intent.getLongExtra(ActivityIndicateursSaisieCharge.SAISIECHARGE,0);
         initialUtilisateur = intent.getStringExtra(EXTRA_INITIAL);
 
         if (id > 0) {
             Model.load(SaisieCharge.class, id);
-            ListView lstViewMesures = (ListView) findViewById(R.id.lstViewMesures);
+
             List<Mesure> lstMesures = DaoMesure.getMesureByAction(id);
             final AdapterMesure adapter = new AdapterMesure(this, R.layout.lst_view_mesures, lstMesures);
             lstViewMesures.setAdapter(adapter);

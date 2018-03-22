@@ -8,6 +8,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
@@ -18,33 +20,38 @@ public class FormationActivity extends AppCompatActivity {
     // TODO afficher les descriptions
 
     protected Formation formationData;
-    protected TextView formationName;
+
+    @BindView(R.id.formationName)
+    TextView formationName;
+
+    @BindView(R.id.formationPhase)
     protected TextView formationPhase;
+
+    @BindView(R.id.formationDescriptionsList)
     protected ListView formationDescriptionsList;
+
+    @BindView(R.id.formationTotalProgressBar)
     protected ProgressBar formationTotalProgressBar;
+
+    @BindView(R.id.formationPreRequisProgressBar)
     protected ProgressBar formationPreRequisProgressBar;
+
+    @BindView(R.id.formationObjectifProgressBar)
     protected ProgressBar formationObjectifProgressBar;
+
+    @BindView(R.id.formationPostFormatProgressBar)
     protected ProgressBar formationPostFormatProgressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.formation_activity);
+        ButterKnife.bind(this);
 
         getFormationData();
-        getViewComponents();
         fillFormationData();
     }
 
-    private void getViewComponents() {
-        formationName                   = (TextView) findViewById(R.id.formationName);
-        formationPhase                  = (TextView) findViewById(R.id.formationPhase);
-        formationDescriptionsList       = (ListView) findViewById(R.id.formationDescriptionsList);
-        formationTotalProgressBar       = (ProgressBar) findViewById(R.id.formationTotalProgressBar);
-        formationPreRequisProgressBar   = (ProgressBar) findViewById(R.id.formationPreRequisProgressBar);
-        formationObjectifProgressBar    = (ProgressBar) findViewById(R.id.formationObjectifProgressBar);
-        formationPostFormatProgressBar  = (ProgressBar) findViewById(R.id.formationPostFormatProgressBar);
-    }
 
     protected void getFormationData() {
         Intent intent = getIntent();
