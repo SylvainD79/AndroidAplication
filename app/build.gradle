@@ -77,6 +77,10 @@ dependencies {
 
     // Ajout de la dépendance vers Picasso (gestion image depuis url)
     compile 'com.squareup.picasso:picasso:2.71828'
+
+    compile('com.google.apis:google-api-services-drive:v3-rev108-1.23.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

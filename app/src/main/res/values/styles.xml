@@ -33,7 +33,7 @@
         <item name="android:disabledAlpha">0.5</item>
         <item name="android:dropDownHorizontalOffset">-6dp</item>
     </style>
-    
+
     <style name="AppTheme.PopupCustomTheme">
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>

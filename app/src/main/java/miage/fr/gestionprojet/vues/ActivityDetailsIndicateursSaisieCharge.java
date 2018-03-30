@@ -127,6 +127,11 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.envoyer_mail:
+                Intent intentSendMail = new Intent(ActivityDetailsIndicateursSaisieCharge.this, SendMailActivity.class);
+                startActivity(intentSendMail);
+                return true;
+
             default:
                 break;
         }

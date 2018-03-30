@@ -135,6 +135,11 @@ public class ActivityBudget extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.envoyer_mail:
+                Intent intentSendMail = new Intent(ActivityBudget.this, SendMailActivity.class);
+                startActivity(intentSendMail);
+                return true;
+
             default:
                 break;
 

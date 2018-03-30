@@ -197,6 +197,11 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.envoyer_mail:
+                Intent intentSendMail = new Intent(ActivityDetailsProjet.this, SendMailActivity.class);
+                startActivity(intentSendMail);
+                return true;
+
             default:
                 break;
         }
