@@ -7,7 +7,7 @@
     tools:context="miage.fr.gestionprojet.vues.SendMailActivity">
 
     <EditText
-        android:text="Saisir l'email destinataire"
+        android:hint="@string/mail_adress_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mail_destinataire"/>
@@ -17,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/send_mail"
-        android:text="Envoyer"/>
-
+        android:text="@string/send_mail_button"/>
 
 </android.support.constraint.ConstraintLayout>
