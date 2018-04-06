@@ -49,6 +49,7 @@ import butterknife.OnClick;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
+import miage.fr.gestionprojet.models.EtapeFormation;
 import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.Projet;
@@ -56,6 +57,7 @@ import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.models.dao.DaoDomaine;
+import miage.fr.gestionprojet.models.dao.DaoFormation;
 import miage.fr.gestionprojet.models.dao.DaoProjet;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
@@ -368,6 +370,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             String rangeRessources = "Ressources!A2:Z";
             String rangeformation = "Indicateurs formation!A3:Z";
             String rangeMesure = "Mesures de saisie/charge!A2:D";
+            String rangePlanFormation = "Plan de formation!A2:I";
             ValueRange reponsesmesure = this.mService.spreadsheets().values()
                     .get(spreadsheetId, rangeMesure)
                     .execute();
@@ -394,12 +397,17 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             ValueRange responseformation = this.mService.spreadsheets().values()
                     .get(spreadsheetId, rangeformation)
                     .execute();
+            ValueRange responsePlanFormation = this.mService.spreadsheets().values()
+                    .get(spreadsheetId, rangePlanFormation)
+                    .execute();
+
             mProgress.setProgress(Outils.calculerPourcentage(4, 7));
             List<List<Object>> values = responseAction.getValues();
             List<List<Object>> valueproject = responseproject.getValues();
             List<List<Object>> valuesSaisieCharge = responsesaisieCharge.getValues();
             List<List<Object>> valuesDcConso = responseDcConso.getValues();
             List<List<Object>> valuesMEsure = reponsesmesure.getValues();
+            List<List<Object>> valuePlanFormation = responsePlanFormation.getValues();
             mProgress.setProgress(Outils.calculerPourcentage(5, 7));
             List<List<Object>> valuesressources = responseressources.getValues();
             if (valueproject != null) {
@@ -426,6 +434,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             if (valuesMEsure != null) {
                 initialiserMesures(reglerDonnees(valuesMEsure));
             }
+
+            if(valuePlanFormation != null) {
+                initialiserEtapeFormation(reglerDonnees(valuePlanFormation));
+            }
+
             return results;
         }
 
@@ -768,5 +781,30 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 informationText.setText("Request cancelled.");
             }
         }
+    }
+
+
+    private void initialiserEtapeFormation(List<List<Object>> values) {
+        new Delete().from(EtapeFormation.class).execute();
+
+        ActiveAndroid.beginTransaction();
+            for (List row : values) {
+                EtapeFormation etapeFormation = new EtapeFormation();
+                Action action = DaoAction.loadActionByCodeSingle(row.get(2).toString());
+                if(action != null) {
+                    Formation formation = DaoFormation.getFormation(action.getId());
+
+                    etapeFormation.setTypeElement(row.get(1).toString());
+                    etapeFormation.setFormation(formation);
+                    etapeFormation.setDescription(row.get(3).toString());
+                    etapeFormation.setTypeActeur(row.get(4).toString());
+                    etapeFormation.setObjectifAtteint("1".equals(row.get(5).toString()));
+                    etapeFormation.setCommentaire(row.get(6).toString());
+
+                    etapeFormation.save();
+                }
+            }
+            ActiveAndroid.setTransactionSuccessful();
+            ActiveAndroid.endTransaction();
     }
 }
