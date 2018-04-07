@@ -36,10 +36,10 @@ public class DaoAction {
     }
 
     public static Action loadActionByCodeSingle(String code) {
-        return new Select()
+        return (Action) new Select()
                 .from(Action.class)
                 .where("code=?",code)
-                .executeSingle();
+                .execute().get(0);
     }
 
     public static List<Action> loadActionsByType(String type, long idProjet) {

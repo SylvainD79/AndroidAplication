@@ -22,7 +22,6 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Projet;

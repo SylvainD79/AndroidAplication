@@ -14,7 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.adapters.EtapeFormationAdapter;
-import miage.fr.gestionprojet.adapters.FormationsAdapter;
 import miage.fr.gestionprojet.models.EtapeFormation;
 import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.dao.DaoEtapeFormation;

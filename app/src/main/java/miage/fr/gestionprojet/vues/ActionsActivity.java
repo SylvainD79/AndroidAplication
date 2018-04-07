@@ -268,7 +268,7 @@ public class ActionsActivity extends AppCompatActivity implements ActionClicked 
         nbJr.setText(nombreJours);
         String estimationText = "Cout par jour : " + action.getCoutParJour();
         estimation.setText(estimationText);
-        final PopupWindow popup = new PopupWindow(layout,400,400, true);
+        final PopupWindow popup = new PopupWindow(layout,800,800, true);
         popup.setOutsideTouchable(true);
         popup.setTouchable(true);
         Drawable drawable = ContextCompat.getDrawable(ActionsActivity.this, R.drawable.background_ounded_border);
