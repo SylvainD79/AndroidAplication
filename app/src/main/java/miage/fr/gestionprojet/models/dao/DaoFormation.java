@@ -22,7 +22,14 @@ public class DaoFormation {
     }
 
     public static Formation getFormation(long id) {
-        return new Select().from(Formation.class).where("Id = ?", id).executeSingle();
+        return new Select().from(Formation.class).where("Id = ?", String.valueOf(id)).executeSingle();
+    }
+
+    public static Formation getFormationByAction(Action action) {
+        return new Select()
+                .from(Formation.class)
+                .where("action = ?", action.getId())
+                .executeSingle();
     }
 
     public static float getAvancementTotal (long idProjet){

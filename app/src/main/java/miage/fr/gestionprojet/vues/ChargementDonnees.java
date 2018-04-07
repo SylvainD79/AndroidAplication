@@ -790,9 +790,9 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
         ActiveAndroid.beginTransaction();
             for (List row : values) {
                 EtapeFormation etapeFormation = new EtapeFormation();
-                Action action = DaoAction.loadActionByCodeSingle(row.get(2).toString());
-                if(action != null) {
-                    Formation formation = DaoFormation.getFormation(action.getId());
+                List<Action> action = DaoAction.loadActionsByCode(row.get(2).toString());
+                if(!action.isEmpty()) {
+                    Formation formation = DaoFormation.getFormationByAction(action.get(0));
 
                     etapeFormation.setTypeElement(row.get(1).toString());
                     etapeFormation.setFormation(formation);
