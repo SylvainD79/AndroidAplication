@@ -8,10 +8,15 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
+import miage.fr.gestionprojet.adapters.EtapeFormationAdapter;
+import miage.fr.gestionprojet.models.EtapeFormation;
 import miage.fr.gestionprojet.models.Formation;
+import miage.fr.gestionprojet.models.dao.DaoEtapeFormation;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
 
 public class FormationActivity extends AppCompatActivity {
@@ -20,6 +25,8 @@ public class FormationActivity extends AppCompatActivity {
     // TODO afficher les descriptions
 
     protected Formation formationData;
+
+    private List<EtapeFormation> listeEtapeFormation;
 
     @BindView(R.id.formationName)
     TextView formationName;
@@ -41,6 +48,7 @@ public class FormationActivity extends AppCompatActivity {
 
     @BindView(R.id.formationPostFormatProgressBar)
     protected ProgressBar formationPostFormatProgressBar;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,8 +75,9 @@ public class FormationActivity extends AppCompatActivity {
         formationObjectifProgressBar.setProgress((int) formationData.getAvancementObjectif());
         formationPostFormatProgressBar.setProgress((int) formationData.getAvancementPostFormation());
 
-        // TODO where are formation's descriptions ?
-//        ArrayAdapter<Formation> formationDescriptionsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, formationData.getAction());
-//        formationDescriptionsList.setAdapter(formationDescriptionsAdapter);
+        listeEtapeFormation = DaoEtapeFormation.getEtapeFormationByFormation(formationData);
+
+        EtapeFormationAdapter etapeFormationsAdapter = new EtapeFormationAdapter(this, R.layout.item_etape_formation, listeEtapeFormation);
+        formationDescriptionsList.setAdapter(etapeFormationsAdapter);
     }
 }

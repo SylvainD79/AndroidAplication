@@ -35,6 +35,13 @@ public class DaoAction {
                 .execute();
     }
 
+    public static Action loadActionByCodeSingle(String code) {
+        return (Action) new Select()
+                .from(Action.class)
+                .where("code=?",code)
+                .execute().get(0);
+    }
+
     public static List<Action> loadActionsByType(String type, long idProjet) {
         Projet proj = Model.load(Projet.class, idProjet);
         ArrayList<Action> lstActions = new ArrayList<>();
@@ -320,4 +327,5 @@ public class DaoAction {
         }
         return lstAction;
     }
+
 }

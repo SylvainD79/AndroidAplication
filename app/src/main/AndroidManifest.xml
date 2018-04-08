@@ -53,8 +53,7 @@
         <activity android:name=".vues.ActivityBudget" />
         <activity android:name=".vues.FormationsActivity" />
         <activity
-            android:name=".vues.FormationActivity"
-            android:theme="@style/AppTheme.PopupCustomTheme" />
+            android:name=".vues.FormationActivity"/>
         <activity android:name=".vues.ActivityMesures" />
         <activity android:name=".vues.SendMailActivity"></activity>
     </application>
