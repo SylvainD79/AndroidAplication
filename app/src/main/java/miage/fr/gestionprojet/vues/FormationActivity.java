@@ -26,8 +26,6 @@ public class FormationActivity extends AppCompatActivity {
 
     protected Formation formationData;
 
-    private List<EtapeFormation> listeEtapeFormation;
-
     @BindView(R.id.formationName)
     TextView formationName;
 
@@ -75,7 +73,7 @@ public class FormationActivity extends AppCompatActivity {
         formationObjectifProgressBar.setProgress((int) formationData.getAvancementObjectif());
         formationPostFormatProgressBar.setProgress((int) formationData.getAvancementPostFormation());
 
-        listeEtapeFormation = DaoEtapeFormation.getEtapeFormationByFormation(formationData);
+        List<EtapeFormation> listeEtapeFormation = DaoEtapeFormation.getEtapeFormationByFormation(formationData);
 
         EtapeFormationAdapter etapeFormationsAdapter = new EtapeFormationAdapter(this, R.layout.item_etape_formation, listeEtapeFormation);
         formationDescriptionsList.setAdapter(etapeFormationsAdapter);

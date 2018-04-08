@@ -66,6 +66,8 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {DriveScopes.DRIVE};
 
+    private Context context;
+
     // TODO récupérer l'id du spreadsheet mis par l'utilisateur, ou celui-là par défaut
     private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
 
@@ -74,6 +76,7 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_mail);
         ButterKnife.bind(this);
+        context = this;
         mCredential = GoogleAccountCredential
                 .usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
@@ -239,28 +242,24 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            FileOutputStream fOut = null;
-            try {
-                // Création du fichier pdf qui va recevoir le download du spreadhsheet
-                File localFolder = new File(Environment.getExternalStorageDirectory(), "WebPageToPDF");
-                if(!localFolder.exists()) {
-                    localFolder.mkdirs();
+            // Création du fichier pdf qui va recevoir le download du spreadhsheet
+            File localFolder = new File(Environment.getExternalStorageDirectory(), "WebPageToPDF");
+            if(!localFolder.exists()) {
+                localFolder.mkdirs();
+            }
+            File pdfFile =  new File (localFolder, "MySamplePDFFile.pdf");
+            try (FileOutputStream outputStream = new FileOutputStream(pdfFile)){
+                if (pdfFile.setWritable(true)) {
+                    mService.files().export(SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(outputStream);
+                    sendMailWithAttachment(pdfFile);
+                } else {
+                    // todo mieux gérer les exceptions / mettre un loader
+                    Toast.makeText(context, "Impossible de récupérer le fichier : l'écriture sur votre appareil est impossible", Toast.LENGTH_LONG).show();
                 }
-                File pdfFile =  new File (localFolder, "MySamplePDFFile.pdf");
-                fOut = new FileOutputStream(pdfFile);
-                pdfFile.setWritable(true);
-                // création fichier
-                mService.files().export(SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(fOut);
-                sendMailWithAttachment(pdfFile);
             } catch (Exception e) {
                 mLastError = e;
                 Log.e(TAG, e.getMessage());
                 cancel(true);
-            } finally {
-                if (fOut != null) {
-                    fOut.flush();
-                    fOut.close();
-                }
             }
             return new ArrayList<>();
         }
@@ -284,7 +283,7 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
 
         private void sendMailWithAttachment(File fileToSend) {
             Uri path = Uri.fromFile(fileToSend);
-            String to[] = {mailDestinataire.getText().toString().toLowerCase().trim()};
+            String[] to = {mailDestinataire.getText().toString().toLowerCase().trim()};
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("vnd.android.cursor.dir/email");
             intent.putExtra(Intent.EXTRA_EMAIL, to);

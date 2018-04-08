@@ -23,7 +23,7 @@ public class DaoSaisieCharge {
     private static final String SAISIE_FILTER = "Saisie";
 
     public static List<SaisieCharge> loadSaisiesByAction(Action action) {
-        return new Select().from(SaisieCharge.class).where("action=?",action.getId()).execute();
+        return new Select().from(SaisieCharge.class).where(ACTION_FILTER,action.getId()).execute();
 
     }
     public static List<SaisieCharge> loadAll() {
@@ -44,7 +44,6 @@ public class DaoSaisieCharge {
                         .from(SaisieCharge.class)
                         .where(ACTION_FILTER, String.valueOf(action.getId()))
                         .execute().get(0);
-                System.out.println(saisieCharge.getHeureParUnite());;
                 saisiesCharge.add(saisieCharge);
             }
         }
@@ -73,7 +72,7 @@ public class DaoSaisieCharge {
     public static SaisieCharge loadSaisiesChargeByAction(long idAction){
         List<SaisieCharge> saisiesCharge = new Select()
                 .from(SaisieCharge.class)
-                .where("action = ?", idAction)
+                .where(ACTION_FILTER, idAction)
                 .execute();
         if (!saisiesCharge.isEmpty()) {
             return saisiesCharge.get(0);

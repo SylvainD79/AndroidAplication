@@ -170,17 +170,7 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
             for (Domaine domaine : doms) {
                 menu.add(0, (int)(long)domaine.getId(), 0, domaine.getNom());
             }
-            pMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.all) {
-                        refreshAdapter(saisiesCharge);
-                    } else {
-                        refreshAdapter(DaoSaisieCharge.loadSaisiesChargesByDomaine(item.getItemId()));
-                    }
-                    return true;
-                }
-            });
+            setMenuItemClickListenerForDomaine(pMenu);
         }
 
         if (type.equalsIgnoreCase("utilisateurs")) {
@@ -192,19 +182,37 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
                     menu.add(0, (int)(long)ressource.getId(), 0, ressource.getInitiales());
                 }
             }
-            pMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.all) {
-                        refreshAdapter(saisiesCharge);
-                    } else {
-                        refreshAdapter(DaoSaisieCharge.loadSaisiesChargeByUtilisateur(item.getItemId()));
-                    }
-                    return true;
-                }
-            });
+            setMenuItemClickListenerForUser(pMenu);
         }
         pMenu.show();
+    }
+
+    private void setMenuItemClickListenerForUser(PopupMenu pMenu) {
+        pMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.all) {
+                    refreshAdapter(saisiesCharge);
+                } else {
+                    refreshAdapter(DaoSaisieCharge.loadSaisiesChargeByUtilisateur(item.getItemId()));
+                }
+                return true;
+            }
+        });
+    }
+
+    private void setMenuItemClickListenerForDomaine(PopupMenu pMenu) {
+        pMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.all) {
+                    refreshAdapter(saisiesCharge);
+                } else {
+                    refreshAdapter(DaoSaisieCharge.loadSaisiesChargesByDomaine(item.getItemId()));
+                }
+                return true;
+            }
+        });
     }
 
     private void refreshAdapter(List<SaisieCharge> actions){

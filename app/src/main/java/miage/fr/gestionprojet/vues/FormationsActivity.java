@@ -53,7 +53,6 @@ public class FormationsActivity extends AppCompatActivity {
         FormationsAdapter formationsAdapter = new FormationsAdapter(this, R.layout.item_formation, formations);
         formationsListView.setAdapter(formationsAdapter);
         formationsAdapter.notifyDataSetChanged();
-        System.out.println("remplissage de la liste");
     }
 
     protected void setFormationItemClickListener() {

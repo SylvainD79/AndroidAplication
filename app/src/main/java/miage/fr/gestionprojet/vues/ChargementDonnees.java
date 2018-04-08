@@ -357,11 +357,6 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
          * @throws IOException
          */
         private List<String> getDataFromApi(String spreadsheetId) throws IOException, ParseException {
-            /*tables des feuilles à parcourir
-            HashMap<String,String>feuilles= new HashMap<>();
-            feuilles.put("rangeActions","Liste des actions projet!A3:Z");
-            feuilles.put("rangeRessources","Ressources!A2:Z");
-            */
             String rangeProject = "Informations générales!A2:E";
             String rangeActions = "Liste des actions projet!A3:Z";
             String rangeDcConso = "DC et détails conso!A5:Z";
@@ -781,13 +776,11 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 informationText.setText("Request cancelled.");
             }
         }
-    }
 
+        private void initialiserEtapeFormation(List<List<Object>> values) {
+            new Delete().from(EtapeFormation.class).execute();
 
-    private void initialiserEtapeFormation(List<List<Object>> values) {
-        new Delete().from(EtapeFormation.class).execute();
-
-        ActiveAndroid.beginTransaction();
+            ActiveAndroid.beginTransaction();
             for (List row : values) {
                 EtapeFormation etapeFormation = new EtapeFormation();
                 List<Action> action = DaoAction.loadActionsByCode(row.get(2).toString());
@@ -806,5 +799,6 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
             }
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
+        }
     }
 }
