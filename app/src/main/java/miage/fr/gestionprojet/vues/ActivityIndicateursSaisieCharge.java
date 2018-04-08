@@ -118,6 +118,11 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.envoyer_mail:
+                Intent intentSendMail = new Intent(ActivityIndicateursSaisieCharge.this, SendMailActivity.class);
+                startActivity(intentSendMail);
+                return true;
+
             case R.id.menu_trie_utilisateur:
                 showPopup("utilisateurs");
                 return true;

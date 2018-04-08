@@ -10,4 +10,9 @@
     <string name="signIn">Se Connecter</string>
     <string name="title_activity_actions">ActionsActivity</string>
     <string name="title_activity_formations">FormationsActivity</string>
+
+    <!-- SendMail activity-->
+    <string name="mail_adress_hint">Saisir l\'email destinataire</string>
+    <string name="send_mail_button">Envoyer</string>
+
 </resources>

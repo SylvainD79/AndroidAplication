@@ -27,6 +27,7 @@ public class MainActivity  extends AppCompatActivity {
     private List<Projet> projets = null;
     private String initialUtilisateur = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,11 +86,18 @@ public class MainActivity  extends AppCompatActivity {
             case R.id.initial_utilisateur:
                 return true;
 
+            case R.id.envoyer_mail:
+                Intent intentSendMail = new Intent(MainActivity.this, SendMailActivity.class);
+                startActivity(intentSendMail);
+                return true;
+
             case R.id.charger_donnees:
                 Intent intent = new Intent(MainActivity.this, ChargementDonnees.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
+
+
 
             default:
                 break;
