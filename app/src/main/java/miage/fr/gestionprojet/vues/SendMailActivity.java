@@ -9,9 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,14 +29,13 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
-import com.google.api.services.sheets.v4.SheetsScopes;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +47,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class SendMailActivity extends Activity implements EasyPermissions.PermissionCallbacks {
+
     @BindView(R.id.send_mail)
     Button sendMail;
 
@@ -53,26 +56,24 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
 
     private GoogleAccountCredential mCredential;
 
-    static final int REQUEST_ACCOUNT_PICKER = 1000;
-    static final int REQUEST_AUTHORIZATION = 1001;
-    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-    private static final String PREF_ACCOUNT_NAME = "accountName";
+    private static final String TAG = "[SendMailActivity]";
 
+    private static final int REQUEST_ACCOUNT_PICKER = 1000;
+    private static final int REQUEST_AUTHORIZATION = 1001;
+    private static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    private static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+    private static final int REQUEST_PERMISSION_EXTERNAL_STORAGE = 1004;
+    private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {DriveScopes.DRIVE};
 
-    private static HttpTransport HTTP_TRANSPORT;
-
+    // TODO récupérer l'id du spreadsheet mis par l'utilisateur, ou celui-là par défaut
     private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
-
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_mail);
         ButterKnife.bind(this);
-
         mCredential = GoogleAccountCredential
                 .usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
@@ -81,14 +82,6 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
     @OnClick(R.id.send_mail)
     public void sendMyMail(){
         getResultsFromApi();
-        /*
-        OutputStream myDriveFile = this.sendMail();
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/html");
-        String mailDestination = this.mailDestinataire.getText().toString();
-        intent.putExtra(Intent.EXTRA_EMAIL, mailDestination);
-        startActivity(Intent.createChooser(intent, "Send Email"));
-        */
     }
 
     private void getResultsFromApi() {
@@ -105,18 +98,13 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
 
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
-        if (EasyPermissions.hasPermissions(
-                this, Manifest.permission.GET_ACCOUNTS)) {
-            String accountName = getPreferences(Context.MODE_PRIVATE)
-                    .getString(PREF_ACCOUNT_NAME, null);
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
+            String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
                 mCredential.setSelectedAccountName(accountName);
                 getResultsFromApi();
             } else {
-                // Start a dialog from which the user can choose an account
-                startActivityForResult(
-                        mCredential.newChooseAccountIntent(),
-                        REQUEST_ACCOUNT_PICKER);
+                startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
@@ -129,8 +117,7 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
     }
 
     @Override
-    protected void onActivityResult(
-            int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
@@ -138,14 +125,13 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                     getResultsFromApi();
                 }
                 break;
+
             case REQUEST_ACCOUNT_PICKER:
                 if (resultCode == RESULT_OK && data != null &&
                         data.getExtras() != null) {
-                    String accountName =
-                            data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                    String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
-                        SharedPreferences settings =
-                                getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
@@ -154,7 +140,14 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                     }
                 }
                 break;
+
             case REQUEST_AUTHORIZATION:
+                if (resultCode == RESULT_OK) {
+                    getResultsFromApi();
+                }
+                break;
+
+            case REQUEST_PERMISSION_EXTERNAL_STORAGE:
                 if (resultCode == RESULT_OK) {
                     getResultsFromApi();
                 }
@@ -170,62 +163,35 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(
-                requestCode, permissions, grantResults, this);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     private boolean isDeviceOnline() {
-        ConnectivityManager connMgr =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
 
     private boolean isGooglePlayServicesAvailable() {
-        GoogleApiAvailability apiAvailability =
-                GoogleApiAvailability.getInstance();
-        final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
-        return connectionStatusCode == ConnectionResult.SUCCESS;
+        final int connectionStatusCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        return ConnectionResult.SUCCESS == connectionStatusCode;
     }
 
     private void acquireGooglePlayServices() {
-        GoogleApiAvailability apiAvailability =
-                GoogleApiAvailability.getInstance();
-        final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
         if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
             showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
         }
     }
 
-    void showGooglePlayServicesAvailabilityErrorDialog(
-            final int connectionStatusCode) {
+    void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
                 SendMailActivity.this,
                 connectionStatusCode,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
-    }
-
-    public Drive getDriveServices() throws GeneralSecurityException, IOException {
-        HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
-        return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, this.mCredential).setApplicationName("Big Follow").build();
-    }
-
-    public OutputStream sendMail() {
-        OutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            this.getDriveServices().files().export(SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(outputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return outputStream;
     }
 
     @Override
@@ -261,9 +227,9 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                 return getDataFromApi();
             } catch (Exception e) {
                 mLastError = e;
-                System.out.println(e);
-                return null;
+                Log.e(TAG, e.getMessage());
             }
+            return new ArrayList<>();
         }
 
         /**
@@ -273,36 +239,30 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            System.out.println("hello");
-            OutputStream outputStream = new ByteArrayOutputStream();
+            FileOutputStream fOut = null;
             try {
-                mService.files().export(SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(outputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-                mLastError = e;
-                cancel(true);
+                // Création du fichier pdf qui va recevoir le download du spreadhsheet
+                File localFolder = new File(Environment.getExternalStorageDirectory(), "WebPageToPDF");
+                if(!localFolder.exists()) {
+                    localFolder.mkdirs();
+                }
+                File pdfFile =  new File (localFolder, "MySamplePDFFile.pdf");
+                fOut = new FileOutputStream(pdfFile);
+                pdfFile.setWritable(true);
+                // création fichier
+                mService.files().export(SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(fOut);
+                sendMailWithAttachment(pdfFile);
             } catch (Exception e) {
                 mLastError = e;
+                Log.e(TAG, e.getMessage());
                 cancel(true);
-                e.printStackTrace();
-            }
-            // todo ici code métier
-            return null;
-            // Get a list of up to 10 files.
-            /*
-            List<String> fileInfo = new ArrayList<String>();
-            FileList result = mService.files().list()
-                    .setPageSize(10)
-                    .setFields("nextPageToken, files(id, name)")
-                    .execute();
-            List<File> files = result.getFiles();
-            if (files != null) {
-                for (File file : files) {
-                    fileInfo.add(String.format("%s (%s)\n",
-                            file.getName(), file.getId()));
+            } finally {
+                if (fOut != null) {
+                    fOut.flush();
+                    fOut.close();
                 }
             }
-            return fileInfo;*/
+            return new ArrayList<>();
         }
 
         @Override
@@ -316,8 +276,22 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             REQUEST_AUTHORIZATION);
+                } else if (mLastError instanceof FileNotFoundException) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_EXTERNAL_STORAGE);
                 }
             }
         }
+
+        private void sendMailWithAttachment(File fileToSend) {
+            Uri path = Uri.fromFile(fileToSend);
+            String to[] = {mailDestinataire.getText().toString().toLowerCase().trim()};
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("vnd.android.cursor.dir/email");
+            intent.putExtra(Intent.EXTRA_EMAIL, to);
+            intent.putExtra(Intent.EXTRA_STREAM, path);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Document Big Follow");
+            startActivity(Intent.createChooser(intent, "Send Email"));
+        }
     }
+
 }
