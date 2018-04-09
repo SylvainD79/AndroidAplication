@@ -227,7 +227,7 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                 return getDataFromApi();
             } catch (Exception e) {
                 mLastError = e;
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, e.toString());
             }
             return new ArrayList<>();
         }

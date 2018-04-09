@@ -96,7 +96,7 @@ public class ActionsActivity extends AppCompatActivity implements ActionClicked 
             initial = getIntent().getStringExtra(ActivityDetailsProjet.EXTRA_INITIAL);
             idProjet = getIntent().getLongExtra(EXTRA_PROJET,0);
         } catch(Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.toString());
             finish();
         }
 
@@ -137,7 +137,7 @@ public class ActionsActivity extends AppCompatActivity implements ActionClicked 
                     dateSaisie = Outils.weekOfYearToDate(year,week);
                     refreshAdapter(DaoAction.loadActionsByDate(dateSaisie, idProjet));
                 } catch(Exception e) {
-                    Log.e(TAG, e.getMessage());
+                    Log.e(TAG, e.toString());
                     yearEditText.setError("");
                 }
             }
@@ -160,7 +160,7 @@ public class ActionsActivity extends AppCompatActivity implements ActionClicked 
                     dateSaisie = Outils.weekOfYearToDate(year,week);
                     refreshAdapter(DaoAction.loadActionsByDate(dateSaisie, idProjet));
                 } catch(Exception e) {
-                    Log.e(TAG, e.getMessage());
+                    Log.e(TAG, e.toString());
                     weekEditText.setError("");
                 }
             }
