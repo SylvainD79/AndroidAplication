@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -66,6 +67,8 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {DriveScopes.DRIVE};
 
+    private ProgressDialog progressDialog;
+
     // TODO récupérer l'id du spreadsheet mis par l'utilisateur, ou celui-là par défaut
     private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
 
@@ -77,6 +80,9 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
         mCredential = GoogleAccountCredential
                 .usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Chargement du fichier  ...");
     }
 
     @OnClick(R.id.send_mail)
@@ -89,7 +95,7 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
             acquireGooglePlayServices();
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
-        } else if (! isDeviceOnline()) {
+        } else if (!isDeviceOnline()) {
             Toast.makeText(this, "No network connection available.", Toast.LENGTH_LONG).show();
         } else {
             new MakeRequestTask(mCredential).execute();
@@ -217,6 +223,16 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                     .build();
         }
 
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(List<String> output) {
+            progressDialog.hide();
+        }
+
         /**
          * Background task to call Drive API.
          * @param params no parameters needed for this task.
@@ -263,6 +279,7 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
 
         @Override
         protected void onCancelled() {
+            progressDialog.hide();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
                     showGooglePlayServicesAvailabilityErrorDialog(
