@@ -66,8 +66,6 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {DriveScopes.DRIVE};
 
-    private Context context;
-
     // TODO récupérer l'id du spreadsheet mis par l'utilisateur, ou celui-là par défaut
     private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
 
@@ -76,7 +74,6 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_mail);
         ButterKnife.bind(this);
-        context = this;
         mCredential = GoogleAccountCredential
                 .usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
@@ -249,16 +246,16 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
             }
             File pdfFile =  new File (localFolder, "MySamplePDFFile.pdf");
             try (FileOutputStream outputStream = new FileOutputStream(pdfFile)){
-                if (pdfFile.setWritable(true)) {
+                if (pdfFile.canWrite() || pdfFile.setWritable(true)) {
                     mService.files().export(SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(outputStream);
                     sendMailWithAttachment(pdfFile);
                 } else {
                     // todo mieux gérer les exceptions / mettre un loader
-                    Toast.makeText(context, "Impossible de récupérer le fichier : l'écriture sur votre appareil est impossible", Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "Impossible de récupérer le fichier : l'écriture sur votre appareil est impossible");
                 }
             } catch (Exception e) {
                 mLastError = e;
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, e.toString());
                 cancel(true);
             }
             return new ArrayList<>();
