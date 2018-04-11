@@ -1,6 +1,7 @@
 package miage.fr.gestionprojet.models.dao;
 
 import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
 
 import java.util.List;
 
@@ -22,6 +23,26 @@ public class DaoEtapeFormation {
                 .from(EtapeFormation.class)
                 .where("formation = ?", String.valueOf(formation.getId()))
                 .execute();
+    }
+
+    public static EtapeFormation getEtapeFormationById(Long id) {
+        return new Select()
+                .from(EtapeFormation.class)
+                .where("id = ?", id)
+                .executeSingle();
+    }
+
+    public static void modificationDonnee(long id,String commentaire, boolean check) {
+        new Update(EtapeFormation.class)
+                .set("commentaire = ?", commentaire)
+                .where("id = ?", id)
+                .execute();
+
+        new Update(EtapeFormation.class)
+                .set("objectif_atteint = ?", check)
+                .where("id = ?", id)
+                .execute();
+
     }
 
 }

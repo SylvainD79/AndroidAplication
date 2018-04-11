@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,11 +22,14 @@ import miage.fr.gestionprojet.models.dao.DaoEtapeFormation;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
 
 public class FormationActivity extends AppCompatActivity {
+    public static final String PLAN_FORMATION_SELECTED = "detail-selected";
 
     // TODO rendre "transparent"
     // TODO afficher les descriptions
 
     protected Formation formationData;
+
+    List<EtapeFormation> listeEtapeFormation;
 
     @BindView(R.id.formationName)
     TextView formationName;
@@ -56,6 +61,7 @@ public class FormationActivity extends AppCompatActivity {
 
         getFormationData();
         fillFormationData();
+        setDetailFormationItemClickListener();
     }
 
 
@@ -73,9 +79,20 @@ public class FormationActivity extends AppCompatActivity {
         formationObjectifProgressBar.setProgress((int) formationData.getAvancementObjectif());
         formationPostFormatProgressBar.setProgress((int) formationData.getAvancementPostFormation());
 
-        List<EtapeFormation> listeEtapeFormation = DaoEtapeFormation.getEtapeFormationByFormation(formationData);
+        listeEtapeFormation = DaoEtapeFormation.getEtapeFormationByFormation(formationData);
 
         EtapeFormationAdapter etapeFormationsAdapter = new EtapeFormationAdapter(this, R.layout.item_etape_formation, listeEtapeFormation);
         formationDescriptionsList.setAdapter(etapeFormationsAdapter);
+    }
+
+    protected void setDetailFormationItemClickListener() {
+        formationDescriptionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), ActivityDetailPlanFormation.class);
+                intent.putExtra(PLAN_FORMATION_SELECTED, (listeEtapeFormation.get(i).getId()));
+                startActivity(intent);
+            }
+        });
     }
 }

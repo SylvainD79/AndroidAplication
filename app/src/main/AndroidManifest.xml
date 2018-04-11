@@ -55,7 +55,9 @@
         <activity
             android:name=".vues.FormationActivity"/>
         <activity android:name=".vues.ActivityMesures" />
-        <activity android:name=".vues.SendMailActivity"></activity>
+        <activity android:name=".vues.SendMailActivity"/>
+        <activity android:name=".vues.ActivityDetailPlanFormation"
+            android:theme="@style/AppTheme.PopupCustomTheme" />
     </application>
 
 </manifest>
