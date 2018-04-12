@@ -1,4 +1,4 @@
-# Projet Big Follow
+# Projet Big Follow V2
 
 ## 1. Présentation
 
