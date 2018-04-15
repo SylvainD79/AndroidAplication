@@ -89,7 +89,7 @@ public class FormationActivity extends AppCompatActivity {
         formationDescriptionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), ActivityDetailPlanFormation.class);
+                Intent intent = new Intent(getApplicationContext(), DetailPlanFormationActivity.class);
                 intent.putExtra(PLAN_FORMATION_SELECTED, (listeEtapeFormation.get(i).getId()));
                 startActivity(intent);
             }

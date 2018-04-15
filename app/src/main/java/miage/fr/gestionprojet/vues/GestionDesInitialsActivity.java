@@ -20,7 +20,7 @@ import miage.fr.gestionprojet.adapters.AdapterInitiales;
 import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 
-public class ActivityGestionDesInitials extends AppCompatActivity {
+public class GestionDesInitialsActivity extends AppCompatActivity {
 
     private List<Ressource> ressourcesInitiales = null;
     public static final String EXTRA_INITIAL = "Initial";
@@ -48,7 +48,7 @@ public class ActivityGestionDesInitials extends AppCompatActivity {
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Intent intent = new Intent(ActivityGestionDesInitials.this, MainActivity.class);
+                    Intent intent = new Intent(GestionDesInitialsActivity.this, MainActivity.class);
                     intent.putExtra(EXTRA_INITIAL, (ressourcesInitiales.get(position).getInitiales()));
                     startActivity(intent);
                 }
@@ -63,7 +63,7 @@ public class ActivityGestionDesInitials extends AppCompatActivity {
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Intent intent = new Intent(ActivityGestionDesInitials.this, MainActivity.class);
+                    Intent intent = new Intent(GestionDesInitialsActivity.this, MainActivity.class);
                     intent.putExtra(EXTRA_INITIAL,"");
                     startActivity(intent);
                 }

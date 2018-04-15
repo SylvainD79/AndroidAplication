@@ -28,7 +28,7 @@ import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.models.dao.DaoRessource;
 
-public class ActivityBudget extends AppCompatActivity {
+public class BudgetActivity extends AppCompatActivity {
     @BindView(R.id.lstViewBudget)
     ListView liste;
 
@@ -62,7 +62,7 @@ public class ActivityBudget extends AppCompatActivity {
         spinChoixAffichage.setAdapter(adapter);
         //on récupère le projet sélectionné
         Intent intent = getIntent();
-        long id =  intent.getLongExtra(ActivityDetailsProjet.PROJET_VISU,0);
+        long id =  intent.getLongExtra(DetailsProjetActivity.PROJET_VISU,0);
         if (id > 0) {
             projet = Model.load(Projet.class, id);
         } else {
@@ -99,19 +99,19 @@ public class ActivityBudget extends AppCompatActivity {
 
     private void affichageDomaine(){
         List<Domaine> domaines = projet.getLstDomaines();
-        AdapterBudgetDomaine adapter = new AdapterBudgetDomaine(ActivityBudget.this,R.layout.lst_view_budget,domaines);
+        AdapterBudgetDomaine adapter = new AdapterBudgetDomaine(BudgetActivity.this,R.layout.lst_view_budget,domaines);
         this.liste.setAdapter(adapter);
     }
 
     private void affichageType(){
         List<String> types = DaoAction.getLstTypeTravail();
-        AdapterBudgetType adapter = new AdapterBudgetType(ActivityBudget.this,R.layout.lst_view_budget,types);
+        AdapterBudgetType adapter = new AdapterBudgetType(BudgetActivity.this,R.layout.lst_view_budget,types);
         this.liste.setAdapter(adapter);
     }
 
     private void affichageUtilisateur(){
         List<Ressource> utilisateurs = DaoRessource.loadAll();
-        AdapterBudgetUtilisateur adapter = new AdapterBudgetUtilisateur(ActivityBudget.this,R.layout.lst_view_budget,utilisateurs);
+        AdapterBudgetUtilisateur adapter = new AdapterBudgetUtilisateur(BudgetActivity.this,R.layout.lst_view_budget,utilisateurs);
         this.liste.setAdapter(adapter);
     }
 
@@ -130,13 +130,13 @@ public class ActivityBudget extends AppCompatActivity {
                 return true;
 
             case R.id.charger_donnees:
-                Intent intent = new Intent(ActivityBudget.this, ChargementDonnees.class);
+                Intent intent = new Intent(BudgetActivity.this, ChargementDonneesActivity.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
 
             case R.id.envoyer_mail:
-                Intent intentSendMail = new Intent(ActivityBudget.this, SendMailActivity.class);
+                Intent intentSendMail = new Intent(BudgetActivity.this, SendMailActivity.class);
                 startActivity(intentSendMail);
                 return true;
 

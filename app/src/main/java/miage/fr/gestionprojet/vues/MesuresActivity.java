@@ -19,7 +19,7 @@ import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoMesure;
 
-public class ActivityMesures extends AppCompatActivity {
+public class MesuresActivity extends AppCompatActivity {
     public static final String EXTRA_INITIAL = "initial";
     private String initialUtilisateur;
 
@@ -33,7 +33,7 @@ public class ActivityMesures extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        long id = intent.getLongExtra(ActivityIndicateursSaisieCharge.SAISIECHARGE,0);
+        long id = intent.getLongExtra(IndicateursSaisieChargeActivity.SAISIECHARGE,0);
         initialUtilisateur = intent.getStringExtra(EXTRA_INITIAL);
 
         if (id > 0) {
@@ -61,13 +61,13 @@ public class ActivityMesures extends AppCompatActivity {
                 return true;
 
             case R.id.charger_donnees:
-                Intent intent = new Intent(ActivityMesures.this, ChargementDonnees.class);
+                Intent intent = new Intent(MesuresActivity.this, ChargementDonneesActivity.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
 
             case R.id.envoyer_mail:
-                Intent intentSendMail = new Intent(ActivityMesures.this, SendMailActivity.class);
+                Intent intentSendMail = new Intent(MesuresActivity.this, SendMailActivity.class);
                 startActivity(intentSendMail);
                 return true;
 

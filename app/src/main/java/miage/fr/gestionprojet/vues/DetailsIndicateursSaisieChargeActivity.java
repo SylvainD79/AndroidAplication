@@ -29,7 +29,7 @@ import miage.fr.gestionprojet.models.dao.DaoMesure;
 import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.Outils;
 
-public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
+public class DetailsIndicateursSaisieChargeActivity extends AppCompatActivity {
 
     private SaisieCharge saisieCharge = null;
     public static final String EXTRA_INITIAL = "initial";
@@ -67,7 +67,7 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        long id = intent.getLongExtra(ActivityIndicateursSaisieCharge.SAISIECHARGE,0);
+        long id = intent.getLongExtra(IndicateursSaisieChargeActivity.SAISIECHARGE,0);
         initialUtilisateur = intent.getStringExtra(EXTRA_INITIAL);
 
         if (id > 0) {
@@ -120,13 +120,13 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
                 return true;
 
             case R.id.charger_donnees:
-                Intent intent = new Intent(ActivityDetailsIndicateursSaisieCharge.this, ChargementDonnees.class);
+                Intent intent = new Intent(DetailsIndicateursSaisieChargeActivity.this, ChargementDonneesActivity.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
 
             case R.id.envoyer_mail:
-                Intent intentSendMail = new Intent(ActivityDetailsIndicateursSaisieCharge.this, SendMailActivity.class);
+                Intent intentSendMail = new Intent(DetailsIndicateursSaisieChargeActivity.this, SendMailActivity.class);
                 startActivity(intentSendMail);
                 return true;
 
@@ -138,7 +138,7 @@ public class ActivityDetailsIndicateursSaisieCharge extends AppCompatActivity {
 
     @OnClick(R.id.btnMesures)
     public void visualiserMesure() {
-        Intent intent = new Intent(ActivityDetailsIndicateursSaisieCharge.this, ActivityMesures.class);
+        Intent intent = new Intent(DetailsIndicateursSaisieChargeActivity.this, MesuresActivity.class);
         intent.putExtra(EXTRA_SAISIECHARGE, saisieCharge.getId());
         intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
         startActivity(intent);

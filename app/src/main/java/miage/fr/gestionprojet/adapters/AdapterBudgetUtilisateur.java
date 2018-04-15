@@ -18,7 +18,7 @@ import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Ressource;
 import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.outils.Outils;
-import miage.fr.gestionprojet.vues.ActivityBudget;
+import miage.fr.gestionprojet.vues.BudgetActivity;
 
 /**
  * Created by Audrey on 25/04/2017.
@@ -27,11 +27,11 @@ import miage.fr.gestionprojet.vues.ActivityBudget;
 public class AdapterBudgetUtilisateur extends ArrayAdapter<Ressource> {
 
     private List<Ressource> utilisateurs;
-    private ActivityBudget activity;
+    private BudgetActivity activity;
     private ArrayList<Integer> nbActionsRealisees;
     private ArrayList<Integer> nbActions;
 
-    public AdapterBudgetUtilisateur(ActivityBudget context,  int resource,  List<Ressource> objects) {
+    public AdapterBudgetUtilisateur(BudgetActivity context, int resource, List<Ressource> objects) {
         super(context, resource, objects);
         this.activity = context;
         this.utilisateurs = objects;

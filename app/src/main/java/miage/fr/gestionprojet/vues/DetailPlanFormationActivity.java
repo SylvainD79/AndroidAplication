@@ -15,13 +15,12 @@ import butterknife.OnClick;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.EtapeFormation;
 import miage.fr.gestionprojet.models.dao.DaoEtapeFormation;
-import miage.fr.gestionprojet.models.dao.DaoFormation;
 
 /**
  * Created by utilisateur on 11/04/2018.
  */
 
-public class ActivityDetailPlanFormation extends AppCompatActivity {
+public class DetailPlanFormationActivity extends AppCompatActivity {
 
     @BindView(R.id.phase)
     TextView phase;

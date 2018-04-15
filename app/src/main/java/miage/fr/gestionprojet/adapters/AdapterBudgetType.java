@@ -17,16 +17,16 @@ import javax.annotation.Nonnull;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.outils.Outils;
-import miage.fr.gestionprojet.vues.ActivityBudget;
+import miage.fr.gestionprojet.vues.BudgetActivity;
 
 public class AdapterBudgetType extends ArrayAdapter<String> {
 
     private List<String> typesTravail;
-    private ActivityBudget activity;
+    private BudgetActivity activity;
     private ArrayList<Integer> nbActionsRealisees;
     private ArrayList<Integer> nbActions;
 
-    public AdapterBudgetType(ActivityBudget context, int resource, List<String> objects) {
+    public AdapterBudgetType(BudgetActivity context, int resource, List<String> objects) {
         super(context, resource, objects);
         this.activity = context;
         this.typesTravail = objects;

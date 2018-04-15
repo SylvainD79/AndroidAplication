@@ -33,30 +33,30 @@
             miage.fr.gestionprojet.models.Ressource,
             miage.fr.gestionprojet.models.SaisieCharge" />
 
-        <activity android:name=".vues.ActivityConnexion">
+        <activity android:name=".vues.ConnexionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".vues.ChargementDonnees" />
+        <activity android:name=".vues.ChargementDonneesActivity" />
         <activity android:name=".vues.MainActivity" />
-        <activity android:name=".vues.ActivityDetailsProjet" />
-        <activity android:name=".vues.ActivityIndicateursSaisieCharge" />
-        <activity android:name=".vues.ActivityDetailsIndicateursSaisieCharge" />
-        <activity android:name=".vues.ActivityGestionDesInitials" />
+        <activity android:name=".vues.DetailsProjetActivity" />
+        <activity android:name=".vues.IndicateursSaisieChargeActivity" />
+        <activity android:name=".vues.DetailsIndicateursSaisieChargeActivity" />
+        <activity android:name=".vues.GestionDesInitialsActivity" />
         <activity
             android:name=".vues.ActionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".vues.ActivityBudget" />
+        <activity android:name=".vues.BudgetActivity" />
         <activity android:name=".vues.FormationsActivity" />
         <activity
             android:name=".vues.FormationActivity"/>
-        <activity android:name=".vues.ActivityMesures" />
+        <activity android:name=".vues.MesuresActivity" />
         <activity android:name=".vues.SendMailActivity"/>
-        <activity android:name=".vues.ActivityDetailPlanFormation"
+        <activity android:name=".vues.DetailPlanFormationActivity"
             android:theme="@style/AppTheme.PopupCustomTheme" />
     </application>
 

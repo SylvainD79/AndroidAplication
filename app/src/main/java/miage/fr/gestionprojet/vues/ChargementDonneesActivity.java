@@ -66,7 +66,7 @@ import miage.fr.gestionprojet.outils.Outils;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class ChargementDonnees extends Activity implements EasyPermissions.PermissionCallbacks {
+public class ChargementDonneesActivity extends Activity implements EasyPermissions.PermissionCallbacks {
 
     private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
 
@@ -307,7 +307,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
     void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
-                ChargementDonnees.this,
+                ChargementDonneesActivity.this,
                 connectionStatusCode,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
@@ -750,9 +750,9 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 informationText.setText(TextUtils.join("\n", output));
             }
             Intent intentInitial = getIntent();
-            String initialUtilisateur = intentInitial.getStringExtra(ActivityGestionDesInitials.EXTRA_INITIAL);
-            Intent intent = new Intent(ChargementDonnees.this,ActivityGestionDesInitials.class);
-            intent.putExtra(ActivityGestionDesInitials.EXTRA_INITIAL, initialUtilisateur);
+            String initialUtilisateur = intentInitial.getStringExtra(GestionDesInitialsActivity.EXTRA_INITIAL);
+            Intent intent = new Intent(ChargementDonneesActivity.this,GestionDesInitialsActivity.class);
+            intent.putExtra(GestionDesInitialsActivity.EXTRA_INITIAL, initialUtilisateur);
             startActivity(intent);
         }
 
@@ -767,7 +767,7 @@ public class ChargementDonnees extends Activity implements EasyPermissions.Permi
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            ChargementDonnees.REQUEST_AUTHORIZATION);
+                            ChargementDonneesActivity.REQUEST_AUTHORIZATION);
                 } else {
                     String text = "The following error occurred:\n" + mLastError.getMessage();
                     informationText.setText(text);

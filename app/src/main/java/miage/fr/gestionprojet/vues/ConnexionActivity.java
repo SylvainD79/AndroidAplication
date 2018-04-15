@@ -27,7 +27,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import miage.fr.gestionprojet.R;
 
-public class ActivityConnexion extends AppCompatActivity {
+public class ConnexionActivity extends AppCompatActivity {
 
     private static final String TAG = "[ActionsActivity]";
 
@@ -100,7 +100,7 @@ public class ActivityConnexion extends AppCompatActivity {
 
     @OnClick(R.id.go_next_activity)
     public void clickedOnGoNextActivityButton() {
-        Intent intent = new Intent(this, ActivityGestionDesInitials.class);
+        Intent intent = new Intent(this, GestionDesInitialsActivity.class);
         startActivity(intent);
     }
 

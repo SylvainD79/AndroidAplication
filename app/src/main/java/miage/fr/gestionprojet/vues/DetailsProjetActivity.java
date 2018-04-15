@@ -31,7 +31,7 @@ import miage.fr.gestionprojet.models.dao.DaoProjet;
 import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
 import miage.fr.gestionprojet.outils.Outils;
 
-public class ActivityDetailsProjet extends AppCompatActivity {
+public class DetailsProjetActivity extends AppCompatActivity {
 
     private static final String RESSOURCES = "Avancement des saisies";
     private static final String FORMATIONS = "Avancement des formations";
@@ -66,25 +66,25 @@ public class ActivityDetailsProjet extends AppCompatActivity {
             Intent intent;
             switch (position) {
                 case 0:
-                    intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
+                    intent = new Intent(DetailsProjetActivity.this, IndicateursSaisieChargeActivity.class);
                     addExtra(intent);
                     startActivity(intent);
                     break;
 
                 case 1:
-                    intent = new Intent(ActivityDetailsProjet.this, FormationsActivity.class);
+                    intent = new Intent(DetailsProjetActivity.this, FormationsActivity.class);
                     addExtra(intent);
                     startActivity(intent);
                     break;
 
                 case 2:
-                    intent = new Intent(ActivityDetailsProjet.this, ActionsActivity.class);
+                    intent = new Intent(DetailsProjetActivity.this, ActionsActivity.class);
                     addExtra(intent);
                     startActivity(intent);
                     break;
 
                 case 3:
-                    intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
+                    intent = new Intent(DetailsProjetActivity.this, BudgetActivity.class);
                     addExtra(intent);
                     startActivity(intent);
                     break;
@@ -191,13 +191,13 @@ public class ActivityDetailsProjet extends AppCompatActivity {
                 return true;
 
             case R.id.charger_donnees:
-                Intent intent = new Intent(ActivityDetailsProjet.this, ChargementDonnees.class);
+                Intent intent = new Intent(DetailsProjetActivity.this, ChargementDonneesActivity.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
 
             case R.id.envoyer_mail:
-                Intent intentSendMail = new Intent(ActivityDetailsProjet.this, SendMailActivity.class);
+                Intent intentSendMail = new Intent(DetailsProjetActivity.this, SendMailActivity.class);
                 startActivity(intentSendMail);
                 return true;
 
@@ -210,7 +210,7 @@ public class ActivityDetailsProjet extends AppCompatActivity {
 
     @OnClick(R.id.btnSaisies)
     public void afficherSaissi() {
-        Intent intent = new Intent(ActivityDetailsProjet.this, ActivityIndicateursSaisieCharge.class);
+        Intent intent = new Intent(DetailsProjetActivity.this, IndicateursSaisieChargeActivity.class);
         intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
         intent.putExtra(PROJET_VISU, projet.getId());
         startActivity(intent);
@@ -219,14 +219,14 @@ public class ActivityDetailsProjet extends AppCompatActivity {
 
     @OnClick(R.id.btnFormations)
     public void afficherFormation() {
-        Intent intent = new Intent(ActivityDetailsProjet.this, FormationsActivity.class);
+        Intent intent = new Intent(DetailsProjetActivity.this, FormationsActivity.class);
         intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
         startActivity(intent);
     }
 
     @OnClick(R.id.btnBudget)
     public void afficherBudget() {
-        Intent intent = new Intent(ActivityDetailsProjet.this, ActivityBudget.class);
+        Intent intent = new Intent(DetailsProjetActivity.this, BudgetActivity.class);
         intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
         intent.putExtra(PROJET_VISU, projet.getId());
         startActivity(intent);

@@ -93,7 +93,7 @@ public class ActionsActivity extends AppCompatActivity implements ActionClicked 
         ButterKnife.bind(this);
 
         try {
-            initial = getIntent().getStringExtra(ActivityDetailsProjet.EXTRA_INITIAL);
+            initial = getIntent().getStringExtra(DetailsProjetActivity.EXTRA_INITIAL);
             idProjet = getIntent().getLongExtra(EXTRA_PROJET,0);
         } catch(Exception e) {
             Log.e(TAG, e.toString());
@@ -314,7 +314,7 @@ public class ActionsActivity extends AppCompatActivity implements ActionClicked 
                 return true;
 
             case R.id.charger_donnees:
-                Intent intent = new Intent(ActionsActivity.this, ChargementDonnees.class);
+                Intent intent = new Intent(ActionsActivity.this, ChargementDonneesActivity.class);
                 intent.putExtra(EXTRA_INITIAL, (initial));
                 startActivity(intent);
                 return true;

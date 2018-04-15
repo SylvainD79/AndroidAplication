@@ -30,7 +30,7 @@ import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoSaisieCharge;
 
 
-public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
+public class IndicateursSaisieChargeActivity extends AppCompatActivity {
 
     private List<SaisieCharge> saisiesCharge;
 
@@ -52,8 +52,8 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
 
         Intent intent = getIntent();
         //on récupère le projet sélectionné
-        long id =  intent.getLongExtra(ActivityDetailsProjet.PROJET_VISU,0);
-        initialUtilisateur = intent.getStringExtra(ActivityDetailsProjet.EXTRA_INITIAL);
+        long id =  intent.getLongExtra(DetailsProjetActivity.PROJET_VISU,0);
+        initialUtilisateur = intent.getStringExtra(DetailsProjetActivity.EXTRA_INITIAL);
 
         if (id > 0 ) {
             // on récupère les données associées à ce projet
@@ -74,7 +74,7 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(ActivityIndicateursSaisieCharge.this, ActivityDetailsIndicateursSaisieCharge.class);
+                    Intent intent = new Intent(IndicateursSaisieChargeActivity.this, DetailsIndicateursSaisieChargeActivity.class);
                     intent.putExtra(SAISIECHARGE, saisiesCharge.get(position).getId());
                     intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
                     startActivity(intent);
@@ -113,13 +113,13 @@ public class ActivityIndicateursSaisieCharge extends AppCompatActivity {
                 return true;
 
             case R.id.charger_donnees:
-                Intent intent = new Intent(ActivityIndicateursSaisieCharge.this, ChargementDonnees.class);
+                Intent intent = new Intent(IndicateursSaisieChargeActivity.this, ChargementDonneesActivity.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
 
             case R.id.envoyer_mail:
-                Intent intentSendMail = new Intent(ActivityIndicateursSaisieCharge.this, SendMailActivity.class);
+                Intent intentSendMail = new Intent(IndicateursSaisieChargeActivity.this, SendMailActivity.class);
                 startActivity(intentSendMail);
                 return true;
 

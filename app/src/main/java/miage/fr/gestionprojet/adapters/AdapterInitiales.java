@@ -16,14 +16,14 @@ import javax.annotation.Nonnull;
 
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Ressource;
-import miage.fr.gestionprojet.vues.ActivityGestionDesInitials;
+import miage.fr.gestionprojet.vues.GestionDesInitialsActivity;
 
 public class AdapterInitiales extends ArrayAdapter<Ressource> {
 
     private List<Ressource> initiales;
-    private ActivityGestionDesInitials activity;
+    private GestionDesInitialsActivity activity;
 
-    public AdapterInitiales(ActivityGestionDesInitials context, int resource, List<Ressource> objects) {
+    public AdapterInitiales(GestionDesInitialsActivity context, int resource, List<Ressource> objects) {
         super(context, resource, objects);
         this.activity = context;
         this.initiales = objects;

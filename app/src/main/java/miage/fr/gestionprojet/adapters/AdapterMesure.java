@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Mesure;
 import miage.fr.gestionprojet.outils.Constants;
-import miage.fr.gestionprojet.vues.ActivityMesures;
+import miage.fr.gestionprojet.vues.MesuresActivity;
 
 /**
  * Created by Audrey on 01/02/2017.
@@ -24,9 +24,9 @@ import miage.fr.gestionprojet.vues.ActivityMesures;
 public class AdapterMesure extends ArrayAdapter<Mesure>{
 
     private List<Mesure> mesures;
-    private ActivityMesures activity;
+    private MesuresActivity activity;
 
-    public AdapterMesure(ActivityMesures context, int resource, List<Mesure> objects) {
+    public AdapterMesure(MesuresActivity context, int resource, List<Mesure> objects) {
         super(context, resource, objects);
         this.activity = context;
         this.mesures = objects;

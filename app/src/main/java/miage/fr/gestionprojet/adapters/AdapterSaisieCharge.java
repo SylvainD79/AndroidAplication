@@ -23,14 +23,14 @@ import miage.fr.gestionprojet.models.SaisieCharge;
 import miage.fr.gestionprojet.models.dao.DaoMesure;
 import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.Outils;
-import miage.fr.gestionprojet.vues.ActivityIndicateursSaisieCharge;
+import miage.fr.gestionprojet.vues.IndicateursSaisieChargeActivity;
 
 public class AdapterSaisieCharge extends ArrayAdapter<SaisieCharge>{
 
     private List<SaisieCharge> saisiesCharge;
-    private ActivityIndicateursSaisieCharge activity;
+    private IndicateursSaisieChargeActivity activity;
 
-    public AdapterSaisieCharge(ActivityIndicateursSaisieCharge context, int resource, List<SaisieCharge> objects) {
+    public AdapterSaisieCharge(IndicateursSaisieChargeActivity context, int resource, List<SaisieCharge> objects) {
         super(context, resource, objects);
         this.activity = context;
         this.saisiesCharge = objects;

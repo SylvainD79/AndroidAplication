@@ -18,16 +18,16 @@ import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.Domaine;
 import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.outils.Outils;
-import miage.fr.gestionprojet.vues.ActivityBudget;
+import miage.fr.gestionprojet.vues.BudgetActivity;
 
 public class AdapterBudgetDomaine extends ArrayAdapter<Domaine> {
 
     private List<Domaine> domaines;
-    private ActivityBudget activity;
+    private BudgetActivity activity;
     private ArrayList<Integer> nbActionsRealisees;
     private ArrayList<Integer> nbActions;
 
-    public AdapterBudgetDomaine(ActivityBudget context, int resource, List<Domaine> objects) {
+    public AdapterBudgetDomaine(BudgetActivity context, int resource, List<Domaine> objects) {
         super(context, resource, objects);
         this.activity = context;
         this.domaines = objects;

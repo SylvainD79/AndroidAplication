@@ -34,7 +34,7 @@ public class MainActivity  extends AppCompatActivity {
         ActiveAndroid.initialize(this);
 
         Intent intentInitial = getIntent();
-        initialUtilisateur = intentInitial.getStringExtra(ActivityGestionDesInitials.EXTRA_INITIAL);
+        initialUtilisateur = intentInitial.getStringExtra(GestionDesInitialsActivity.EXTRA_INITIAL);
         setContentView(R.layout.activity_main);
 
         //on récupère la liste des projet dont la date de fin n'est passé
@@ -48,7 +48,7 @@ public class MainActivity  extends AppCompatActivity {
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Intent intent = new Intent(MainActivity.this, ActivityDetailsProjet.class);
+                    Intent intent = new Intent(MainActivity.this, DetailsProjetActivity.class);
                     intent.putExtra(EXTRA_PROJET, (projets.get(position).getId()));
                     intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
                     startActivity(intent);
@@ -57,7 +57,7 @@ public class MainActivity  extends AppCompatActivity {
         } else {
             // sinon, on affiche directement les détails du projet en cours
             if (projets.size() == 1) {
-                Intent intent = new Intent(MainActivity.this, ActivityDetailsProjet.class);
+                Intent intent = new Intent(MainActivity.this, DetailsProjetActivity.class);
                 intent.putExtra(EXTRA_PROJET, (projets.get(0).getId()));
                 intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
                 startActivity(intent);
@@ -92,7 +92,7 @@ public class MainActivity  extends AppCompatActivity {
                 return true;
 
             case R.id.charger_donnees:
-                Intent intent = new Intent(MainActivity.this, ChargementDonnees.class);
+                Intent intent = new Intent(MainActivity.this, ChargementDonneesActivity.class);
                 intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
                 startActivity(intent);
                 return true;
