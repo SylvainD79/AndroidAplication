@@ -14,10 +14,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -28,6 +26,7 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -80,6 +79,8 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
 
     private static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
+    private static final int ERROR_CODE_NOT_FOUND = 404;
+
     private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
 
     private GoogleAccountCredential mCredential;
@@ -88,11 +89,10 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
 
     private String userInput;
 
+    private Context context;
+
     @BindView(R.id.call_api_button)
     Button callApiButton;
-
-    @BindView(R.id.information_text)
-    TextView informationText;
 
     @BindView(R.id.user_input)
     EditText userInputEditText;
@@ -107,6 +107,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chargement_donnees);
         ButterKnife.bind(this);
+        context = this;
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Préparation de la base de données  ...");
@@ -121,7 +122,6 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
     public void loadApi() {
         this.userInput = userInputEditText.getText().toString();
         callApiButton.setEnabled(false);
-        informationText.setText("");
         getResultsFromApi(userInput);
         callApiButton.setEnabled(true);
     }
@@ -145,7 +145,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
             } else if (mCredential.getSelectedAccountName() == null) {
                 chooseAccount();
             } else if (!isDeviceOnline()) {
-                informationText.setText("No network connection available.");
+                Toast.makeText(context, "No network connection available.", Toast.LENGTH_LONG).show();
             } else {
                 new MakeRequestTask(mCredential, userInput).execute();
             }
@@ -204,7 +204,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
                 if (resultCode != RESULT_OK) {
                     String text = "This app requires Google Play Services. Please install " +
                             "Google Play Services on your device and relaunch this app.";
-                    informationText.setText(text);
+                    Toast.makeText(context, text, Toast.LENGTH_LONG).show();
                 } else {
                     getResultsFromApi(userInput);
                 }
@@ -317,7 +317,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
      * An asynchronous task that handles the Google Sheets API call.
      * Placing the API calls in their own task ensures the UI stays responsive.
      */
-    public class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
+    public class MakeRequestTask extends AsyncTask<Void, Void, Void> {
         private com.google.api.services.sheets.v4.Sheets mService = null;
         private Exception mLastError = null;
 
@@ -339,14 +339,14 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
          * @param params no parameters needed for this task.
          */
         @Override
-        protected List<String> doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             try {
-                return getDataFromApi(userInput);
+                getDataFromApi(userInput);
             } catch (Exception e) {
                 mLastError = e;
                 cancel(true);
-                return new ArrayList<>();
             }
+            return null;
         }
 
         /**
@@ -356,7 +356,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
          * @return List of names and majors
          * @throws IOException
          */
-        private List<String> getDataFromApi(String spreadsheetId) throws IOException, ParseException {
+        private void getDataFromApi(String spreadsheetId) throws IOException, ParseException {
             String rangeProject = "Informations générales!A2:E";
             String rangeActions = "Liste des actions projet!A3:Z";
             String rangeDcConso = "DC et détails conso!A5:Z";
@@ -369,7 +369,6 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
             ValueRange reponsesmesure = this.mService.spreadsheets().values()
                     .get(spreadsheetId, rangeMesure)
                     .execute();
-            List<String> results = new ArrayList<>();
             ValueRange responseproject = this.mService.spreadsheets().values()
                     .get(spreadsheetId, rangeProject)
                     .execute();
@@ -433,8 +432,6 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
             if(valuePlanFormation != null) {
                 initialiserEtapeFormation(reglerDonnees(valuePlanFormation));
             }
-
-            return results;
         }
 
         /*
@@ -736,19 +733,12 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
 
         @Override
         protected void onPreExecute() {
-            informationText.setText("");
             mProgress.show();
         }
 
         @Override
-        protected void onPostExecute(List<String> output) {
+        protected void onPostExecute(Void output) {
             mProgress.hide();
-            if (output.isEmpty()) {
-                informationText.setText("No results returned.");
-            } else {
-                output.add(0, "Data retrieved using the Google Sheets API:");
-                informationText.setText(TextUtils.join("\n", output));
-            }
             Intent intentInitial = getIntent();
             String initialUtilisateur = intentInitial.getStringExtra(GestionDesInitialsActivity.EXTRA_INITIAL);
             Intent intent = new Intent(ChargementDonneesActivity.this,GestionDesInitialsActivity.class);
@@ -769,11 +759,21 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             ChargementDonneesActivity.REQUEST_AUTHORIZATION);
                 } else {
-                    String text = "The following error occurred:\n" + mLastError.getMessage();
-                    informationText.setText(text);
+                    String toToast = "Une erreur est survenue : ";
+                    if (mLastError instanceof GoogleJsonResponseException) {
+                        GoogleJsonResponseException googleJsonException= (GoogleJsonResponseException) mLastError;
+                        if (ERROR_CODE_NOT_FOUND == googleJsonException.getStatusCode()) {
+                            toToast +=  "L'id de ce fichier est introuvable.";
+                        } else {
+                            toToast += googleJsonException.getStatusMessage();
+                        }
+                    } else {
+                        toToast += mLastError.getMessage();
+                    }
+                    Toast.makeText(context, toToast, Toast.LENGTH_LONG).show();
                 }
             } else {
-                informationText.setText("Request cancelled.");
+                Toast.makeText(context, "Request cancelled.", Toast.LENGTH_LONG).show();
             }
         }
 
