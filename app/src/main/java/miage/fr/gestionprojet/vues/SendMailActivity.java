@@ -44,6 +44,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import miage.fr.gestionprojet.R;
+import miage.fr.gestionprojet.outils.Constants;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -59,24 +60,18 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
 
     private static final String TAG = "[SendMailActivity]";
 
-    private static final int REQUEST_ACCOUNT_PICKER = 1000;
-    private static final int REQUEST_AUTHORIZATION = 1001;
-    private static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-    private static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-    private static final int REQUEST_PERMISSION_EXTERNAL_STORAGE = 1004;
-    private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {DriveScopes.DRIVE};
 
     private ProgressDialog progressDialog;
 
-    // TODO récupérer l'id du spreadsheet mis par l'utilisateur, ou celui-là par défaut
-    private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_mail);
         ButterKnife.bind(this);
+        context = this;
         mCredential = GoogleAccountCredential
                 .usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
@@ -102,22 +97,22 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
         }
     }
 
-    @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
+    @AfterPermissionGranted(Constants.REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
-            String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME, null);
+            String accountName = getPreferences(Context.MODE_PRIVATE).getString(Constants.PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
                 mCredential.setSelectedAccountName(accountName);
                 getResultsFromApi();
             } else {
-                startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+                startActivityForResult(mCredential.newChooseAccountIntent(), Constants.REQUEST_ACCOUNT_PICKER);
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
                     this,
                     "This app needs to access your Google account (via Contacts).",
-                    REQUEST_PERMISSION_GET_ACCOUNTS,
+                    Constants.REQUEST_PERMISSION_GET_ACCOUNTS,
                     Manifest.permission.GET_ACCOUNTS);
         }
     }
@@ -126,20 +121,20 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case REQUEST_GOOGLE_PLAY_SERVICES:
+            case Constants.REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode == RESULT_OK) {
                     getResultsFromApi();
                 }
                 break;
 
-            case REQUEST_ACCOUNT_PICKER:
+            case Constants.REQUEST_ACCOUNT_PICKER:
                 if (resultCode == RESULT_OK && data != null &&
                         data.getExtras() != null) {
                     String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
                         SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
-                        editor.putString(PREF_ACCOUNT_NAME, accountName);
+                        editor.putString(Constants.PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
                         mCredential.setSelectedAccountName(accountName);
                         getResultsFromApi();
@@ -147,13 +142,13 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                 }
                 break;
 
-            case REQUEST_AUTHORIZATION:
+            case Constants.REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
                     getResultsFromApi();
                 }
                 break;
 
-            case REQUEST_PERMISSION_EXTERNAL_STORAGE:
+            case Constants.REQUEST_PERMISSION_EXTERNAL_STORAGE:
                 if (resultCode == RESULT_OK) {
                     getResultsFromApi();
                 }
@@ -196,7 +191,7 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
         Dialog dialog = apiAvailability.getErrorDialog(
                 SendMailActivity.this,
                 connectionStatusCode,
-                REQUEST_GOOGLE_PLAY_SERVICES);
+                Constants.REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
     }
 
@@ -263,11 +258,12 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
             File pdfFile =  new File (localFolder, "MySamplePDFFile.pdf");
             try (FileOutputStream outputStream = new FileOutputStream(pdfFile)){
                 if (pdfFile.canWrite() || pdfFile.setWritable(true)) {
-                    mService.files().export(SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(outputStream);
+                    // TODO récupérer l'id du spreadsheet mis par l'utilisateur, ou celui-là par défaut
+                    mService.files().export(Constants.SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(outputStream);
                     sendMailWithAttachment(pdfFile);
                 } else {
-                    // todo mieux gérer les exceptions / mettre un loader
-                    Log.e(TAG, "Impossible de récupérer le fichier : l'écriture sur votre appareil est impossible");
+                    // mettre un loader
+                    Toast.makeText(context, "Impossible de récupérer le fichier : l'écriture sur votre appareil est impossible", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 mLastError = e;
@@ -288,9 +284,9 @@ public class SendMailActivity extends Activity implements EasyPermissions.Permis
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            REQUEST_AUTHORIZATION);
+                            Constants.REQUEST_AUTHORIZATION);
                 } else if (mLastError instanceof FileNotFoundException) {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_EXTERNAL_STORAGE);
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_PERMISSION_EXTERNAL_STORAGE);
                 }
             }
         }

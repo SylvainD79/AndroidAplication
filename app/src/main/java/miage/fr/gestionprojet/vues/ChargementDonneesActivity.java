@@ -67,20 +67,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class ChargementDonneesActivity extends Activity implements EasyPermissions.PermissionCallbacks {
 
-    private static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
-
-    private static final String PREF_ACCOUNT_NAME = "accountName";
-
-    private static final int REQUEST_ACCOUNT_PICKER = 1000;
-
-    private static final int REQUEST_AUTHORIZATION = 1001;
-
-    private static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-
-    private static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-
-    private static final int ERROR_CODE_NOT_FOUND = 404;
-
     private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
 
     private GoogleAccountCredential mCredential;
@@ -128,7 +114,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
 
     @OnClick(R.id.defaut_id_button)
     public void setDefaultId() {
-        userInputEditText.setText(SPREAD_SHEET_DEFAULT_ID);
+        userInputEditText.setText(Constants.SPREAD_SHEET_DEFAULT_ID);
     }
 
     /**
@@ -164,23 +150,23 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
      * function will be rerun automatically whenever the GET_ACCOUNTS permission
      * is granted.
      */
-    @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
+    @AfterPermissionGranted(Constants.REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
-            String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME,null);
+            String accountName = getPreferences(Context.MODE_PRIVATE).getString(Constants.PREF_ACCOUNT_NAME,null);
             if (accountName != null) {
                 mCredential.setSelectedAccountName(accountName);
                 getResultsFromApi(userInput);
             } else {
                 // Start a dialog from which the user can choose an account
-                startActivityForResult(mCredential.newChooseAccountIntent(),REQUEST_ACCOUNT_PICKER);
+                startActivityForResult(mCredential.newChooseAccountIntent(),Constants.REQUEST_ACCOUNT_PICKER);
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
                     this,
                     "This app needs to access your Google account (via Contacts).",
-                    REQUEST_PERMISSION_GET_ACCOUNTS,
+                    Constants.REQUEST_PERMISSION_GET_ACCOUNTS,
                     Manifest.permission.GET_ACCOUNTS);
         }
     }
@@ -200,7 +186,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_GOOGLE_PLAY_SERVICES:
+            case Constants.REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
                     String text = "This app requires Google Play Services. Please install " +
                             "Google Play Services on your device and relaunch this app.";
@@ -210,14 +196,14 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
                 }
                 break;
 
-            case REQUEST_ACCOUNT_PICKER:
+            case Constants.REQUEST_ACCOUNT_PICKER:
                 if (resultCode == RESULT_OK && data != null &&
                         data.getExtras() != null) {
                     String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
                         SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
-                        editor.putString(PREF_ACCOUNT_NAME, accountName);
+                        editor.putString(Constants.PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
                         mCredential.setSelectedAccountName(accountName);
                         getResultsFromApi(userInput);
@@ -225,7 +211,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
                 }
                 break;
 
-            case REQUEST_AUTHORIZATION:
+            case Constants.REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
                     getResultsFromApi(userInput);
                 }
@@ -309,7 +295,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
         Dialog dialog = apiAvailability.getErrorDialog(
                 ChargementDonneesActivity.this,
                 connectionStatusCode,
-                REQUEST_GOOGLE_PLAY_SERVICES);
+                Constants.REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
     }
 
@@ -626,7 +612,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
         private void intialiserFormation(List<List<Object>> values) {
             new Delete().from(Formation.class).execute();
 
-            Action action = new Action();
+            Action action;
             ActiveAndroid.beginTransaction();
             try {
 
@@ -757,12 +743,12 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            ChargementDonneesActivity.REQUEST_AUTHORIZATION);
+                            Constants.REQUEST_AUTHORIZATION);
                 } else {
                     String toToast = "Une erreur est survenue : ";
                     if (mLastError instanceof GoogleJsonResponseException) {
                         GoogleJsonResponseException googleJsonException= (GoogleJsonResponseException) mLastError;
-                        if (ERROR_CODE_NOT_FOUND == googleJsonException.getStatusCode()) {
+                        if (Constants.ERROR_CODE_NOT_FOUND == googleJsonException.getStatusCode()) {
                             toToast +=  "L'id de ce fichier est introuvable.";
                         } else {
                             toToast += googleJsonException.getStatusMessage();
