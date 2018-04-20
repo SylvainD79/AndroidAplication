@@ -10,6 +10,9 @@ public class EtapeFormation extends Model{
     @Column(name="formation", onDelete = Column.ForeignKeyAction.CASCADE)
     private Formation formation;
 
+    @Column(name="id_ligne")
+    private int idLigne;
+
     @Column(name="type_element")
     private String typeElement;
 
@@ -71,5 +74,13 @@ public class EtapeFormation extends Model{
 
     public void setObjectifAtteint(boolean objectifAtteint) {
         this.objectifAtteint = objectifAtteint;
+    }
+
+    public int getIdLigne() {
+        return idLigne;
+    }
+
+    public void setIdLigne(int idLigne) {
+        this.idLigne = idLigne;
     }
 }

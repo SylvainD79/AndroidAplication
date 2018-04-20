@@ -767,7 +767,9 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
             new Delete().from(EtapeFormation.class).execute();
 
             ActiveAndroid.beginTransaction();
-            for (List row : values) {
+            int size = values.size();
+            for (int i = 0; i < size; i++) {
+                List row = values.get(i);
                 EtapeFormation etapeFormation = new EtapeFormation();
                 List<Action> action = DaoAction.loadActionsByCode(row.get(2).toString());
                 if(!action.isEmpty()) {
@@ -779,6 +781,7 @@ public class ChargementDonneesActivity extends Activity implements EasyPermissio
                     etapeFormation.setTypeActeur(row.get(4).toString());
                     etapeFormation.setObjectifAtteint("1".equals(row.get(5).toString()));
                     etapeFormation.setCommentaire(row.get(6).toString());
+                    etapeFormation.setIdLigne(i + 2); // seul moyen de récupérer l'id de la ligne dans le spreadhseet (désolé, moi aussi ça me fait gerber)
 
                     etapeFormation.save();
                 }

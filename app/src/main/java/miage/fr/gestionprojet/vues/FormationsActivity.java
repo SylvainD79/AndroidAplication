@@ -35,9 +35,12 @@ public class FormationsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initialUtilisateur = getIntent().getStringExtra(EXTRA_INITIAL);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         formations = DaoFormation.getFormations();
-
         fillFormationsList();
         setFormationItemClickListener();
     }

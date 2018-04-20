@@ -55,7 +55,11 @@ public class DetailPlanFormationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_detail_etape_formation);
         ButterKnife.bind(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         getDetailPlanData();
         associerData();
     }
@@ -80,9 +84,7 @@ public class DetailPlanFormationActivity extends AppCompatActivity {
     public void validerSaisieEtape() {
         dataEtape.setCommentaire(commentaire.getText().toString());
         dataEtape.setObjectifAtteint(actionRealise.isChecked());
-
         dataEtape.save();
         finish();
-
     }
 }

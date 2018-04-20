@@ -8,7 +8,11 @@ public class Constants {
 
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
-    public static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
+    // Spreadsheet originel non modifiable
+    //public static final String SPREAD_SHEET_DEFAULT_ID = "1yw_8OO4oFYR6Q25KH0KE4LOr86UfwoNl_E6hGgq2UD4";
+
+    // Clone du spreadsheet originel, modifiable
+    public static final String SPREAD_SHEET_DEFAULT_ID =  "1fKEH_jg6RuWoAP1T-QT_sVFFH9VH_qo1td4BQa5siR8";
 
     public static final String PREF_ACCOUNT_NAME = "accountName";
 

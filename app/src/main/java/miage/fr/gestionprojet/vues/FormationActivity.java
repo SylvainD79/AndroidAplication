@@ -58,10 +58,14 @@ public class FormationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.formation_activity);
         ButterKnife.bind(this);
+        setDetailFormationItemClickListener();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         getFormationData();
         fillFormationData();
-        setDetailFormationItemClickListener();
     }
 
 
