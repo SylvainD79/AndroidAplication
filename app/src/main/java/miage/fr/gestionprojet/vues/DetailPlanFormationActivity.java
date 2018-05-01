@@ -2,13 +2,10 @@ package miage.fr.gestionprojet.vues;
 
 import android.Manifest;
 import android.accounts.AccountManager;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,8 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -47,6 +42,8 @@ import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.models.EtapeFormation;
 import miage.fr.gestionprojet.models.dao.DaoEtapeFormation;
 import miage.fr.gestionprojet.outils.Constants;
+import miage.fr.gestionprojet.outils.GoogleServices;
+import miage.fr.gestionprojet.outils.Outils;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -143,11 +140,11 @@ public class DetailPlanFormationActivity extends AppCompatActivity implements Ea
     }
 
     private void updateFormationsData() {
-        if (!isGooglePlayServicesAvailable()) {
-            acquireGooglePlayServices();
+        if (!GoogleServices.isGooglePlayServicesAvailable(context)) {
+            GoogleServices.acquireGooglePlayServices(context);
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
-        } else if (!isDeviceOnline()) {
+        } else if (!GoogleServices.isDeviceOnline(context)) {
             Toast.makeText(context, "No network connection available.", Toast.LENGTH_LONG).show();
         } else {
             new DetailPlanFormationActivity.MakeRequestTask(mCredential).execute();
@@ -232,35 +229,6 @@ public class DetailPlanFormationActivity extends AppCompatActivity implements Ea
     public void onPermissionsDenied(int requestCode, List<String> list) {
     }
 
-    private boolean isDeviceOnline() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
-    }
-
-    private boolean isGooglePlayServicesAvailable() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        return connectionStatusCode == ConnectionResult.SUCCESS;
-    }
-
-    private void acquireGooglePlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
-            showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
-        }
-    }
-
-    void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        Dialog dialog = apiAvailability.getErrorDialog(
-                DetailPlanFormationActivity.this,
-                connectionStatusCode,
-                Constants.REQUEST_GOOGLE_PLAY_SERVICES);
-        dialog.show();
-    }
-
     public class MakeRequestTask extends AsyncTask<Void, Void, Void> {
         private com.google.api.services.sheets.v4.Sheets mService = null;
         private Exception mLastError = null;
@@ -290,9 +258,9 @@ public class DetailPlanFormationActivity extends AppCompatActivity implements Ea
             mProgress.hide();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
-                    showGooglePlayServicesAvailabilityErrorDialog(
+                    GoogleServices.showGooglePlayServicesAvailabilityErrorDialog(
                             ((GooglePlayServicesAvailabilityIOException) mLastError)
-                                    .getConnectionStatusCode());
+                                    .getConnectionStatusCode(), context);
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
@@ -330,7 +298,7 @@ public class DetailPlanFormationActivity extends AppCompatActivity implements Ea
         private void updateFormationsData() throws IOException {
             // petit trick java car List<String> n'hérite pas de List<Object> (nik)
             List<String> datasToUpdate = Arrays.asList(
-                    booleanToInt(dataEtape.isObjectifAtteint()),
+                    Outils.booleanToInt(dataEtape.isObjectifAtteint()),
                     dataEtape.getCommentaire()
             );
             List<Object> datasToUpdateInObject = new ArrayList<>();
@@ -348,11 +316,10 @@ public class DetailPlanFormationActivity extends AppCompatActivity implements Ea
                     this.mService.spreadsheets().values().update(Constants.SPREAD_SHEET_DEFAULT_ID, rangeToUpdate, body)
                             .setValueInputOption("RAW")
                             .execute();
-            boolean ok = result.getUpdatedCells() == 2;
-            String dd = "";
-        }
-        private String booleanToInt(boolean isObjectifAtteint) {
-            return isObjectifAtteint ? "1" : "";
+            if(result.getUpdatedCells() == 2) {
+                Toast.makeText(context, "Mise à jour effectuée", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 }

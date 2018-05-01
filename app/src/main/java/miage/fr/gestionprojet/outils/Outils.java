@@ -25,4 +25,8 @@ public class Outils {
     public static long dureeEntreDeuxDates(Date dateInf, Date datePost){
         return (datePost.getTime() - dateInf.getTime()) / CONST_DURATION_OF_DAY;
     }
+
+    public static String booleanToInt(boolean isObjectifAtteint) {
+        return isObjectifAtteint ? "1" : "";
+    }
 }

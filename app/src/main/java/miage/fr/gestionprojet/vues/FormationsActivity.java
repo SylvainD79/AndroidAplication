@@ -2,13 +2,10 @@ package miage.fr.gestionprojet.vues;
 
 import android.Manifest;
 import android.accounts.AccountManager;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,8 +18,6 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -49,6 +44,7 @@ import miage.fr.gestionprojet.models.Formation;
 import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
 import miage.fr.gestionprojet.outils.Constants;
+import miage.fr.gestionprojet.outils.GoogleServices;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -98,11 +94,11 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
     }
 
     private void getUpdatedFormationsData() {
-        if (!isGooglePlayServicesAvailable()) {
-            acquireGooglePlayServices();
+        if (!GoogleServices.isGooglePlayServicesAvailable(context)) {
+            GoogleServices.acquireGooglePlayServices(context);
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
-        } else if (!isDeviceOnline()) {
+        } else if (!GoogleServices.isDeviceOnline(context)) {
             Toast.makeText(context, "No network connection available.", Toast.LENGTH_LONG).show();
         } else {
             new FormationsActivity.MakeRequestTask(mCredential).execute();
@@ -187,35 +183,6 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
     public void onPermissionsDenied(int requestCode, List<String> list) {
     }
 
-    private boolean isDeviceOnline() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
-    }
-
-    private boolean isGooglePlayServicesAvailable() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        return connectionStatusCode == ConnectionResult.SUCCESS;
-    }
-
-    private void acquireGooglePlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
-            showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
-        }
-    }
-
-    void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        Dialog dialog = apiAvailability.getErrorDialog(
-                FormationsActivity.this,
-                connectionStatusCode,
-                Constants.REQUEST_GOOGLE_PLAY_SERVICES);
-        dialog.show();
-    }
-
     public class MakeRequestTask extends AsyncTask<Void, Void, Void> {
         private com.google.api.services.sheets.v4.Sheets mService = null;
         private Exception mLastError = null;
@@ -247,9 +214,9 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
             mProgress.hide();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
-                    showGooglePlayServicesAvailabilityErrorDialog(
+                    GoogleServices.showGooglePlayServicesAvailabilityErrorDialog(
                             ((GooglePlayServicesAvailabilityIOException) mLastError)
-                                    .getConnectionStatusCode());
+                                    .getConnectionStatusCode(), context);
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
