@@ -6,6 +6,8 @@ public class Constants {
         // private constructor
     }
 
+    public static final String APPLICATION_NAME = "BigFollow";
+
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     // Spreadsheet originel non modifiable

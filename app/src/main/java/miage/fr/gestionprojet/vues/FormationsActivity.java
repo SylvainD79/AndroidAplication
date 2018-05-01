@@ -18,20 +18,15 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
-import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,9 +74,7 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
 
         initialUtilisateur = getIntent().getStringExtra(EXTRA_INITIAL);
         // Initialize credentials and service object.
-        mCredential = GoogleAccountCredential.usingOAuth2(
-                getApplicationContext(), Arrays.asList(SCOPES))
-                .setBackOff(new ExponentialBackOff());
+        mCredential = GoogleServices.getCredential(context, SCOPES);
     }
 
     @Override
@@ -184,16 +177,11 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
     }
 
     public class MakeRequestTask extends AsyncTask<Void, Void, Void> {
-        private com.google.api.services.sheets.v4.Sheets mService = null;
+        private Sheets mService = null;
         private Exception mLastError = null;
 
         MakeRequestTask(GoogleAccountCredential credential) {
-            HttpTransport transport = AndroidHttp.newCompatibleTransport();
-            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-            mService = new com.google.api.services.sheets.v4.Sheets.Builder(
-                    transport, jsonFactory, credential)
-                    .setApplicationName("Big Follow")
-                    .build();
+            mService = GoogleServices.getSheetsService(credential);
         }
 
         @Override
