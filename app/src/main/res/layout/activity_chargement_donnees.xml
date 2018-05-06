@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
-    <Button
-        android:id="@+id/call_api_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:text="Charger la base de données"/>
 
     <EditText
         android:id="@+id/user_input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Saissisez l'id d'un document Google Sheet"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
         android:id="@+id/defaut_id_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"
+        android:theme="@style/AppButton.Button"
+        android:layout_marginTop="10dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:text="ID par défaut"/>
+        android:text="ID par défaut"
+        app:layout_constraintTop_toBottomOf="@id/user_input"/>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/call_api_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"
+        android:theme="@style/AppButton.Button"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="Charger la base de données"
+        app:layout_constraintTop_toBottomOf="@id/defaut_id_button"/>
+
+</android.support.constraint.ConstraintLayout>

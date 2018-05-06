@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -56,7 +57,7 @@ import miage.fr.gestionprojet.outils.Outils;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class ChargementDonneesActivity extends Activity implements EasyPermissions.PermissionCallbacks {
+public class ChargementDonneesActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
 

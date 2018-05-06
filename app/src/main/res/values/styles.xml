@@ -45,4 +45,9 @@
         <item name="android:shadowColor">#000</item>
         <item name="android:background">#fff</item>
     </style>
+
+    <style name="AppButton.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/common_google_signin_btn_text_dark</item>
+    </style>
 </resources>

@@ -6,14 +6,31 @@
     android:layout_height="match_parent"
     tools:context="miage.fr.gestionprojet.vues.SendMailActivity">
 
+    <TextView
+        android:id="@+id/context_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Envoyer le document Google Sheet par mail"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <EditText
         android:hint="@string/mail_adress_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mail_destinataire"/>
+        android:id="@+id/mail_destinataire"
+        app:layout_constraintTop_toBottomOf="@id/context_title"/>
 
     <Button
         app:layout_constraintTop_toBottomOf="@id/mail_destinataire"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"
+        android:theme="@style/AppButton.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/send_mail"
