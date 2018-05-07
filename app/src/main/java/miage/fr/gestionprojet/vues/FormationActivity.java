@@ -22,14 +22,6 @@ import miage.fr.gestionprojet.models.dao.DaoEtapeFormation;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
 
 public class FormationActivity extends AppCompatActivity {
-    public static final String PLAN_FORMATION_SELECTED = "detail-selected";
-
-    // TODO rendre "transparent"
-    // TODO afficher les descriptions
-
-    protected Formation formationData;
-
-    List<EtapeFormation> listeEtapeFormation;
 
     @BindView(R.id.formationName)
     TextView formationName;
@@ -52,6 +44,11 @@ public class FormationActivity extends AppCompatActivity {
     @BindView(R.id.formationPostFormatProgressBar)
     protected ProgressBar formationPostFormatProgressBar;
 
+    public static final String PLAN_FORMATION_SELECTED = "detail-selected";
+
+    protected Formation formationData;
+
+    List<EtapeFormation> listeEtapeFormation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -40,6 +40,7 @@ import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
 import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.GoogleServices;
+import miage.fr.gestionprojet.outils.Outils;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -87,14 +88,17 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
     }
 
     private void getUpdatedFormationsData() {
-        if (!GoogleServices.isGooglePlayServicesAvailable(context)) {
+        String sheetId = Outils.getSheetId(this);
+        if (sheetId == null) {
+            Toast.makeText(this, "Pas de document chargé préalablement.", Toast.LENGTH_LONG).show();
+        } else if (!GoogleServices.isGooglePlayServicesAvailable(context)) {
             GoogleServices.acquireGooglePlayServices(context);
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!GoogleServices.isDeviceOnline(context)) {
             Toast.makeText(context, "No network connection available.", Toast.LENGTH_LONG).show();
         } else {
-            new FormationsActivity.MakeRequestTask(mCredential).execute();
+            new FormationsActivity.MakeRequestTask(mCredential, sheetId).execute();
         }
     }
 
@@ -179,9 +183,11 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
     public class MakeRequestTask extends AsyncTask<Void, Void, Void> {
         private Sheets mService = null;
         private Exception mLastError = null;
+        private String sheetId;
 
-        MakeRequestTask(GoogleAccountCredential credential) {
+        MakeRequestTask(GoogleAccountCredential credential, String sheetId) {
             mService = GoogleServices.getSheetsService(credential);
+            this.sheetId = sheetId;
         }
 
         @Override
@@ -242,7 +248,7 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
         private void getUpdatedFormationsData() throws IOException {
             // Récupération des indicateurs mis à jour
             ValueRange responseformation = this.mService.spreadsheets().values()
-                    .get(Constants.SPREAD_SHEET_DEFAULT_ID, RANGE_FORMATIONS)
+                    .get(sheetId, RANGE_FORMATIONS)
                     .execute();
             List<List<Object>> valuesformation = responseformation.getValues();
             if (valuesformation != null) {
@@ -251,7 +257,7 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
 
             // Récupération des plans de formation mis à jour
             ValueRange responsePlanFormation = this.mService.spreadsheets().values()
-                    .get(Constants.SPREAD_SHEET_DEFAULT_ID, RANGE_PLAN_FORMATION)
+                    .get(sheetId, RANGE_PLAN_FORMATION)
                     .execute();
             List<List<Object>> valuePlanFormation = responsePlanFormation.getValues();
             if(valuePlanFormation != null) {

@@ -36,6 +36,7 @@ import butterknife.OnClick;
 import miage.fr.gestionprojet.R;
 import miage.fr.gestionprojet.outils.Constants;
 import miage.fr.gestionprojet.outils.GoogleServices;
+import miage.fr.gestionprojet.outils.Outils;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -74,14 +75,17 @@ public class SendMailActivity extends AppCompatActivity implements EasyPermissio
     }
 
     private void getResultsFromApi() {
-        if (!GoogleServices.isGooglePlayServicesAvailable(context)) {
+        String sheetId = Outils.getSheetId(this);
+        if (sheetId == null) {
+            Toast.makeText(this, "Pas de document chargé préalablement.", Toast.LENGTH_LONG).show();
+        } else if (!GoogleServices.isGooglePlayServicesAvailable(context)) {
             GoogleServices.acquireGooglePlayServices(context);
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!GoogleServices.isDeviceOnline(context)) {
             Toast.makeText(this, "No network connection available.", Toast.LENGTH_LONG).show();
         } else {
-            new MakeRequestTask(mCredential).execute();
+            new MakeRequestTask(mCredential, sheetId).execute();
         }
     }
 
@@ -168,9 +172,11 @@ public class SendMailActivity extends AppCompatActivity implements EasyPermissio
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         Drive mService = null;
         private Exception mLastError = null;
+        private String sheetId;
 
-        MakeRequestTask(GoogleAccountCredential credential) {
+        MakeRequestTask(GoogleAccountCredential credential, String sheetId) {
             mService = GoogleServices.getDriveService(credential);
+            this.sheetId = sheetId;
         }
 
         @Override
@@ -213,8 +219,7 @@ public class SendMailActivity extends AppCompatActivity implements EasyPermissio
             File pdfFile =  new File (localFolder, "MySamplePDFFile.pdf");
             try (FileOutputStream outputStream = new FileOutputStream(pdfFile)){
                 if (pdfFile.canWrite() || pdfFile.setWritable(true)) {
-                    // TODO récupérer l'id du spreadsheet mis par l'utilisateur, ou celui-là par défaut
-                    mService.files().export(Constants.SPREAD_SHEET_DEFAULT_ID, "application/pdf").executeMediaAndDownloadTo(outputStream);
+                    mService.files().export(sheetId, "application/pdf").executeMediaAndDownloadTo(outputStream);
                     sendMailWithAttachment(pdfFile);
                 } else {
                     // mettre un loader

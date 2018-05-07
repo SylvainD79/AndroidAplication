@@ -134,14 +134,17 @@ public class DetailPlanFormationActivity extends AppCompatActivity implements Ea
     }
 
     private void updateFormationsData() {
-        if (!GoogleServices.isGooglePlayServicesAvailable(context)) {
+        String sheetId = Outils.getSheetId(this);
+        if (sheetId == null) {
+            Toast.makeText(this, "Pas de document chargé préalablement.", Toast.LENGTH_LONG).show();
+        } else if (!GoogleServices.isGooglePlayServicesAvailable(context)) {
             GoogleServices.acquireGooglePlayServices(context);
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!GoogleServices.isDeviceOnline(context)) {
             Toast.makeText(context, "No network connection available.", Toast.LENGTH_LONG).show();
         } else {
-            new DetailPlanFormationActivity.MakeRequestTask(mCredential).execute();
+            new DetailPlanFormationActivity.MakeRequestTask(mCredential, sheetId).execute();
         }
     }
 
@@ -226,9 +229,11 @@ public class DetailPlanFormationActivity extends AppCompatActivity implements Ea
     public class MakeRequestTask extends AsyncTask<Void, Void, Void> {
         private Sheets mService = null;
         private Exception mLastError = null;
+        private String sheetId;
 
-        MakeRequestTask(GoogleAccountCredential credential) {
+        MakeRequestTask(GoogleAccountCredential credential, String sheetId) {
             mService = GoogleServices.getSheetsService(credential);
+            this.sheetId = sheetId;
         }
 
         @Override
@@ -302,7 +307,7 @@ public class DetailPlanFormationActivity extends AppCompatActivity implements Ea
             ValueRange body = new ValueRange()
                     .setValues(values);
             UpdateValuesResponse result =
-                    this.mService.spreadsheets().values().update(Constants.SPREAD_SHEET_DEFAULT_ID, rangeToUpdate, body)
+                    this.mService.spreadsheets().values().update(sheetId, rangeToUpdate, body)
                             .setValueInputOption("RAW")
                             .execute();
             if(result.getUpdatedCells() == 2) {

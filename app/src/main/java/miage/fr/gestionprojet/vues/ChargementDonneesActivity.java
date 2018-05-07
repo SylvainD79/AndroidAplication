@@ -3,7 +3,6 @@ package miage.fr.gestionprojet.vues;
 
 import android.Manifest;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -107,6 +106,12 @@ public class ChargementDonneesActivity extends AppCompatActivity implements Easy
         userInputEditText.setText(Constants.SPREAD_SHEET_DEFAULT_ID);
     }
 
+    private void saveSheetIdInSharedPreferences(String sheetId) {
+        SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+        editor.putString(Constants.SHEET_ID_KEY, sheetId);
+        editor.apply();
+    }
+
     /**
      * Attempt to call the API, after verifying that all the preconditions are
      * satisfied. The preconditions are: Google Play Services installed, an
@@ -123,6 +128,7 @@ public class ChargementDonneesActivity extends AppCompatActivity implements Easy
             } else if (!GoogleServices.isDeviceOnline(context)) {
                 Toast.makeText(context, "No network connection available.", Toast.LENGTH_LONG).show();
             } else {
+                saveSheetIdInSharedPreferences(userInput);
                 new MakeRequestTask(mCredential, userInput).execute();
             }
         } else {

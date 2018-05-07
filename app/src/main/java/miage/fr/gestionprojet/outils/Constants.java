@@ -8,6 +8,10 @@ public class Constants {
 
     public static final String APPLICATION_NAME = "BigFollow";
 
+    public static final String SHARED_PREFERENCES_NAME ="BIG_FOLLOW_SHARED_PREFERENCES";
+
+    public static final String SHEET_ID_KEY = "SHEET_ID_KEY";
+
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     // Spreadsheet originel non modifiable

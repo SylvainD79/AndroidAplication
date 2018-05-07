@@ -1,5 +1,8 @@
 package miage.fr.gestionprojet.outils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,5 +31,10 @@ public class Outils {
 
     public static String booleanToInt(boolean isObjectifAtteint) {
         return isObjectifAtteint ? "1" : "";
+    }
+
+    public static String getSheetId(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return prefs.getString(Constants.SHEET_ID_KEY, null);
     }
 }
