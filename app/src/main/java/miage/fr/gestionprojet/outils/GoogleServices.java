@@ -22,6 +22,10 @@ import java.util.Arrays;
  */
 public class GoogleServices {
 
+    private GoogleServices() {
+        // private constructor
+    }
+
     public static boolean isDeviceOnline(Context context) {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

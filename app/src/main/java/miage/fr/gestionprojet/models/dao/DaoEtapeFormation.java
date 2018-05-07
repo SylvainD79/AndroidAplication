@@ -14,6 +14,8 @@ import miage.fr.gestionprojet.models.Formation;
 
 public class DaoEtapeFormation {
 
+    private static final String ID_FILTER = "id = ?";
+
     private DaoEtapeFormation() {
         // private constructor for static class
     }
@@ -28,19 +30,19 @@ public class DaoEtapeFormation {
     public static EtapeFormation getEtapeFormationById(Long id) {
         return new Select()
                 .from(EtapeFormation.class)
-                .where("id = ?", id)
+                .where(ID_FILTER, id)
                 .executeSingle();
     }
 
     public static void modificationDonnee(long id,String commentaire, boolean check) {
         new Update(EtapeFormation.class)
                 .set("commentaire = ?", commentaire)
-                .where("id = ?", id)
+                .where(ID_FILTER, id)
                 .execute();
 
         new Update(EtapeFormation.class)
                 .set("objectif_atteint = ?", check)
-                .where("id = ?", id)
+                .where(ID_FILTER, id)
                 .execute();
 
     }
