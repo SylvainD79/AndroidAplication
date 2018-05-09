@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import miage.fr.gestionprojet.R;
+import miage.fr.gestionprojet.adapters.ProjetDetailAdapter;
 import miage.fr.gestionprojet.models.Projet;
 import miage.fr.gestionprojet.models.dao.DaoAction;
 import miage.fr.gestionprojet.models.dao.DaoFormation;
@@ -124,8 +125,8 @@ public class DetailsProjetActivity extends AppCompatActivity {
             actions.add(FORMATIONS);
             actions.add(PLANNING);
             actions.add(BUDGET);
-            final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, actions);
-            liste.setAdapter(adapter);
+            ProjetDetailAdapter projetDetailAdapter = new ProjetDetailAdapter(this, actions);
+            liste.setAdapter(projetDetailAdapter);
 
             liste.setOnItemClickListener(customAdapterViewOnItemClickListener);
 
