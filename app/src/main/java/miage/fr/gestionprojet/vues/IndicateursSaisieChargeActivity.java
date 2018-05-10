@@ -12,8 +12,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.activeandroid.Model;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,9 @@ public class IndicateursSaisieChargeActivity extends AppCompatActivity {
 
     private List<SaisieCharge> saisiesCharge;
 
+    @BindView(R.id.textViewNomProjetSaisieCharge)
+    TextView projectNameTextView;
+
     @BindView(R.id.listViewSaisieCharge)
     ListView liste;
 
@@ -51,6 +57,8 @@ public class IndicateursSaisieChargeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
+        String projectName = intent.getStringExtra("projectName");
+        projectNameTextView.setText(projectName);
         //on récupère le projet sélectionné
         long id =  intent.getLongExtra(DetailsProjetActivity.PROJET_VISU,0);
         initialUtilisateur = intent.getStringExtra(DetailsProjetActivity.EXTRA_INITIAL);

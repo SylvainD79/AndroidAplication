@@ -15,4 +15,10 @@
     <string name="mail_adress_hint">Saisir l\'email destinataire</string>
     <string name="send_mail_button">Envoyer</string>
 
+    <!--General strings-->
+    <string name="suivi_budget">Suivi du budget</string>
+    <string name="suivi_saisie">Suivi des saisies</string>
+    <string name="suivi_planning">Suivi du planning</string>
+    <string name="suivi_formations">Suivi des formations</string>
+
 </resources>

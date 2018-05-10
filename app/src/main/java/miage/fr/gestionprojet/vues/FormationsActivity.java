@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -363,5 +364,29 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id){
+            case R.id.initial_utilisateur:
+                return true;
+
+            case R.id.charger_donnees:
+                Intent intent = new Intent(FormationsActivity.this, ChargementDonneesActivity.class);
+                intent.putExtra(EXTRA_INITIAL, (initialUtilisateur));
+                startActivity(intent);
+                return true;
+
+            case R.id.envoyer_mail:
+                Intent intentSendMail = new Intent(FormationsActivity.this, SendMailActivity.class);
+                startActivity(intentSendMail);
+                return true;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

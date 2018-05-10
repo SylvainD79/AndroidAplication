@@ -68,7 +68,9 @@ public class DetailsProjetActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     intent = new Intent(DetailsProjetActivity.this, IndicateursSaisieChargeActivity.class);
-                    addExtra(intent);
+                    intent.putExtra("projectName", txtNomProj.getText());
+                    intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
+                    intent.putExtra(PROJET_VISU, projet.getId());
                     startActivity(intent);
                     break;
 
@@ -214,6 +216,7 @@ public class DetailsProjetActivity extends AppCompatActivity {
         Intent intent = new Intent(DetailsProjetActivity.this, IndicateursSaisieChargeActivity.class);
         intent.putExtra(EXTRA_INITIAL,initialUtilisateur);
         intent.putExtra(PROJET_VISU, projet.getId());
+        intent.putExtra("projectName", txtNomProj.getText());
         startActivity(intent);
     }
 

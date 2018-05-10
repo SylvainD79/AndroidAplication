@@ -25,7 +25,7 @@
             android:id="@+id/envoyer_mail"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:icon="@drawable/mail_icon"
+            android:icon="@mipmap/ic_mail"
             android:orderInCategory="1"
             android:orientation="vertical"
             android:title=""
