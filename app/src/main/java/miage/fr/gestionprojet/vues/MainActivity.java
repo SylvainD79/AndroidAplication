@@ -1,6 +1,7 @@
 package miage.fr.gestionprojet.vues;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -36,6 +37,7 @@ public class MainActivity  extends AppCompatActivity {
         Intent intentInitial = getIntent();
         initialUtilisateur = intentInitial.getStringExtra(GestionDesInitialsActivity.EXTRA_INITIAL);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
 
         //on récupère la liste des projet dont la date de fin n'est passé
         projets = DaoProjet.getProjetsEnCours(new Date());

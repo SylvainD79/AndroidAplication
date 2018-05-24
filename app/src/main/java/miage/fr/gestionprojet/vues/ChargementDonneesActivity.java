@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -84,6 +85,7 @@ public class ChargementDonneesActivity extends AppCompatActivity implements Easy
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chargement_donnees);
         ButterKnife.bind(this);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
         context = this;
 
         mProgress = new ProgressDialog(this);

@@ -1,6 +1,7 @@
 package miage.fr.gestionprojet.vues;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -55,6 +56,7 @@ public class IndicateursSaisieChargeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indicateurs_saisie_charge);
         ButterKnife.bind(this);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
 
         Intent intent = getIntent();
         String projectName = intent.getStringExtra("projectName");

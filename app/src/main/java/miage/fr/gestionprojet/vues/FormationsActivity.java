@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -73,6 +74,7 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
         setContentView(R.layout.activity_formations);
         ButterKnife.bind(this);
         context = this;
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
 
         initialUtilisateur = getIntent().getStringExtra(EXTRA_INITIAL);
         // Initialize credentials and service object.
