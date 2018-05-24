@@ -9,6 +9,9 @@ Le projet Big Follow est une application Android permettant de suivre l'avanceme
 * une consultation simple pour un suivi global
 * tirer parti des dernières fonctionnalité offertes par Android
 
+Il s'agit d'un projet étudiant, qui est réalisé sur plusieurs années par plusieurs promotion du Master MIAGE de Nantes.
+Le code original est disponible sur le repo suivant : https://github.com/amineeloufir/AndroidAplication
+
 ### 1.2. Objectif
 
 Derrière ce projet, l'objectif est de mettre en pratique la méthode de gestion de projet RUP, et ce dans le cadre du cours de *Processus de développement* dispensé en M2 MIAGE à l'UFR des Sciences et Techniques de Nantes.
@@ -17,18 +20,22 @@ Derrière ce projet, l'objectif est de mettre en pratique la méthode de gestion
 
 Membre | Rôle
 --- | ---
-Guillaume AMOUZOU | Responsable Technique
-Audrey BALLENGHIEN | Chef de projet
-Charifa EL ALAOUI MOSTAFA | Responsable communication/marketing
-Mohammed Amine EL OUFIR | Responsable Qualité
-Romain HUNAULT | Responsable métier
+Simon BERNARD | Responsable Technique
+Sylvain DAVID | Chef de projet
+Raphaël LIBOT | Responsable communication/marketing
+Nicolas PARIS | Responsable fonctionnelle
 
 ## 2. Environnement de développement
 
 L'application est développée pour les téléphones Android. Le développement s'effectue avec les outils suivant :
 * [Android Studio](https://developer.android.com/studio/index.html)
 
-## 3. Liens
+## 3. Amélioration apportées
 
-* [Google Drive](https://drive.google.com/drive/folders/0B9w0H-NLpQyebkpoV0J0Rmt2eUk)
-* [Trello](https://trello.com/b/IZpxAou7/projet-big-follow)
+Sur l'itération 2017/2018, a été apporté :
+
+- Fix des différents bug de la version legacy : problème active android, refonte connexion, différents bug d'affichage et de filtres
+- Ajout de la fonctionnalité de cache utilisateur lors de la connexion
+- Possibilité de télécharger le projet en PDF et de l'envoyer par mail
+- Possibilité de modifier les données liées aux formations
+- Refactoring global pour améliorer la qualité Sonar
