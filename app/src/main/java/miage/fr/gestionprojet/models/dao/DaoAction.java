@@ -56,14 +56,39 @@ public class DaoAction {
 
     public static List<Action> loadActionsByPhaseAndDate(String phase,Date d, long idProjet) {
         Projet proj = Model.load(Projet.class, idProjet);
-        ArrayList<Action> lstActions = new ArrayList<>();
-        for(Domaine dom : proj.getLstDomaines()) {
-            List<Action> actions = new Select().from(Action.class)
-                    .where("phase = ? and dt_fin_prevue>=? and dt_debut<=? and domaine=?", phase, d.getTime(), d.getTime(), dom.getId())
+        ArrayList<Action> actions = new ArrayList<>();
+
+        /* Création des date du début et de la fin de semaine */
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        Date debut = cal.getTime();
+        cal.add(Calendar.DATE, 6);
+        Date fin = cal.getTime();
+
+        /* Recherche des action selon la date de début et
+           de fin de semaine, de numéro de la phase, et des domaines
+         */
+        for(Domaine domaine : proj.getLstDomaines()) {
+            List<Action> domaineActions = new Select()
+                    .from(Action.class)
+                    .where("phase=? and ((dt_debut <= ? and dt_debut >= ?) or " +
+                                    "(dt_fin_prevue <= ? and dt_fin_prevue >= ?) or " +
+                                    "(dt_debut <= ? and dt_fin_prevue >= ?) or " +
+                                    "(dt_debut >= ? and dt_fin_prevue <= ?)) and domaine = ?",
+                            phase,
+                            fin.getTime(), debut.getTime(),
+                            fin.getTime(), debut.getTime(),
+                            debut.getTime(), debut.getTime(),
+                            debut.getTime(), fin.getTime(), domaine.getId())
                     .execute();
-            lstActions.addAll(actions);
+            actions.addAll(domaineActions);
         }
-        return lstActions;
+        return actions;
     }
 
     public static List<Action> loadActionsByDate(Date date, long idProjet) {
