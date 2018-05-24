@@ -356,7 +356,7 @@ public class ActionsActivity extends AppCompatActivity implements ActionClicked 
                 if (item.getItemId() == R.id.all) {
                     refreshAdapter(DaoAction.loadActionsByDate(dateSaisie,idProjet));
                 } else {
-                    refreshAdapter(DaoAction.loadActionsByType(item.getTitle().toString(),idProjet));
+                    refreshAdapter(DaoAction.loadActionsByDateAndType(dateSaisie, item.getTitle().toString(),idProjet));
                 }
                 return true;
             }

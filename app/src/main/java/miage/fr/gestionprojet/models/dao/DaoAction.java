@@ -141,17 +141,29 @@ public class DaoAction {
         return lstActions;
     }
 
-    public static List<Action> loadActionsByDomaineAndDate(int idDomaine,Date d, long idProjet){
-        Projet proj = Model.load(Projet.class, idProjet);
-        List<Action> lstActions = new ArrayList<>();
-        for(Domaine dom : proj.getLstDomaines()) {
-            List<Action> result = new Select()
-                    .from(Action.class)
-                    .where("domaine=? and dt_fin_prevue>=? and dt_debut<=? and domaine=?", idDomaine, d.getTime(), d.getTime(),dom.getId())
-                    .execute();
-            lstActions.addAll(result);
-        }
-        return lstActions;
+    public static List<Action> loadActionsByDomaineAndDate(int idDomaine, Date d, long idProjet){
+
+
+        /* Création des date du début et de la fin de semaine */
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        Date debut = cal.getTime();
+        cal.add(Calendar.DATE, 6);
+        Date fin = cal.getTime();
+
+        List<Action> result = new Select()
+                .from(Action.class)
+                .where("domaine=? and dt_debut>=? " +
+                        "and dt_fin_prevue<=?",
+                        idDomaine, debut.getTime(),
+                        fin.getTime())
+                .execute();
+        return result;
     }
     public static List<Action> getActionbyCode(String id) {
         return new Select()
@@ -353,4 +365,42 @@ public class DaoAction {
         return lstAction;
     }
 
+    public static List<Action> loadActionsByDateAndType(Date dateSaisie, String type, long idProjet) {
+        Projet proj = Model.load(Projet.class, idProjet);
+        ArrayList<Action> actions = new ArrayList<>();
+
+        /* Création des date du début et de la fin de semaine */
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateSaisie);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        Date debut = cal.getTime();
+        cal.add(Calendar.DATE, 6);
+        Date fin = cal.getTime();
+
+        /* Recherche des action selon la date de début et
+           de fin de semaine, de numéro de la phase, et des domaines
+         */
+        for(Domaine domaine : proj.getLstDomaines()) {
+            List<Action> domaineActions = new Select()
+                    .from(Action.class)
+                    .where("typeTravail = ? and ((dt_debut <= ? and dt_debut >= ?) or " +
+                                    "(dt_fin_prevue <= ? and dt_fin_prevue >= ?) or " +
+                                    "(dt_debut <= ? and dt_fin_prevue >= ?) or " +
+                                    "(dt_debut >= ? and dt_fin_prevue <= ?)) and domaine = ?",
+                            type,
+                            fin.getTime(), debut.getTime(),
+                            fin.getTime(), debut.getTime(),
+                            debut.getTime(), debut.getTime(),
+                            debut.getTime(), fin.getTime(), domaine.getId())
+                    .execute();
+            actions.addAll(domaineActions);
+        }
+        return actions;
+
+
+    }
 }
