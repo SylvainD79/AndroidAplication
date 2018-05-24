@@ -23,7 +23,7 @@ Membre | Rôle
 Simon BERNARD | Responsable Technique
 Sylvain DAVID | Chef de projet
 Raphaël LIBOT | Responsable communication/marketing
-Nicolas PARIS | Responsable fonctionnelle
+Nicolas PARIS | Responsable fonctionnel
 
 ## 2. Environnement de développement
 
