@@ -584,8 +584,8 @@ public class ChargementDonneesActivity extends AppCompatActivity implements Easy
             projet.setDescription("");
             projet.setNom("");
             projet.setDateDebut(chaineToDate("20/01/2017"));
-            projet.setDateFinReelle(chaineToDate("20/06/2018"));
-            projet.setDateFinInitiale(chaineToDate("20/06/2018"));
+            projet.setDateFinReelle(chaineToDate("20/06/2020"));
+            projet.setDateFinInitiale(chaineToDate("20/06/2020"));
             ActiveAndroid.beginTransaction();
             try {
                 for (List row : values) {
