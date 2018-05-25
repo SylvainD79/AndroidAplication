@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,7 +75,7 @@ public class FormationsActivity extends AppCompatActivity implements EasyPermiss
         setContentView(R.layout.activity_formations);
         ButterKnife.bind(this);
         context = this;
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimaryDark)));
 
         initialUtilisateur = getIntent().getStringExtra(EXTRA_INITIAL);
         // Initialize credentials and service object.

@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -17,15 +17,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import miage.fr.gestionprojet.R;
 
-/**
- * Created by Sylvain on 09/05/2018.
- */
-
 public class ProjetDetailAdapter extends ArrayAdapter<String> {
     private Context context;
 
-    public ProjetDetailAdapter(Context context, ArrayList<String> details) {
-        super(context,-1,details);
+    public ProjetDetailAdapter(Context context, List<String> details) {
+        super(context,-1, details);
         this.context = context;
     }
 

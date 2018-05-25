@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
@@ -64,7 +65,7 @@ public class SendMailActivity extends AppCompatActivity implements EasyPermissio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_mail);
         ButterKnife.bind(this);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimaryDark)));
         context = this;
         mCredential = GoogleServices.getCredential(context, SCOPES);
         progressDialog = new ProgressDialog(this);

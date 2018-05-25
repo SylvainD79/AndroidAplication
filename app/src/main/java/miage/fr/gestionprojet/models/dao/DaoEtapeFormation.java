@@ -8,10 +8,6 @@ import java.util.List;
 import miage.fr.gestionprojet.models.EtapeFormation;
 import miage.fr.gestionprojet.models.Formation;
 
-/**
- * Created by utilisateur on 06/04/2018.
- */
-
 public class DaoEtapeFormation {
 
     private static final String ID_FILTER = "id = ?";
@@ -46,5 +42,4 @@ public class DaoEtapeFormation {
                 .execute();
 
     }
-
 }

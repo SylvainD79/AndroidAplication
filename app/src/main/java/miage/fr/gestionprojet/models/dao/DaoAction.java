@@ -18,11 +18,13 @@ import miage.fr.gestionprojet.models.Action;
 import miage.fr.gestionprojet.models.Domaine;
 import miage.fr.gestionprojet.models.Projet;
 
-/**
- * Created by Audrey on 07/04/2017.
- */
-
 public class DaoAction {
+
+    private static final String END_DATE_FILTER = "(dt_fin_prevue <= ? and dt_fin_prevue >= ?) or ";
+
+    private static final String START_DATE_FILTER = "(dt_debut <= ? and dt_fin_prevue >= ?) or ";
+
+    private static final String DATE_AND_DOMAINE_FILTER = "(dt_debut >= ? and dt_fin_prevue <= ?)) and domaine = ?";
 
     private DaoAction() {
         // private constructor for static class
@@ -77,9 +79,9 @@ public class DaoAction {
             List<Action> domaineActions = new Select()
                     .from(Action.class)
                     .where("phase=? and ((dt_debut <= ? and dt_debut >= ?) or " +
-                                    "(dt_fin_prevue <= ? and dt_fin_prevue >= ?) or " +
-                                    "(dt_debut <= ? and dt_fin_prevue >= ?) or " +
-                                    "(dt_debut >= ? and dt_fin_prevue <= ?)) and domaine = ?",
+                                    END_DATE_FILTER +
+                                    START_DATE_FILTER +
+                                    DATE_AND_DOMAINE_FILTER,
                             phase,
                             fin.getTime(), debut.getTime(),
                             fin.getTime(), debut.getTime(),
@@ -110,9 +112,9 @@ public class DaoAction {
             List<Action> domaineActions = new Select()
                     .from(Action.class)
                     .where("((dt_debut <= ? and dt_debut >= ?) or " +
-                            "(dt_fin_prevue <= ? and dt_fin_prevue >= ?) or " +
-                            "(dt_debut <= ? and dt_fin_prevue >= ?) or " +
-                            "(dt_debut >= ? and dt_fin_prevue <= ?)) and domaine = ?",
+                                    END_DATE_FILTER +
+                                    START_DATE_FILTER +
+                                    DATE_AND_DOMAINE_FILTER,
                             fin.getTime(), debut.getTime(),
                             fin.getTime(), debut.getTime(),
                             debut.getTime(), debut.getTime(),
@@ -141,8 +143,7 @@ public class DaoAction {
         return lstActions;
     }
 
-    public static List<Action> loadActionsByDomaineAndDate(int idDomaine, Date d, long idProjet){
-
+    public static List<Action> loadActionsByDomaineAndDate(int idDomaine, Date d){
 
         /* Création des date du début et de la fin de semaine */
         Calendar cal = Calendar.getInstance();
@@ -156,14 +157,13 @@ public class DaoAction {
         cal.add(Calendar.DATE, 6);
         Date fin = cal.getTime();
 
-        List<Action> result = new Select()
+        return new Select()
                 .from(Action.class)
                 .where("domaine=? and dt_debut>=? " +
                         "and dt_fin_prevue<=?",
                         idDomaine, debut.getTime(),
                         fin.getTime())
                 .execute();
-        return result;
     }
     public static List<Action> getActionbyCode(String id) {
         return new Select()
@@ -388,9 +388,9 @@ public class DaoAction {
             List<Action> domaineActions = new Select()
                     .from(Action.class)
                     .where("typeTravail = ? and ((dt_debut <= ? and dt_debut >= ?) or " +
-                                    "(dt_fin_prevue <= ? and dt_fin_prevue >= ?) or " +
-                                    "(dt_debut <= ? and dt_fin_prevue >= ?) or " +
-                                    "(dt_debut >= ? and dt_fin_prevue <= ?)) and domaine = ?",
+                                    END_DATE_FILTER +
+                                    START_DATE_FILTER +
+                                    DATE_AND_DOMAINE_FILTER,
                             type,
                             fin.getTime(), debut.getTime(),
                             fin.getTime(), debut.getTime(),
@@ -400,7 +400,5 @@ public class DaoAction {
             actions.addAll(domaineActions);
         }
         return actions;
-
-
     }
 }

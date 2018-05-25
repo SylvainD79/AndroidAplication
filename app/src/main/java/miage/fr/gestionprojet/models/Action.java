@@ -45,9 +45,6 @@ public class Action extends Model{
     @Column(name="resp_ouv", onDelete = Column.ForeignKeyAction.CASCADE)
     private Ressource respOuv;
 
-    //@Column(name="utilisateurs_ouv")
-   // private ArrayList<Ressource> lstUtilisateursOuv;
-
     @Column(name="dt_debut")
     private Date dtDeb;
 
@@ -154,13 +151,6 @@ public class Action extends Model{
         this.respOuv = respOuv;
     }
 
-    /*public ArrayList<Ressource> getLstUtilisateursOuv() {
-        return lstUtilisateursOuv;
-    }
-
-    public void setLstUtilisateursOuv(ArrayList<Ressource> lstUtilisateursOuv) {
-        this.lstUtilisateursOuv = lstUtilisateursOuv;
-    }*/
     public Date getDtDeb() {
         return dtDeb;
     }

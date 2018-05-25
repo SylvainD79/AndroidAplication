@@ -3,6 +3,7 @@ package miage.fr.gestionprojet.vues;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,7 +36,7 @@ public class GestionDesInitialsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_gestion_des_initials);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimaryDark)));
 
         ButterKnife.bind(this);
 

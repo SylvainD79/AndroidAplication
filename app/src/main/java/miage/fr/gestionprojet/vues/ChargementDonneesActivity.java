@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,7 +86,7 @@ public class ChargementDonneesActivity extends AppCompatActivity implements Easy
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chargement_donnees);
         ButterKnife.bind(this);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimaryDark)));
         context = this;
 
         mProgress = new ProgressDialog(this);
