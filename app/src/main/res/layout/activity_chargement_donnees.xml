@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Saissisez l'id d'un document Google Sheet"
+        android:hint="@string/hint_saisie_id_spreatsheet"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
@@ -22,7 +22,7 @@
         android:layout_marginTop="10dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:text="ID par défaut"
+        android:text="@string/default_id"
         app:layout_constraintTop_toBottomOf="@id/user_input"/>
 
     <Button
@@ -33,7 +33,7 @@
         android:theme="@style/AppButton.Button"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:text="Charger la base de données"
+        android:text="@string/load_bdd"
         app:layout_constraintTop_toBottomOf="@id/defaut_id_button"/>
 
 </android.support.constraint.ConstraintLayout>

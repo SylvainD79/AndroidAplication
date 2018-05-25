@@ -26,7 +26,7 @@
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18dp"
-                android:text="Projet" />
+                android:text="@string/projet" />
 
         </LinearLayout>
 
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginLeft="7dp"
-                android:text="Budget" />
+                android:text="@string/budget" />
 
             <Button
                 android:id="@+id/btnSaisies"
@@ -51,7 +51,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:text="Saisies" />
+                android:text="@string/saisies" />
 
             <Button
                 android:id="@+id/btnFormations"
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginRight="7dp"
-                android:text="Formation" />
+                android:text="@string/formation" />
         </LinearLayout>
 
         <ProgressBar

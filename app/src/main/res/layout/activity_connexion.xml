@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"
             android:theme="@style/AppButton.Button"
-            android:text="Sign out"
+            android:text="@string/sign_out"
             android:layout_weight="1" />
 
         <Button
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"
             android:theme="@style/AppButton.Button"
-            android:text="Lancer l'application"
+            android:text="@string/launch_application"
             android:layout_weight="1" />
 
     </LinearLayout>
@@ -89,7 +89,7 @@
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in"
+        android:text="@string/signIn"
         style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"
         android:theme="@style/AppButton.Button"
         android:layout_centerHorizontal="true"

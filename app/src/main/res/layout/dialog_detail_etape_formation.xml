@@ -37,14 +37,12 @@
     <TextView
         android:id="@+id/typeElement"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="TextView" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/commentaire"
@@ -52,13 +50,12 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:text="@string/name" />
 
     <TextView
         android:id="@+id/responsable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,14 +68,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="false"
-            android:text="Action réalisé" />
+            android:text="@string/action_performed" />
 
         <Button
             android:id="@+id/valider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Valider" />
+            android:text="@string/valided" />
     </LinearLayout>
 
 </LinearLayout>

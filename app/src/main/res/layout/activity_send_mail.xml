@@ -10,7 +10,7 @@
         android:id="@+id/context_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Envoyer le document Google Sheet par mail"
+        android:text="@string/send_mail_spreatsheet"
         android:layout_marginTop="15dp"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="18dp"

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Big Follow</string>
-    <string name="menu_trie_domaine">Trier par Domaine</string>
-    <string name="menu_trie_utilisateurs">Trier par utilisateur</string>
+    <string name="menu_trie_domaine">Filtre par Domaine</string>
+    <string name="menu_trie_utilisateurs">Filtre par utilisateur</string>
     <string name="action_settings">Settings</string>
     <string name="server_client_id">1025819528334-1rr2odja050n9rqu768t1hhqj7heg6ok.apps.googleusercontent.com</string>
     <!-- Button labels -->
@@ -20,5 +20,29 @@
     <string name="suivi_saisie">Suivi des saisies</string>
     <string name="suivi_planning">Suivi du planning</string>
     <string name="suivi_formations">Suivi des formations</string>
+
+    <string name="no_action_show">no action to show</string>
+    <string name="hint_saisie_id_spreatsheet">Saissisez l\'id d\'un document Google Sheet</string>
+    <string name="default_id">ID par défaut</string>
+    <string name="load_bdd">Charger la base de données</string>
+
+    <string name="launch_application">Lancer l\'application</string>
+    <string name="mesures">Mesures</string>
+    <string name="seizure_or_load">Saisie ou charge</string>
+
+    <string name="projet">Projet</string>
+    <string name="budget">Budget</string>
+    <string name="saisies">Saisies</string>
+    <string name="formation">Formation</string>
+    
+    <string name="send_mail_spreatsheet">Envoyer le document Google Sheet par mail</string>
+    <string name="name">Name</string>
+    <string name="action_performed">Action réalisé</string>
+    <string name="valided">Valider</string>
+
+    <string name="total">Total</string>
+    <string name="pre_requis">Pré-requis</string>
+    <string name="objective">Objectif</string>
+    <string name="post_format">Post-format</string>
 
 </resources>

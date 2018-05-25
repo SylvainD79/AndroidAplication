@@ -36,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:text="TextView"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -51,7 +50,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Total" />
+                android:text="@string/total" />
 
             <ProgressBar
                 android:id="@+id/formationTotalProgressBar"
@@ -67,7 +66,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pré-requis" />
+                android:text="@string/pre_requis" />
 
             <ProgressBar
                 android:id="@+id/formationPreRequisProgressBar"
@@ -80,7 +79,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Objectif" />
+                android:text="@string/objective" />
 
             <ProgressBar
                 android:id="@+id/formationObjectifProgressBar"
@@ -93,7 +92,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Post-format" />
+                android:text="@string/post_format" />
 
             <ProgressBar
                 android:id="@+id/formationPostFormatProgressBar"

@@ -26,7 +26,6 @@
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
-                android:text="text"
                 android:textSize="18sp"></TextView>
 
             <TextView
@@ -34,7 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"
                 android:textAlignment="textStart"
                 android:textSize="14sp" />
 
